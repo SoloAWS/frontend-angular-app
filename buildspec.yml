@@ -1,0 +1,15 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - npm install -g @angular/cli
+  pre_build:
+    commands:
+      - npm install
+  build:
+    commands:
+      - ng build --prod --output-path dist
+  post_build:
+    commands:
+      - aws s3 sync dist s3://$S3_BUCKET --delete
+      - aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths '/*'
