@@ -1,0 +1,15 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - npm install -g @angular/cli
+  pre_build:
+    commands:
+      - npm install
+  build:
+    commands:
+      - ng build --prod --output-path dist
+artifacts:
+  files:
+    - '**/*'
+  base-directory: dist
