@@ -10,29 +10,32 @@ export class InfrastructureStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // Create an S3 bucket to store the Angular app
-    const hostingBucket = new s3.Bucket(this, 'FrontendAngularBucket', {
-      bucketName: 'frontend-angular-bucket',
-      websiteIndexDocument: 'index.html',
-      websiteErrorDocument: 'index.html',
-      publicReadAccess: true,
+    // Step 1: Create an S3 bucket for storing Angular build artifacts
+    const hostingBucket = new s3.Bucket(this, 'AngularHostingBucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
-      blockPublicAccess: new s3.BlockPublicAccess({
-        blockPublicAcls: false,
-        blockPublicPolicy: false,
-        ignorePublicAcls: false,
-        restrictPublicBuckets: false,
-      }),
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL, // Keep bucket private
     });
 
-    // Create a CloudFront distribution
+    // Step 2: Create an Origin Access Identity for CloudFront to securely access the S3 bucket
+    const originAccessIdentity = new cloudfront.OriginAccessIdentity(
+      this,
+      'AngularHostingOAI',
+      {
+        comment: 'OAI for Angular Hosting Bucket',
+      }
+    );
+    hostingBucket.grantRead(originAccessIdentity); // Grant read access to CloudFront
+
+    // Step 3: Create a CloudFront distribution to serve the Angular app
     const distribution = new cloudfront.Distribution(
       this,
-      'FrontendAngularDistribution',
+      'AngularHostingDistribution',
       {
         defaultBehavior: {
-          origin: new origins.S3Origin(hostingBucket),
+          origin: new origins.S3Origin(hostingBucket, {
+            originAccessIdentity: originAccessIdentity,
+          }),
           viewerProtocolPolicy:
             cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         },
@@ -41,14 +44,14 @@ export class InfrastructureStack extends cdk.Stack {
           {
             httpStatus: 404,
             responseHttpStatus: 200,
-            responsePagePath: '/index.html',
+            responsePagePath: '/index.html', // For SPA fallback in Angular
           },
         ],
       }
     );
 
-    // Deploy site contents to S3 bucket
-    new s3deploy.BucketDeployment(this, 'DeployFrontendAngular', {
+    // Step 4: Deploy Angular app to the S3 bucket
+    new s3deploy.BucketDeployment(this, 'DeployAngularApp', {
       sources: [
         s3deploy.Source.asset(
           path.join(__dirname, '../../dist/frontend-angular')
@@ -59,10 +62,10 @@ export class InfrastructureStack extends cdk.Stack {
       distributionPaths: ['/*'],
     });
 
-    // Output the CloudFront URL
-    new cdk.CfnOutput(this, 'DistributionDomainName', {
+    // Step 5: Output CloudFront URL for easy access
+    new cdk.CfnOutput(this, 'CloudFrontURL', {
       value: distribution.domainName,
-      description: 'CloudFront Distribution Domain Name',
+      description: 'CloudFront URL for the Angular App',
     });
   }
 }
