@@ -4,6 +4,7 @@ import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
+import * as path from 'path';
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -20,24 +21,33 @@ export class InfrastructureStack extends cdk.Stack {
     });
 
     // Create a CloudFront distribution
-    const distribution = new cloudfront.Distribution(this, 'FrontendAngularDistribution', {
-      defaultBehavior: {
-        origin: new origins.S3Origin(hostingBucket),
-        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      },
-      defaultRootObject: 'index.html',
-      errorResponses: [
-        {
-          httpStatus: 404,
-          responseHttpStatus: 200,
-          responsePagePath: '/index.html',
+    const distribution = new cloudfront.Distribution(
+      this,
+      'FrontendAngularDistribution',
+      {
+        defaultBehavior: {
+          origin: new origins.S3Origin(hostingBucket),
+          viewerProtocolPolicy:
+            cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         },
-      ],
-    });
+        defaultRootObject: 'index.html',
+        errorResponses: [
+          {
+            httpStatus: 404,
+            responseHttpStatus: 200,
+            responsePagePath: '/index.html',
+          },
+        ],
+      }
+    );
 
     // Deploy site contents to S3 bucket
     new s3deploy.BucketDeployment(this, 'DeployFrontendAngular', {
-      sources: [s3deploy.Source.asset('../FrontendAngular/dist/frontend-angular')],
+      sources: [
+        s3deploy.Source.asset(
+          path.join(__dirname, '../../dist/frontend-angular')
+        ),
+      ],
       destinationBucket: hostingBucket,
       distribution,
       distributionPaths: ['/*'],
