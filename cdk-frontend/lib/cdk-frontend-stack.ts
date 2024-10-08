@@ -55,9 +55,17 @@ export class CdkFrontendStack extends Stack {
       ],
     });
 
-    // Output the CloudFront distribution domain name
+    // Outputs
     new CfnOutput(this, 'DistributionDomainName', {
       value: distribution.domainName,
+    });
+
+    new CfnOutput(this, 'DistributionId', {
+      value: distribution.distributionId,
+    });
+
+    new CfnOutput(this, 'WebsiteBucketName', {
+      value: websiteBucket.bucketName,
     });
   }
 }
