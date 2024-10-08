@@ -14,8 +14,6 @@ import {
   CachedMethods,
 } from 'aws-cdk-lib/aws-cloudfront';
 import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
-import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
-import * as path from 'path';
 
 export class CdkFrontendStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
