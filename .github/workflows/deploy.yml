@@ -33,11 +33,11 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          BUCKET_NAME="angular-app-bucket"
+          BUCKET_NAME="angular-app-bucket-us-east-1-174377208419"
           aws s3 sync ./dist/ s3://$BUCKET_NAME --delete
 
       - name: Invalidate CloudFront cache
         run: |
-          BUCKET_NAME="angular-app-bucket"
+          BUCKET_NAME="angular-app-bucket-us-east-1-174377208419"
           DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Origins.Items[0].DomainName=='${BUCKET_NAME}.s3.amazonaws.com'].Id" --output text)
           aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
