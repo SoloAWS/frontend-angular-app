@@ -8,36 +8,36 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '22'
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: |
+        cd FrontendAngular
+        npm ci
 
-      - name: Build Angular application
-        run: npm run build --prod
+    - name: Build Angular app
+      run: |
+        cd FrontendAngular
+        npm run build
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'us-east-1'
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
 
-      - name: Deploy to S3
-        run: |
-          BUCKET_NAME="angular-app-bucket-us-east-1-174377208419"
-          aws s3 sync ./dist/ s3://$BUCKET_NAME --delete
+    - name: Install AWS CDK
+      run: npm install -g aws-cdk
 
-      - name: Invalidate CloudFront cache
-        run: |
-          BUCKET_NAME="angular-app-bucket-us-east-1-174377208419"
-          DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Origins.Items[0].DomainName=='${BUCKET_NAME}.s3.amazonaws.com'].Id" --output text)
-          aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
+    - name: CDK Deploy
+      run: |
+        cd infrastructure
+        npm ci
+        cdk deploy --require-approval never
