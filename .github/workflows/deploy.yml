@@ -19,10 +19,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build Angular app
-      run: |
-        cd FrontendAngular
-        npm run build
+    - name: Build Angular application
+      run: npm run build --prod
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
