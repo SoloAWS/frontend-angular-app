@@ -57,18 +57,6 @@ export class CdkFrontendStack extends Stack {
       ],
     });
 
-    // Deploy the Angular build output to the S3 bucket
-    new BucketDeployment(this, 'DeployWebsite', {
-      sources: [
-        Source.asset(
-          path.resolve(__dirname, '../../FrontendAngular/dist/frontend-angular')
-        ),
-      ],
-      destinationBucket: websiteBucket,
-      distribution,
-      distributionPaths: ['/*'],
-    });
-
     // Output the CloudFront distribution domain name
     new CfnOutput(this, 'DistributionDomainName', {
       value: distribution.domainName,
