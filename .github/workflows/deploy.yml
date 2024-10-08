@@ -1,4 +1,4 @@
-name: Deploy Angular App to AWS
+name: Build and Deploy Angular App
 
 on:
   push:
@@ -6,34 +6,37 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
+      - name: Check out the repo
+        uses: actions/checkout@v3
 
-    - name: Use Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '22'
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build Angular application
-      run: npm run build --prod
+      - name: Build Angular app
+        run: npm run build -- --prod
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'us-east-1'
 
-    - name: Install AWS CDK
-      run: npm install -g aws-cdk
+      - name: Sync S3 bucket
+        run: |
+          aws s3 sync ./dist/frontend-angular/browser s3://$S3_BUCKET_NAME --delete
+        env:
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
 
-    - name: CDK Deploy
-      run: |
-        cd infrastructure
-        npm ci
-        cdk deploy --require-approval never
+      - name: Create CloudFront invalidation
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
