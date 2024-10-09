@@ -1,0 +1,38 @@
+.login-container  {
+    display: flex;
+    height: 100%;
+  }
+  
+  .welcome-board {
+    width: 33%;
+    background-color: #255F8C;
+    position: relative;
+  }
+
+  .welcome-texts {
+    position: absolute;
+    padding-left: 50px;
+    top: 64%;
+    width: 70%;
+  }
+  
+  .form-panel {
+    width: 67%;
+  }
+
+  .welcome-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 96px;
+    color: #FFFFFF;
+    margin-block: auto;
+  }
+
+  .welcome-text {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 32px;
+    color: #CFCFCF;
+    margin-top: 20px;
+  }
+  
