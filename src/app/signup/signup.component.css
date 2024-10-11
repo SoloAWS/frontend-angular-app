@@ -1,0 +1,104 @@
+.login-container  {
+    display: flex;
+    height: 100%;
+  }
+    
+  .welcome-board {
+    width: 33%;
+    background-color: #255F8C;
+    position: relative;
+  }
+  
+  .welcome-texts {
+    position: absolute;
+    padding-left: 50px;
+    top: 64%;
+    width: 70%;
+  }
+  
+  .welcome-texts h1 {
+    font-weight: 600;
+    font-size: 96px;
+    color: #FFFFFF;
+    margin-block: auto;
+  }
+  
+  .welcome-texts p {
+    font-weight: 300;
+    font-size: 32px;
+    color: #CFCFCF;
+    margin-top: 20px;
+  }
+  
+  .form-container {
+    width: 67%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  form {
+    width: 60%;
+  }
+  
+  .form-container h2 {
+    font-weight: 700;
+    font-size: 34px;
+    margin: 0;
+    align-self: flex-start;
+  }
+  
+  .form-container p {
+    font-weight: 300;
+    font-size: 20px;
+    margin: 24px 0;
+    align-self: flex-start;
+  }
+  
+  .signup-input {
+    width: 100%;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .half-input {
+    width: 50%;
+  }
+  
+  .login-button {
+    height: 42px;
+    width: 100%;
+    font-size: 15px;
+  }
+  
+  .top-right {
+    border: #1a73e8;
+    position: absolute;
+    top: 20px;
+    right: 32px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 16px;
+    color: #2196F3;
+  }
+  
+  .globe-icon {
+    font-size: 18px;
+  }
+  
+  .language-selector {
+    cursor: pointer;
+  }
+  
+  .dropdown-icon {
+    font-size: 12px;
+    cursor: pointer;
+  }
+    
