@@ -70,11 +70,11 @@
   .half-input {
     width: 50%;
   }
-  
-  .login-button {
-    height: 42px;
-    width: 100%;
-    font-size: 15px;
+
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
   }
   
   .top-right {
