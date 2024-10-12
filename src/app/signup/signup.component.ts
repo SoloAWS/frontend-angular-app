@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { SignupService } from './signup.service';
+import { Company } from './company';
 
 interface Country {
   name: string;
@@ -22,16 +24,33 @@ interface Country {
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })
 export class SignupComponent {
-
-  selectedCountry?: string;
-  selectedCity?: string;
+  signupForm: FormGroup;
   filteredCities: string[] = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private signupService: SignupService
+  ) {
+    this.signupForm = this.fb.group({
+      companyName: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      birthDate: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      country: ['', Validators.required],
+      city: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+    });
+  }
 
   countries: Country[] = [
     { name: 'Colombia', cities: ['Bogotá', 'Medellín', 'Cali', 'Cartagena', 'Barranquilla', 'Bucaramanga'] },
@@ -56,10 +75,37 @@ export class SignupComponent {
     { name: 'Egipto', cities: ['El Cairo', 'Alejandría', 'Giza', 'Sharm el-Sheij', 'Luxor', 'Asuán'] },
   ];
   
+  
   onCountryChange(countryName: string) {
     const selected = this.countries.find(country => country.name === countryName);
     this.filteredCities = selected ? selected.cities : [];
-    this.selectedCity = '';
+    this.signupForm.get('city')?.reset();
+  }
+
+  onSubmit() {
+    if (this.signupForm.valid) {
+      const company = new Company(
+        0,
+        this.signupForm.value.companyName,
+        this.signupForm.value.firstName,
+        this.signupForm.value.lastName,
+        this.signupForm.value.birthDate,
+        this.signupForm.value.phoneNumber,
+        this.signupForm.value.email,
+        this.signupForm.value.country,
+        this.signupForm.value.city,
+        this.signupForm.value.password
+      );
+
+      this.signupService.crearCompany(company).subscribe({
+        next: (response) => {
+          console.log('User registered successfully', response);
+        },
+        error: (error) => {
+          console.error('Error registering user', error);
+        }
+      });
+    }
   }
 
 }
