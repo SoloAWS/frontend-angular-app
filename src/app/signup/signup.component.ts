@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { SignupService } from './signup.service';
 import { Company } from './company';
+import { CommonModule, DatePipe } from '@angular/common';
 
 interface Country {
   name: string;
@@ -26,7 +27,9 @@ interface Country {
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule
   ],
+  providers: [DatePipe],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })
@@ -36,7 +39,8 @@ export class SignupComponent {
 
   constructor(
     private fb: FormBuilder,
-    private signupService: SignupService
+    private signupService: SignupService,
+    private datePipe: DatePipe
   ) {
     this.signupForm = this.fb.group({
       companyName: ['', Validators.required],
@@ -84,12 +88,13 @@ export class SignupComponent {
 
   onSubmit() {
     if (this.signupForm.valid) {
+      const formattedBirthDate = this.datePipe.transform(this.signupForm.value.birthDate, 'yyyy-MM-dd');
       const company = new Company(
         0,
         this.signupForm.value.companyName,
         this.signupForm.value.firstName,
         this.signupForm.value.lastName,
-        this.signupForm.value.birthDate,
+        formattedBirthDate!,
         this.signupForm.value.phoneNumber,
         this.signupForm.value.email,
         this.signupForm.value.country,
