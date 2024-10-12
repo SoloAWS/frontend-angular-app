@@ -13,6 +13,9 @@ export class SignupService {
   constructor(private http: HttpClient) {}
 
   crearCompany(company: Company): Observable<Company> {
-    return this.http.post<Company>(`${this.apiUrl}/user/company`, company);
+    return this.http.post<Company>(
+      `${this.apiUrl}/user-management/company`,
+      company
+    );
   }
 }
