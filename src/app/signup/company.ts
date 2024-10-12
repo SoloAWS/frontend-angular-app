@@ -1,7 +1,7 @@
 export class Company {
   id: number;
   name: string;
-  fist_name: string;
+  first_name: string;
   last_name: string;
   birth_date: string;
   phone_number: string;
@@ -13,7 +13,7 @@ export class Company {
   constructor(
     id: number,
     name: string,
-    fist_name: string,
+    first_name: string,
     last_name: string,
     birth_date: string,
     phone_number: string,
@@ -24,7 +24,7 @@ export class Company {
   ) {
     this.id = id;
     this.name = name;
-    this.fist_name = fist_name;
+    this.first_name = first_name;
     this.last_name = last_name;
     this.birth_date = birth_date;
     this.phone_number = phone_number;
