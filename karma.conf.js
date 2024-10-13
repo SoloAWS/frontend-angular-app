@@ -11,28 +11,24 @@ module.exports = function(config) {
       '@angular-devkit/build-angular/plugins/karma'
     ],
     client: {
-      clearContext: false
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     angularCli: {
       environment: 'dev'
     },
-    files: [
-
-    ],
     preprocessors: {
-      './src/**/*.js': ['coverage'],
-      './src/**/*.ts': ['coverage']
+      './src/**/*.ts': ['coverage'] // Only process TypeScript files for coverage
     },
     coverageReporter: {
-      dir: path.join(__dirname, './coverage/'),
+      dir: require('path').join(__dirname, './coverage/'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'lcov', subdir: '.' },
-        { type: 'text-summary' }
+        { type: 'html' }, // Generates an HTML report
+        { type: 'lcov', subdir: '.' }, // Generates lcov.info
+        { type: 'text-summary' } // Summary in console
       ]
     },
-    reporters: ['progress', 'coverage', 'coveralls'],
+    reporters: ['progress', 'coverage'], // You may omit coveralls unless you need it
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
