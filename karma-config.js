@@ -24,15 +24,15 @@ module.exports = function(config) {
       './src/**/*.ts': ['coverage']
     },
     coverageReporter: {
-      dir: path.join(__dirname, './coverage/frontend-angular-app/'),
+      dir: path.join(__dirname, './coverage/'),
       subdir: '.',
       reporters: [
         { type: 'html' },
-        { type: 'lcov', subdir: '.', file: 'lcov.info' },
+        { type: 'lcov', subdir: '.' },
         { type: 'text-summary' }
       ]
     },
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'coverage', 'coveralls'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
