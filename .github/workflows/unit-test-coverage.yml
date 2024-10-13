@@ -41,17 +41,26 @@ jobs:
     - name: Run Tests and Generate Coverage
       run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
 
-    - name: Check Coverage
-      run: |
-        # Install lcov if it's not already installed
-        if ! command -v lcov &> /dev/null; then
-          sudo apt-get install lcov
-        fi
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage
+        path: coverage/
 
-        # Check the coverage and fail if it's below 70%
-        COVERAGE=$(lcov --capture --directory coverage --output-file coverage.info && lcov --summary coverage.info | grep -oP 'Lines\s+:\s+\K[0-9]+(?=%)')
-        echo "Coverage: $COVERAGE%"
-        if [ "$COVERAGE" -lt 70 ]; then
-          echo "Coverage is below 70%. Failing the job."
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: ./coverage/lcov.info
+
+    - name: Verify Coverage Threshold
+      run: |
+        COVERAGE=$(cat ./coverage/lcov.info | grep -E "SF:.*\.ts$" -A 1 | grep "LF:" | awk '{sum+=$2} END {print sum}')
+        COVERED=$(cat ./coverage/lcov.info | grep -E "SF:.*\.ts$" -A 1 | grep "LH:" | awk '{sum+=$2} END {print sum}')
+        COVERAGE_PERCENTAGE=$(awk "BEGIN {print ($COVERED/$COVERAGE)*100}")
+        if (( $(echo "$COVERAGE_PERCENTAGE < 70" | bc -l) )); then
+          echo "Code coverage is below 70%. Current coverage: $COVERAGE_PERCENTAGE%"
           exit 1
+        else
+          echo "Code coverage is at or above 70%. Current coverage: $COVERAGE_PERCENTAGE%"
         fi
