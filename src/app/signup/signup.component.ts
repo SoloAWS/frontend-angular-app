@@ -52,26 +52,23 @@ export class SignupComponent {
   ) {
     this.signupForm = this.fb.group(
       {
-        companyName: ['test', [Validators.required, Validators.minLength(2)]],
-        firstName: ['test', [Validators.required, Validators.maxLength(50)]],
-        lastName: ['test', [Validators.required, Validators.maxLength(50)]],
-        birthDate: ['1996-10-08', [Validators.required, this.ageValidator()]],
-        phoneNumber: [
-          '+57 300 000 0000',
-          [Validators.required, this.phoneNumberValidator()],
-        ],
-        country: ['Colombia', Validators.required],
-        city: ['Bogotá', Validators.required],
-        email: ['test@test.com', [Validators.required, Validators.email]],
+        companyName: ['', [Validators.required, Validators.minLength(2)]],
+        firstName: ['', [Validators.required, Validators.maxLength(50)]],
+        lastName: ['', [Validators.required, Validators.maxLength(50)]],
+        birthDate: ['', [Validators.required, this.ageValidator()]],
+        phoneNumber: ['', [Validators.required, this.phoneNumberValidator()]],
+        country: ['', Validators.required],
+        city: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
         password: [
-          'Password123#',
+          '',
           [
             Validators.required,
             Validators.minLength(8),
             this.passwordStrengthValidator(),
           ],
         ],
-        confirmPassword: ['Password123#', Validators.required],
+        confirmPassword: ['', Validators.required],
       },
       { validators: this.passwordMatchValidator }
     );
@@ -84,9 +81,6 @@ export class SignupComponent {
           ?.setValue(formattedValue, { emitEvent: false });
       }
     });
-
-    // Set the filtered cities based on the default country
-    this.onCountryChange('Colombia');
   }
 
   ageValidator(): ValidatorFn {
