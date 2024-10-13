@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { SignupService } from './signup.service';
 import { Company } from './company';
 import { CommonModule, DatePipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 interface Country {
   name: string;
@@ -27,7 +28,8 @@ interface Country {
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   providers: [DatePipe],
   templateUrl: './signup.component.html',
@@ -36,6 +38,7 @@ interface Country {
 export class SignupComponent {
   signupForm: FormGroup;
   filteredCities: string[] = [];
+  today: Date = new Date();
 
   constructor(
     private fb: FormBuilder,
@@ -44,16 +47,16 @@ export class SignupComponent {
   ) {
     this.signupForm = this.fb.group({
       companyName: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')]],
+      lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')]],
       birthDate: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^\\+\\d+$')]],
       country: ['', Validators.required],
       city: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
-    });
+    }, { validators: this.passwordMatchValidator });
   }
 
   countries: Country[] = [
@@ -78,7 +81,12 @@ export class SignupComponent {
     { name: 'Sudáfrica', cities: ['Johannesburgo', 'Ciudad del Cabo', 'Durban', 'Pretoria', 'Port Elizabeth', 'Bloemfontein'] },
     { name: 'Egipto', cities: ['El Cairo', 'Alejandría', 'Giza', 'Sharm el-Sheij', 'Luxor', 'Asuán'] },
   ];
-  
+
+  passwordMatchValidator(form: FormGroup): ValidationErrors | null {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  }
   
   onCountryChange(countryName: string) {
     const selected = this.countries.find(country => country.name === countryName);
@@ -110,6 +118,9 @@ export class SignupComponent {
           console.error('Error registering user', error);
         }
       });
+    }
+    else {
+      console.error('Form is invalid');
     }
   }
 

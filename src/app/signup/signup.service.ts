@@ -8,13 +8,13 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class SignupService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = 'http://localhost:8001';
 
   constructor(private http: HttpClient) {}
 
   crearCompany(company: Company): Observable<Company> {
     return this.http.post<Company>(
-      `${this.apiUrl}/user-management/company`,
+      `${this.apiUrl}/company`,
       company
     );
   }
