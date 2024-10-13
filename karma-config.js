@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = function(config) {
   config.set({
     basePath: '',
@@ -22,7 +24,7 @@ module.exports = function(config) {
       './src/**/*.ts': ['coverage']
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/my-app'),
+      dir: path.join(__dirname, './coverage/frontend-angular-app/'),
       subdir: '.',
       reporters: [
         { type: 'html' },
