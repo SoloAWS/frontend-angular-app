@@ -1,3 +1,4 @@
 export const environment = {
-  apiUrl: 'https://0tf03tvuel.execute-api.us-east-1.amazonaws.com',
+  apiUrl:
+    'https://Infras-MyALB-LltaISkeDuig-2140045379.us-east-1.elb.amazonaws.com',
 };
