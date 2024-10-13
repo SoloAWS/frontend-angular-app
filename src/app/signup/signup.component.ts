@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -43,17 +43,100 @@ export class SignupComponent {
     private datePipe: DatePipe
   ) {
     this.signupForm = this.fb.group({
-      companyName: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
+      companyName: ['', [Validators.required, Validators.minLength(2)]],
+      firstName: ['', [Validators.required, Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.maxLength(50)]],
+      birthDate: ['', [Validators.required, this.ageValidator()]],
+      phoneNumber: ['', [Validators.required, this.phoneNumberValidator()]],
       country: ['', Validators.required],
       city: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
       confirmPassword: ['', Validators.required],
+    }, { validators: this.passwordMatchValidator });
+
+    this.signupForm.get('phoneNumber')?.valueChanges.subscribe(value => {
+      if (value) {
+        const formattedValue = this.formatPhoneNumber(value);
+        this.signupForm.get('phoneNumber')?.setValue(formattedValue, { emitEvent: false });
+      }
     });
+  }
+
+  ageValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      if (control.value) {
+        const today = new Date();
+        const birthDate = new Date(control.value);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        if (age < 18) {
+          return { 'underage': true };
+        }
+      }
+      return null;
+    };
+  }
+
+  phoneNumberValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const valid = /^\+[0-9]{1,3}\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}$/.test(control.value);
+      return valid ? null : {'invalidPhoneNumber': {value: control.value}};
+    };
+  }
+
+  passwordStrengthValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const password = control.value;
+      if (password) {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        const valid = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+        if (!valid) {
+          return { 'weakPassword': true };
+        }
+      }
+      return null;
+    };
+  }
+
+  passwordMatchValidator: ValidatorFn = (group: AbstractControl): { [key: string]: any } | null => {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword');
+
+    if (password !== confirmPassword?.value) {
+      confirmPassword?.setErrors({ passwordMismatch: true });
+    } else {
+      confirmPassword?.setErrors(null);
+    }
+
+    return null;
+  };
+
+
+  formatPhoneNumber(value: string): string {
+    const digits = value.replace(/\D/g, '');
+
+    let formatted = '';
+    if (digits.length > 0) {
+      formatted += '+' + digits.substring(0, Math.min(2, digits.length));
+    }
+    if (digits.length > 2) {
+      formatted += ' ' + digits.substring(2, Math.min(5, digits.length));
+    }
+    if (digits.length > 5) {
+      formatted += ' ' + digits.substring(5, Math.min(8, digits.length));
+    }
+    if (digits.length > 8) {
+      formatted += ' ' + digits.substring(8, 12);
+    }
+
+    return formatted;
   }
 
   countries: Country[] = [
@@ -78,8 +161,8 @@ export class SignupComponent {
     { name: 'Sudáfrica', cities: ['Johannesburgo', 'Ciudad del Cabo', 'Durban', 'Pretoria', 'Port Elizabeth', 'Bloemfontein'] },
     { name: 'Egipto', cities: ['El Cairo', 'Alejandría', 'Giza', 'Sharm el-Sheij', 'Luxor', 'Asuán'] },
   ];
-  
-  
+
+
   onCountryChange(countryName: string) {
     const selected = this.countries.find(country => country.name === countryName);
     this.filteredCities = selected ? selected.cities : [];
@@ -113,4 +196,35 @@ export class SignupComponent {
     }
   }
 
+  getErrorMessage(controlName: string): string {
+    const control = this.signupForm.get(controlName);
+    if (control?.hasError('required')) {
+      return 'Este campo es requerido';
+    }
+    if (control?.hasError('email') || control?.hasError('invalidEmail')) {
+      return 'Ingrese un correo electrónico válido';
+    }
+    if (control?.hasError('minlength')) {
+      return `Mínimo ${control.errors?.['minlength'].requiredLength} caracteres`;
+    }
+    if (control?.hasError('maxlength')) {
+      return `Máximo ${control.errors?.['maxlength'].requiredLength} caracteres`;
+    }
+    if (control?.hasError('underage')) {
+      return 'Debe ser mayor de 18 años';
+    }
+    if (control?.hasError('weakPassword')) {
+      return 'La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales';
+    }
+    if (control?.hasError('passwordMismatch')) {
+      return 'Las contraseñas no coinciden';
+    }
+    if (control?.hasError('invalidName')) {
+      return 'Ingrese solo letras (incluyendo acentos y ñ)';
+    }
+    if (control?.hasError('invalidPhoneNumber')) {
+      return 'Ingrese formato (+XX XXX XXX XXXX)';
+    }
+    return '';
+  }
 }
