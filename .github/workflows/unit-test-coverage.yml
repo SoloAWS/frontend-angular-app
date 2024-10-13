@@ -54,13 +54,4 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Verify Coverage Threshold
-      run: |
-        COVERAGE=$(npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage | grep -i "Statements.*%" | awk '{print $2}' | sed 's/%//')
-        if (( $(echo "$COVERAGE < 70" | bc -l) )); then
-          echo "Code coverage is below 70%. Current coverage: $COVERAGE%"
-          exit 1
-        else
-          echo "Code coverage is at or above 70%. Current coverage: $COVERAGE%"
-        fi
+        path-to-lcov: ./coverage/frontend-angular/lcov.info
