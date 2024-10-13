@@ -1,0 +1,70 @@
+name: Angular Tests and Coverage
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - 'main'
+      - 'master'
+      - 'develop'
+      - 'release/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Cache node modules
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Run Tests
+      run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
+
+    - name: Generate Coverage Report
+      run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage
+        path: coverage/
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Verify Coverage Threshold
+      run: |
+        COVERAGE=$(npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage | grep -i "Statements.*%" | awk '{print $2}' | sed 's/%//')
+        if (( $(echo "$COVERAGE < 70" | bc -l) )); then
+          echo "Code coverage is below 70%. Current coverage: $COVERAGE%"
+          exit 1
+        else
+          echo "Code coverage is at or above 70%. Current coverage: $COVERAGE%"
+        fi
