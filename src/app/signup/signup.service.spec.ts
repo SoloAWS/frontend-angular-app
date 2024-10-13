@@ -1,5 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { SignupService } from './signup.service';
 import { Company } from './company';
 import { environment } from '../../environments/environment';
@@ -11,7 +14,7 @@ describe('SignupService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [SignupService]
+      providers: [SignupService],
     });
     service = TestBed.inject(SignupService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -39,11 +42,13 @@ describe('SignupService', () => {
       'password123'
     );
 
-    service.crearCompany(mockCompany).subscribe(company => {
+    service.crearCompany(mockCompany).subscribe((company) => {
       expect(company).toEqual(mockCompany);
     });
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/user-management/company`);
+    const req = httpMock.expectOne(
+      `${environment.apiUrl}/user-management/company/`
+    );
     expect(req.request.method).toBe('POST');
     req.flush(mockCompany);
   });
@@ -64,8 +69,12 @@ describe('SignupService', () => {
 
     service.crearCompany(mockCompany).subscribe();
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/user-management/company`);
-    expect(req.request.url).toBe(`${environment.apiUrl}/user-management/company`);
+    const req = httpMock.expectOne(
+      `${environment.apiUrl}/user-management/company/`
+    );
+    expect(req.request.url).toBe(
+      `${environment.apiUrl}/user-management/company/`
+    );
     req.flush(mockCompany);
   });
 
@@ -85,7 +94,9 @@ describe('SignupService', () => {
 
     service.crearCompany(mockCompany).subscribe();
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/user-management/company`);
+    const req = httpMock.expectOne(
+      `${environment.apiUrl}/user-management/company/`
+    );
     expect(req.request.body).toEqual(mockCompany);
     req.flush(mockCompany);
   });
@@ -104,7 +115,7 @@ describe('SignupService', () => {
       'password123'
     );
 
-    service.crearCompany(mockCompany).subscribe(company => {
+    service.crearCompany(mockCompany).subscribe((company) => {
       expect(company.id).toBe(1);
       expect(company.name).toBe('Test Company');
       expect(company.first_name).toBe('John');
@@ -117,7 +128,9 @@ describe('SignupService', () => {
       expect(company.password).toBe('password123');
     });
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/user-management/company`);
+    const req = httpMock.expectOne(
+      `${environment.apiUrl}/user-management/company/`
+    );
     expect(req.request.method).toBe('POST');
     req.flush(mockCompany);
   });
@@ -145,7 +158,9 @@ describe('SignupService', () => {
       }
     );
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/user-management/company`);
+    const req = httpMock.expectOne(
+      `${environment.apiUrl}/user-management/company/`
+    );
     expect(req.request.method).toBe('POST');
     req.flush('Invalid data', mockError);
   });
