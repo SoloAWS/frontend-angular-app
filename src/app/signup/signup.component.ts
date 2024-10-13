@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+  AbstractControl,
+  ValidatorFn,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -27,11 +35,11 @@ interface Country {
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [DatePipe],
   templateUrl: './signup.component.html',
-  styleUrl: './signup.component.css'
+  styleUrl: './signup.component.css',
 })
 export class SignupComponent {
   signupForm: FormGroup;
@@ -42,39 +50,60 @@ export class SignupComponent {
     private signupService: SignupService,
     private datePipe: DatePipe
   ) {
-    this.signupForm = this.fb.group({
-      companyName: ['', [Validators.required, Validators.minLength(2)]],
-      firstName: ['', [Validators.required, Validators.maxLength(50)]],
-      lastName: ['', [Validators.required, Validators.maxLength(50)]],
-      birthDate: ['', [Validators.required, this.ageValidator()]],
-      phoneNumber: ['', [Validators.required, this.phoneNumberValidator()]],
-      country: ['', Validators.required],
-      city: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
-      confirmPassword: ['', Validators.required],
-    }, { validators: this.passwordMatchValidator });
+    this.signupForm = this.fb.group(
+      {
+        companyName: ['test', [Validators.required, Validators.minLength(2)]],
+        firstName: ['test', [Validators.required, Validators.maxLength(50)]],
+        lastName: ['test', [Validators.required, Validators.maxLength(50)]],
+        birthDate: ['1996-10-08', [Validators.required, this.ageValidator()]],
+        phoneNumber: [
+          '+57 300 000 0000',
+          [Validators.required, this.phoneNumberValidator()],
+        ],
+        country: ['Colombia', Validators.required],
+        city: ['Bogotá', Validators.required],
+        email: ['test@test.com', [Validators.required, Validators.email]],
+        password: [
+          'Password123#',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.passwordStrengthValidator(),
+          ],
+        ],
+        confirmPassword: ['Password123#', Validators.required],
+      },
+      { validators: this.passwordMatchValidator }
+    );
 
-    this.signupForm.get('phoneNumber')?.valueChanges.subscribe(value => {
+    this.signupForm.get('phoneNumber')?.valueChanges.subscribe((value) => {
       if (value) {
         const formattedValue = this.formatPhoneNumber(value);
-        this.signupForm.get('phoneNumber')?.setValue(formattedValue, { emitEvent: false });
+        this.signupForm
+          .get('phoneNumber')
+          ?.setValue(formattedValue, { emitEvent: false });
       }
     });
+
+    // Set the filtered cities based on the default country
+    this.onCountryChange('Colombia');
   }
 
   ageValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       if (control.value) {
         const today = new Date();
         const birthDate = new Date(control.value);
         let age = today.getFullYear() - birthDate.getFullYear();
         const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        if (
+          monthDiff < 0 ||
+          (monthDiff === 0 && today.getDate() < birthDate.getDate())
+        ) {
           age--;
         }
         if (age < 18) {
-          return { 'underage': true };
+          return { underage: true };
         }
       }
       return null;
@@ -82,30 +111,35 @@ export class SignupComponent {
   }
 
   phoneNumberValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
-      const valid = /^\+[0-9]{1,3}\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}$/.test(control.value);
-      return valid ? null : {'invalidPhoneNumber': {value: control.value}};
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const valid = /^\+[0-9]{1,3}\s[0-9]{3}\s[0-9]{3}\s[0-9]{4}$/.test(
+        control.value
+      );
+      return valid ? null : { invalidPhoneNumber: { value: control.value } };
     };
   }
 
   passwordStrengthValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const password = control.value;
       if (password) {
         const hasUpperCase = /[A-Z]/.test(password);
         const hasLowerCase = /[a-z]/.test(password);
         const hasNumber = /[0-9]/.test(password);
         const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-        const valid = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+        const valid =
+          hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
         if (!valid) {
-          return { 'weakPassword': true };
+          return { weakPassword: true };
         }
       }
       return null;
     };
   }
 
-  passwordMatchValidator: ValidatorFn = (group: AbstractControl): { [key: string]: any } | null => {
+  passwordMatchValidator: ValidatorFn = (
+    group: AbstractControl
+  ): { [key: string]: any } | null => {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword');
 
@@ -117,7 +151,6 @@ export class SignupComponent {
 
     return null;
   };
-
 
   formatPhoneNumber(value: string): string {
     const digits = value.replace(/\D/g, '');
@@ -140,38 +173,207 @@ export class SignupComponent {
   }
 
   countries: Country[] = [
-    { name: 'Colombia', cities: ['Bogotá', 'Medellín', 'Cali', 'Cartagena', 'Barranquilla', 'Bucaramanga'] },
-    { name: 'Argentina', cities: ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'La Plata', 'Mar del Plata'] },
-    { name: 'Ecuador', cities: ['Quito', 'Guayaquil', 'Cuenca', 'Manta', 'Ambato', 'Loja'] },
-    { name: 'México', cities: ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Cancún', 'Tijuana'] },
-    { name: 'Perú', cities: ['Lima', 'Cusco', 'Arequipa', 'Trujillo', 'Chiclayo', 'Piura'] },
-    { name: 'Chile', cities: ['Santiago', 'Valparaíso', 'Concepción', 'La Serena', 'Antofagasta', 'Temuco'] },
-    { name: 'Brasil', cities: ['São Paulo', 'Río de Janeiro', 'Brasilia', 'Salvador', 'Fortaleza', 'Belo Horizonte'] },
-    { name: 'España', cities: ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga'] },
-    { name: 'Estados Unidos', cities: ['Nueva York', 'Los Ángeles', 'Chicago', 'Houston', 'Miami', 'San Francisco'] },
-    { name: 'Canadá', cities: ['Toronto', 'Vancouver', 'Montreal', 'Ottawa', 'Calgary', 'Edmonton'] },
-    { name: 'Francia', cities: ['París', 'Marsella', 'Lyon', 'Toulouse', 'Niza', 'Nantes'] },
-    { name: 'Italia', cities: ['Roma', 'Milán', 'Nápoles', 'Turín', 'Venecia', 'Florencia'] },
-    { name: 'Alemania', cities: ['Berlín', 'Múnich', 'Hamburgo', 'Fráncfort', 'Colonia', 'Stuttgart'] },
-    { name: 'Japón', cities: ['Tokio', 'Osaka', 'Yokohama', 'Nagoya', 'Kioto', 'Sapporo'] },
-    { name: 'China', cities: ['Pekín', 'Shanghái', 'Cantón', 'Shenzhen', 'Chongqing', 'Tianjin'] },
-    { name: 'Australia', cities: ['Sídney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaida', 'Canberra'] },
-    { name: 'Reino Unido', cities: ['Londres', 'Manchester', 'Birmingham', 'Edimburgo', 'Glasgow', 'Liverpool'] },
-    { name: 'India', cities: ['Nueva Delhi', 'Bombay (Mumbai)', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata'] },
-    { name: 'Sudáfrica', cities: ['Johannesburgo', 'Ciudad del Cabo', 'Durban', 'Pretoria', 'Port Elizabeth', 'Bloemfontein'] },
-    { name: 'Egipto', cities: ['El Cairo', 'Alejandría', 'Giza', 'Sharm el-Sheij', 'Luxor', 'Asuán'] },
+    {
+      name: 'Colombia',
+      cities: [
+        'Bogotá',
+        'Medellín',
+        'Cali',
+        'Cartagena',
+        'Barranquilla',
+        'Bucaramanga',
+      ],
+    },
+    {
+      name: 'Argentina',
+      cities: [
+        'Buenos Aires',
+        'Córdoba',
+        'Rosario',
+        'Mendoza',
+        'La Plata',
+        'Mar del Plata',
+      ],
+    },
+    {
+      name: 'Ecuador',
+      cities: ['Quito', 'Guayaquil', 'Cuenca', 'Manta', 'Ambato', 'Loja'],
+    },
+    {
+      name: 'México',
+      cities: [
+        'Ciudad de México',
+        'Guadalajara',
+        'Monterrey',
+        'Puebla',
+        'Cancún',
+        'Tijuana',
+      ],
+    },
+    {
+      name: 'Perú',
+      cities: ['Lima', 'Cusco', 'Arequipa', 'Trujillo', 'Chiclayo', 'Piura'],
+    },
+    {
+      name: 'Chile',
+      cities: [
+        'Santiago',
+        'Valparaíso',
+        'Concepción',
+        'La Serena',
+        'Antofagasta',
+        'Temuco',
+      ],
+    },
+    {
+      name: 'Brasil',
+      cities: [
+        'São Paulo',
+        'Río de Janeiro',
+        'Brasilia',
+        'Salvador',
+        'Fortaleza',
+        'Belo Horizonte',
+      ],
+    },
+    {
+      name: 'España',
+      cities: [
+        'Madrid',
+        'Barcelona',
+        'Valencia',
+        'Sevilla',
+        'Bilbao',
+        'Málaga',
+      ],
+    },
+    {
+      name: 'Estados Unidos',
+      cities: [
+        'Nueva York',
+        'Los Ángeles',
+        'Chicago',
+        'Houston',
+        'Miami',
+        'San Francisco',
+      ],
+    },
+    {
+      name: 'Canadá',
+      cities: [
+        'Toronto',
+        'Vancouver',
+        'Montreal',
+        'Ottawa',
+        'Calgary',
+        'Edmonton',
+      ],
+    },
+    {
+      name: 'Francia',
+      cities: ['París', 'Marsella', 'Lyon', 'Toulouse', 'Niza', 'Nantes'],
+    },
+    {
+      name: 'Italia',
+      cities: ['Roma', 'Milán', 'Nápoles', 'Turín', 'Venecia', 'Florencia'],
+    },
+    {
+      name: 'Alemania',
+      cities: [
+        'Berlín',
+        'Múnich',
+        'Hamburgo',
+        'Fráncfort',
+        'Colonia',
+        'Stuttgart',
+      ],
+    },
+    {
+      name: 'Japón',
+      cities: ['Tokio', 'Osaka', 'Yokohama', 'Nagoya', 'Kioto', 'Sapporo'],
+    },
+    {
+      name: 'China',
+      cities: [
+        'Pekín',
+        'Shanghái',
+        'Cantón',
+        'Shenzhen',
+        'Chongqing',
+        'Tianjin',
+      ],
+    },
+    {
+      name: 'Australia',
+      cities: [
+        'Sídney',
+        'Melbourne',
+        'Brisbane',
+        'Perth',
+        'Adelaida',
+        'Canberra',
+      ],
+    },
+    {
+      name: 'Reino Unido',
+      cities: [
+        'Londres',
+        'Manchester',
+        'Birmingham',
+        'Edimburgo',
+        'Glasgow',
+        'Liverpool',
+      ],
+    },
+    {
+      name: 'India',
+      cities: [
+        'Nueva Delhi',
+        'Bombay (Mumbai)',
+        'Bangalore',
+        'Hyderabad',
+        'Chennai',
+        'Kolkata',
+      ],
+    },
+    {
+      name: 'Sudáfrica',
+      cities: [
+        'Johannesburgo',
+        'Ciudad del Cabo',
+        'Durban',
+        'Pretoria',
+        'Port Elizabeth',
+        'Bloemfontein',
+      ],
+    },
+    {
+      name: 'Egipto',
+      cities: [
+        'El Cairo',
+        'Alejandría',
+        'Giza',
+        'Sharm el-Sheij',
+        'Luxor',
+        'Asuán',
+      ],
+    },
   ];
 
-
   onCountryChange(countryName: string) {
-    const selected = this.countries.find(country => country.name === countryName);
+    const selected = this.countries.find(
+      (country) => country.name === countryName
+    );
     this.filteredCities = selected ? selected.cities : [];
     this.signupForm.get('city')?.reset();
   }
 
   onSubmit() {
     if (this.signupForm.valid) {
-      const formattedBirthDate = this.datePipe.transform(this.signupForm.value.birthDate, 'yyyy-MM-dd');
+      const formattedBirthDate = this.datePipe.transform(
+        this.signupForm.value.birthDate,
+        'yyyy-MM-dd'
+      );
       const company = new Company(
         0,
         this.signupForm.value.companyName,
@@ -191,7 +393,7 @@ export class SignupComponent {
         },
         error: (error) => {
           console.error('Error registering user', error);
-        }
+        },
       });
     }
   }
