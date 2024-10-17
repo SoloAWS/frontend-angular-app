@@ -1,0 +1,49 @@
+.container {
+    height: 100%;
+}
+
+.with-toolbar {
+    margin-top: 64px;
+}
+
+.mat-sidenav {
+    width: 16% !important;
+}
+
+.mat-sidenav .mdc-list {
+    padding-left: 20px !important;
+}
+
+h3 {
+    margin-left: 20px;
+    color: #212121;
+}
+
+.mat-toolbar {
+    background: #255F8C;
+    color: white;
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    align-items: center;
+}
+
+.menu-icon {
+    font-size: 30px;
+    margin-left: 16px;
+    margin-bottom: 8px;
+}
+
+.title {
+    margin-left: 20px;
+    font-size: 30px;
+}
+
+.spacer {
+    flex: 1;
+}
