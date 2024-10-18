@@ -1,21 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Document, UserCompanies } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Company } from '../models';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class SignupService {
+export class IncidentService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  crearCompany(company: Company): Observable<Company> {
-    return this.http.post<Company>(
-      `${this.apiUrl}/user-management/company/`,
-      company
+  getCompaniesByDocument(userDocument: Document): Observable<UserCompanies> {
+    return this.http.post<UserCompanies>(
+      `${this.apiUrl}/user-management/user/companies`,
+      userDocument
     );
   }
 }

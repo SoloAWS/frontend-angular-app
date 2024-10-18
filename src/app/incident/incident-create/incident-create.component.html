@@ -1,0 +1,33 @@
+<div class="incident-create-container">
+    <div class="form-container">
+        <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()">
+            <h2>Iniciar Nuevo Incidente</h2>
+            <mat-form-field appearance="outline" class="incident-input">
+                <mat-label>Número de identificación del usuario</mat-label>
+                <input matInput formControlName="documentId" placeholder="Ingrese el número de identificación" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="incident-input">
+                <mat-label>Tipo de documento</mat-label>
+                <mat-select formControlName="documentType" (selectionChange)="fetchCompanies()" name="documentType" required>
+                  @for (documentType of documentTypes; track documentType) {
+                    <mat-option [value]="documentType">{{documentType}}</mat-option>
+                  }
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="incident-input">
+                <mat-label>Empresa</mat-label>
+                <mat-select formControlName="company" name="company" required>
+                  @for (company of filteredCompanies; track company) {
+                    <mat-option [value]="company.name">{{company.name}}</mat-option>
+                  }
+                </mat-select>
+            </mat-form-field>
+
+            <div class="button-container">
+                <button mat-flat-button type="submit" class="continue-button">CONTINUAR</button>
+            </div>
+        </form>
+    </div>
+</div>

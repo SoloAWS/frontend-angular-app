@@ -11,7 +11,7 @@
       <p>Tu aliado en el servicio al cliente</p>
     </div>
   </div>
-  
+
   <div class="form-container">
     <h2>¡Bienvenido de nuevo!</h2>
     <p>Ingresa tus datos para continuar</p>
@@ -20,13 +20,13 @@
         <mat-label>Correo</mat-label>
         <input matInput placeholder="Ingrese el correo" required>
       </mat-form-field>
-      
+
       <mat-form-field appearance="outline" class="login-input">
         <mat-label>Contraseña</mat-label>
         <input matInput type="password" placeholder="Ingrese la contraseña" required>
       </mat-form-field>
-      
-      <button mat-flat-button class="login-button">INICIAR SESION</button>
+
+      <button mat-flat-button routerLink="/incident/dashboard" class="login-button">INICIAR SESION</button>
 
       <div class="links-container">
         <a routerLink="/signup" class="link">Crear Cuenta</a>
@@ -35,4 +35,3 @@
     </form>
   </div>
 </div>
-  
