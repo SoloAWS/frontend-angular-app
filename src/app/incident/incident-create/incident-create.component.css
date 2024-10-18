@@ -1,9 +1,9 @@
-.incident-create-container  {
+.incident-create-container {
     display: flex;
     height: 100%;
     align-items: center;
     justify-content: center;
-  }
+}
 
 .form-container {
     width: 83%;
@@ -16,23 +16,31 @@
     padding: 10px;
 }
 
-.form-container h2 {
-    font-weight: 700;
-    font-size: 34px;
-    margin-bottom: 24px;
-    text-align: center;
-}
-
 form {
     width: 86%;
 }
 
-.login-input {
-    width: 100%;
+.form-container h2 {
+    font-weight: 700;
+    font-size: 34px;
+    margin-bottom: 60px;
+    align-self: flex-start;
 }
 
-.login-button {
-    height: 42px;
+.incident-input {
     width: 100%;
-    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.continue-button {
+    height: 36px;
+    font-size: 14px;
+    justify-content: flex-end;
+    margin-top: 45px;
+    margin-bottom: 30px;
 }

@@ -15,9 +15,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { SignupService } from './signup.service';
-import { Company } from './company';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Company } from '../models';
 
 interface Country {
   name: string;
@@ -371,7 +371,7 @@ export class SignupComponent {
         'yyyy-MM-dd'
       );
       const company = new Company(
-        0,
+        '',
         this.signupForm.value.companyName,
         this.signupForm.value.firstName,
         this.signupForm.value.lastName,
