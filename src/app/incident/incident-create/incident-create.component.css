@@ -1,0 +1,38 @@
+.incident-create-container  {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+.form-container {
+    width: 83%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #BDBDBD;
+    padding: 10px;
+}
+
+.form-container h2 {
+    font-weight: 700;
+    font-size: 34px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+form {
+    width: 86%;
+}
+
+.login-input {
+    width: 100%;
+}
+
+.login-button {
+    height: 42px;
+    width: 100%;
+    font-size: 15px;
+}

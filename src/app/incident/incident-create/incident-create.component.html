@@ -1,1 +1,18 @@
-<p>incident-create works!</p>
+<div class="incident-create-container">
+    <div class="form-container">
+        <h2>Iniciar Nuevo Incidente</h2>
+        <form>
+            <mat-form-field appearance="outline" class="login-input">
+                <mat-label>Número de identificación del usuario</mat-label>
+                <input matInput placeholder="Ingrese el número de identificación" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="login-input">
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="password" placeholder="Ingrese la contraseña" required>
+            </mat-form-field>
+
+            <button mat-flat-button routerLink="/incident/create" class="login-button">INICIAR SESION</button>
+        </form>
+    </div>
+</div>
