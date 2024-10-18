@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { SignupService } from './signup.service';
 import { Company } from './company';
 import { CommonModule, DatePipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 interface Country {
   name: string;
@@ -36,6 +37,7 @@ interface Country {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    RouterModule
   ],
   providers: [DatePipe],
   templateUrl: './signup.component.html',
