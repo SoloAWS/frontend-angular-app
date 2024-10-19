@@ -1,0 +1,91 @@
+.detail-container  {
+    display: flex;
+    height: 100%;
+  }
+    
+  .detail-board {
+    width: 30%;
+    border: 1px solid #BDBDBD;
+    margin: 40px 20px;
+    padding-left: 20px;
+  }
+  
+  .detail-board p {
+    color: #757575;
+  }
+  
+  .form-container {
+    width: 63%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #BDBDBD;
+    margin: 40px 40px 40px 20px;
+  }
+  
+  .form-container h2 {
+    font-weight: 700;
+    font-size: 34px;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .form-container p {
+    font-weight: 300;
+    font-size: 20px;
+    margin: 24px;
+    text-align: center;
+  }
+  
+  form {
+    width: 54%;
+  }
+  
+  .login-input {
+    width: 100%;
+  }
+  
+  .login-button {
+    height: 42px;
+    width: 100%;
+    font-size: 15px;
+  }
+  
+  .links-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 8px;
+  }
+  
+  .link {
+    font-size: 14px;
+    color: #2196F3;
+  }
+  
+  .top-right {
+    border: #1a73e8;
+    position: absolute;
+    top: 20px;
+    right: 32px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 16px;
+    color: #2196F3;
+  }
+  
+  .globe-icon {
+    font-size: 18px;
+  }
+  
+  .language-selector {
+    cursor: pointer;
+  }
+  
+  .dropdown-icon {
+    font-size: 12px;
+    cursor: pointer;
+  }
+    

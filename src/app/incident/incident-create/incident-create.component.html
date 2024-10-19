@@ -5,6 +5,7 @@
             <mat-form-field appearance="outline" class="incident-input">
                 <mat-label>Número de identificación del usuario</mat-label>
                 <input matInput formControlName="documentId" placeholder="Ingrese el número de identificación" required>
+                <mat-error *ngIf="incidentForm.get('documentId')?.invalid">{{ getErrorMessage('documentId') }}</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="incident-input">
@@ -14,6 +15,7 @@
                     <mat-option [value]="documentType">{{documentType}}</mat-option>
                   }
                 </mat-select>
+                <mat-error *ngIf="incidentForm.get('documentType')?.invalid">{{ getErrorMessage('documentType') }}</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="incident-input">
@@ -23,6 +25,7 @@
                     <mat-option [value]="company.name">{{company.name}}</mat-option>
                   }
                 </mat-select>
+                <mat-error *ngIf="incidentForm.get('company')?.invalid">{{ getErrorMessage('company') }}</mat-error>
             </mat-form-field>
 
             <div class="button-container">

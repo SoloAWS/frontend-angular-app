@@ -6,6 +6,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { IncidentService } from '../incident.service';
 import { Company, Document, UserCompanies } from '../../models';
+import { Router } from '@angular/router';
+import { FormDataService } from '../../form-data.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-incident-create',
@@ -17,6 +20,7 @@ import { Company, Document, UserCompanies } from '../../models';
     FormsModule,
     MatSelectModule,
     ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './incident-create.component.html',
   styleUrl: './incident-create.component.css'
@@ -29,6 +33,8 @@ export class IncidentCreateComponent {
   constructor(
     private fb: FormBuilder,
     private incidentService: IncidentService,
+    private formDataService: FormDataService,
+    private router: Router
   ) {
     this.incidentForm = this.fb.group(
       {
@@ -37,9 +43,6 @@ export class IncidentCreateComponent {
         company: ['', Validators.required],
       }
     );
-  }
-
-  ngOnInit(): void {
   }
 
   fetchCompanies() {
@@ -60,6 +63,18 @@ export class IncidentCreateComponent {
     }
   }
 
+  getErrorMessage(controlName: string): string {
+    const control = this.incidentForm.get(controlName);
+    if (control?.hasError('required')) {
+      return 'Este campo es requerido';
+    }
+    return '';
+  }
+
   onSubmit() {
+    if (this.incidentForm.valid) {
+      this.formDataService.setFormData(this.incidentForm.value);
+      this.router.navigate(['/incident/details']);
+    }
   }
 }
