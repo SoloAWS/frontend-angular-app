@@ -141,3 +141,28 @@ export class User {
         this.incidents = incidents;
     }
 }
+
+export class IncidentCreate {
+    user_id: string;
+    company_id: string;
+    description: string;
+    state: string;
+    channel: string;
+    priority: string;
+
+    constructor(
+        user_id: string,
+        company_id: string,
+        description: string,
+        state: string,
+        channel: string,
+        priority: string
+    ) {
+        this.user_id = user_id;
+        this.company_id = company_id;
+        this.description = description;
+        this.state = state;
+        this.channel = channel;
+        this.priority = priority;
+    }
+}

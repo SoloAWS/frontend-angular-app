@@ -15,7 +15,14 @@
       </div>
     </div>
 
-    <h2>Historial de Llamadas</h2>
+    <h2>Historial de Incidentes</h2>
+    <div class="incident-list">
+      <mat-card *ngFor="let incident of userDetails?.incidents" class="incident-card">
+        <p>Última llamada: {{ incident.creation_date | date: 'dd/MM/yyyy' }}</p>
+        <p>Motivo: {{ incident.description }}</p>
+        <p>Estado: {{ translateState(incident.state) }}</p>
+      </mat-card>
+    </div>
   </div>
 
   <div class="form-container">
@@ -28,12 +35,13 @@
           <mat-option [value]="priority.value">{{priority.label}}</mat-option>
           }
         </mat-select>
-        <mat-error *ngIf="incidentForm.get('documentType')?.invalid">{{ getErrorMessage('documentType') }}</mat-error>
+        <mat-error *ngIf="incidentForm.get('priority')?.invalid">{{ getErrorMessage('priority') }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="descrpition-input">
+      <mat-form-field appearance="outline" class="descrpition-input" required>
         <mat-label>Descripción del incidente...</mat-label>
-        <input matInput required>
+        <input matInput formControlName="description" required>
+        <mat-error *ngIf="incidentForm.get('description')?.invalid">{{ getErrorMessage('description') }}</mat-error>
       </mat-form-field>
 
       <div class="button-container">

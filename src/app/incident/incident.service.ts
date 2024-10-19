@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Document, User, UserCompanies, UserDetailRequest } from '../models';
+import { Document, IncidentCreate, User, UserCompanies, UserDetailRequest } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -23,6 +23,14 @@ export class IncidentService {
     return this.http.post<User>(
       `${this.apiUrl}/user-management/user/users-view`,
       userDetailRequest
+    );
+  }
+
+  crearIncident(incident: IncidentCreate): Observable<any> {
+    console.log(incident);
+    return this.http.post<any>(
+      `${this.apiUrl}/incident-management/`,
+      incident
     );
   }
 }
