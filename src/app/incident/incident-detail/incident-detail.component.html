@@ -1,39 +1,42 @@
 <div class="detail-container">
-    <div class="detail-board">
-        <h1>Información del Cliente</h1>
-        <div class="user-info">
-            <p>Nombre: {{ userDetails?.first_name }} {{ userDetails?.last_name }}</p>
-            <p>ID: {{ userDetails?.document_id }}</p>
-            <p>Teléfono: {{ userDetails?.phone_number }}</p>
-            <p>Email: {{ userDetails?.username }}</p>
-        </div>
-        
-        <h2>Prioridad del Cliente: {{ userDetails?.importance }}/10</h2>
-        <div class="importance-bar-background">
-          <div class="importance-bar" [style.width.%]="(userDetails?.importance || 0) * 10"></div>
-        </div>
+  <div class="detail-board">
+    <h1>Información del Cliente</h1>
+    <div class="user-info">
+      <p>Nombre: {{ userDetails?.first_name }} {{ userDetails?.last_name }}</p>
+      <p>ID: {{ userDetails?.document_id }}</p>
+      <p>Teléfono: {{ userDetails?.phone_number }}</p>
+      <p>Email: {{ userDetails?.username }}</p>
     </div>
-  
-    <div class="form-container">
-      <h2>¡Bienvenido de nuevo!</h2>
-      <p>Ingresa tus datos para continuar</p>
-      <form>
-        <mat-form-field appearance="outline" class="login-input">
-          <mat-label>Correo</mat-label>
-          <input matInput placeholder="Ingrese el correo" required>
-        </mat-form-field>
-  
-        <mat-form-field appearance="outline" class="login-input">
-          <mat-label>Contraseña</mat-label>
-          <input matInput type="password" placeholder="Ingrese la contraseña" required>
-        </mat-form-field>
-  
-        <button mat-flat-button routerLink="/incident/dashboard" class="login-button">INICIAR SESION</button>
-  
-        <div class="links-container">
-          <a routerLink="/signup" class="link">Crear Cuenta</a>
-          <a class="link">Olvide mi contraseña</a>
-        </div>
-      </form>
+
+    <div class="importance-container">
+      <h2>Prioridad del Cliente: {{ userDetails?.importance }}/10</h2>
+      <div class="importance-bar-background">
+        <div class="importance-bar" [style.width.%]="(10 || 0) * 10"></div>
+      </div>
     </div>
+
+    <h2>Historial de Llamadas</h2>
   </div>
+
+  <div class="form-container">
+    <h1>Detalles del Incidente</h1>
+    <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="incident-input">
+        <mat-label>Prioridad</mat-label>
+        <mat-select formControlName="priority" name="priority" required>
+          @for (priority of priorities; track priority) {
+          <mat-option [value]="priority.value">{{priority.label}}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="incidentForm.get('documentType')?.invalid">{{ getErrorMessage('documentType') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="descrpition-input">
+        <mat-label>Correo</mat-label>
+        <input matInput placeholder="Ingrese el correo" required>
+      </mat-form-field>
+
+      <button mat-flat-button routerLink="/incident/dashboard" class="login-button">INICIAR SESION</button>
+    </form>
+  </div>
+</div>
