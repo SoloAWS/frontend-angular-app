@@ -1,7 +1,14 @@
 <div class="detail-container">
     <div class="detail-board">
-        <h1>ABCalls</h1>
-        <p>Tu aliado en el servicio al cliente</p>
+        <h1>Información del Cliente</h1>
+        <div class="user-info">
+            <p>Nombre: {{ userDetails?.first_name }} {{ userDetails?.last_name }}</p>
+            <p>ID: {{ userDetails?.document_id }}</p>
+            <p>Teléfono: {{ userDetails?.phone_number }}</p>
+            <p>Email: {{ userDetails?.username }}</p>
+        </div>
+        
+        <h2>Prioridad del Cliente:</h2>
     </div>
   
     <div class="form-container">

@@ -21,7 +21,7 @@
             <mat-form-field appearance="outline" class="incident-input">
                 <mat-label>Empresa</mat-label>
                 <mat-select formControlName="company" name="company" required>
-                  @for (company of filteredCompanies; track company) {
+                  @for (company of userCompanies.companies; track company) {
                     <mat-option [value]="company.name">{{company.name}}</mat-option>
                   }
                 </mat-select>

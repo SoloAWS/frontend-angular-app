@@ -1,20 +1,38 @@
-.detail-container  {
+.detail-container {
     display: flex;
     height: 100%;
-  }
-    
-  .detail-board {
+}
+
+.detail-board {
     width: 30%;
     border: 1px solid #BDBDBD;
     margin: 40px 20px;
     padding-left: 20px;
-  }
-  
-  .detail-board p {
+    padding-right: 20px;
+}
+
+.user-info {
+    width: 100%;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.detail-board h1 {
+    font-size: 24px;
+}
+
+.detail-board p {
     color: #757575;
-  }
-  
-  .form-container {
+}
+
+
+
+
+
+
+
+
+.form-container {
     width: 63%;
     display: flex;
     flex-wrap: nowrap;
@@ -23,48 +41,48 @@
     justify-content: center;
     border: 1px solid #BDBDBD;
     margin: 40px 40px 40px 20px;
-  }
-  
-  .form-container h2 {
+}
+
+.form-container h2 {
     font-weight: 700;
     font-size: 34px;
     margin: 0;
     text-align: center;
-  }
-  
-  .form-container p {
+}
+
+.form-container p {
     font-weight: 300;
     font-size: 20px;
     margin: 24px;
     text-align: center;
-  }
-  
-  form {
+}
+
+form {
     width: 54%;
-  }
-  
-  .login-input {
+}
+
+.login-input {
     width: 100%;
-  }
-  
-  .login-button {
+}
+
+.login-button {
     height: 42px;
     width: 100%;
     font-size: 15px;
-  }
-  
-  .links-container {
+}
+
+.links-container {
     margin-top: 20px;
     display: flex;
     gap: 8px;
-  }
-  
-  .link {
+}
+
+.link {
     font-size: 14px;
     color: #2196F3;
-  }
-  
-  .top-right {
+}
+
+.top-right {
     border: #1a73e8;
     position: absolute;
     top: 20px;
@@ -74,18 +92,17 @@
     gap: 4px;
     font-size: 16px;
     color: #2196F3;
-  }
-  
-  .globe-icon {
+}
+
+.globe-icon {
     font-size: 18px;
-  }
-  
-  .language-selector {
+}
+
+.language-selector {
     cursor: pointer;
-  }
-  
-  .dropdown-icon {
+}
+
+.dropdown-icon {
     font-size: 12px;
     cursor: pointer;
-  }
-    
+}

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Document, UserCompanies } from '../models';
+import { Document, Incident, User, UserCompanies, UserDetailRequest } from '../models';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 export class IncidentService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCompaniesByDocument(userDocument: Document): Observable<UserCompanies> {
     /*return this.http.post<UserCompanies>(
@@ -59,5 +59,50 @@ export class IncidentService {
       ]
     };
     return of(mockResponse);
+  }
+
+  getUserDetails(userDetailRequest: UserDetailRequest): Observable<User> {
+    /*return this.http.post<User>(
+      `${this.apiUrl}/user-management/user/users-view`,
+      userDetailRequest
+    );*/
+    const incident1 = new Incident(
+      "9d145ac8-ead2-4b4e-94ef-d09d9f3ec672",
+      "Sample incident description",
+      "open",
+      "2024-10-19T01:30:42.780111Z"
+    );
+
+    const incident2 = new Incident(
+      "612629d3-e4aa-4472-ac47-3d9b6789721b",
+      "Sample incident description",
+      "open",
+      "2024-10-19T01:30:41.821418Z"
+    );
+
+    const incident3 = new Incident(
+      "5aa35673-1871-4251-898b-0f710cb97ee9",
+      "Sample incident description",
+      "open",
+      "2024-10-19T01:30:39.458021Z"
+    );
+
+    const user = new User(
+      "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "user1@example.com",
+      "User",
+      "One",
+      "PASS1",
+      "passport",
+      "1990-01-01",
+      "1111111111",
+      5,
+      true,
+      true,
+      true,
+      "2024-10-19T00:35:05.556522Z",
+      [incident1, incident2, incident3]
+    );
+    return of(user);
   }
 }

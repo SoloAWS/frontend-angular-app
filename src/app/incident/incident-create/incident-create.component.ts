@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { IncidentService } from '../incident.service';
-import { Company, Document, UserCompanies } from '../../models';
+import { Document, UserCompanies } from '../../models';
 import { Router } from '@angular/router';
 import { FormDataService } from '../../form-data.service';
 import { CommonModule } from '@angular/common';
@@ -28,7 +28,7 @@ import { CommonModule } from '@angular/common';
 export class IncidentCreateComponent {
   incidentForm: FormGroup;
   documentTypes: string[] = ['passport', 'cc']
-  filteredCompanies: Company[] = [];
+  userCompanies: UserCompanies = { user_id: '', companies: [] };
 
   constructor(
     private fb: FormBuilder,
@@ -54,7 +54,7 @@ export class IncidentCreateComponent {
 
       this.incidentService.getCompaniesByDocument(userDocument).subscribe(
         (response: UserCompanies) => {
-          this.filteredCompanies = response.companies;
+          this.userCompanies = response;
         },
         (error) => {
           console.error('Error fetching companies:', error);
@@ -73,7 +73,12 @@ export class IncidentCreateComponent {
 
   onSubmit() {
     if (this.incidentForm.valid) {
-      this.formDataService.setFormData(this.incidentForm.value);
+      const formData = this.incidentForm.value;
+
+      // Store the form data in FormDataService
+      this.formDataService.setFormData(formData);
+
+      // Navigate to the next component
       this.router.navigate(['/incident/details']);
     }
   }
