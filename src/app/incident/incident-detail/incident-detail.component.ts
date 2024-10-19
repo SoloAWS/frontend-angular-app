@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FormDataService } from '../../form-data.service';
 import { IncidentService } from '../incident.service';
 import { User, UserDetailRequest } from '../../models';
@@ -18,8 +18,9 @@ import { User, UserDetailRequest } from '../../models';
   styleUrl: './incident-detail.component.css'
 })
 export class IncidentDetailComponent implements OnInit {
+  user_id: string = '';
+  company_id: string = '';
   userDetails: User | null = null;
-  formData: any; // To store retrieved form data
 
   constructor(
     private formDataService: FormDataService,
@@ -27,15 +28,14 @@ export class IncidentDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Retrieve the form data from FormDataService
-    this.formData = this.formDataService.getFormData();
+    // Retrieve the user_id and company_id from FormDataService
+    const formData = this.formDataService.getFormData();
+    this.user_id = formData.user_id;
+    this.company_id = formData.company_id;
 
-    // Extract user_id and company_id from formData (if available)
-    if (this.formData && this.formData.documentId && this.formData.company) {
-      const userDetailRequest = new UserDetailRequest(this.formData.documentId, this.formData.company);
+    if (this.user_id && this.company_id) {
+      const userDetailRequest = new UserDetailRequest(this.user_id, this.company_id);
       this.getUserDetails(userDetailRequest);
-    } else {
-      console.error("Form data is missing. Ensure data is passed correctly.");
     }
   }
 

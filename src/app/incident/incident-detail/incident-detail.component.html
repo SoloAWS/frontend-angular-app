@@ -8,7 +8,10 @@
             <p>Email: {{ userDetails?.username }}</p>
         </div>
         
-        <h2>Prioridad del Cliente:</h2>
+        <h2>Prioridad del Cliente: {{ userDetails?.importance }}/10</h2>
+        <div class="importance-bar-background">
+          <div class="importance-bar" [style.width.%]="(userDetails?.importance || 0) * 10"></div>
+        </div>
     </div>
   
     <div class="form-container">

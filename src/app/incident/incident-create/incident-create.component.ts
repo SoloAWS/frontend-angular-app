@@ -73,12 +73,14 @@ export class IncidentCreateComponent {
 
   onSubmit() {
     if (this.incidentForm.valid) {
-      const formData = this.incidentForm.value;
+      const selectedCompanyId = this.incidentForm.get('company')?.value;
+      const userId = this.userCompanies.user_id;
 
-      // Store the form data in FormDataService
-      this.formDataService.setFormData(formData);
+      this.formDataService.setFormData({
+        user_id: userId,
+        company_id: selectedCompanyId
+      });
 
-      // Navigate to the next component
       this.router.navigate(['/incident/details']);
     }
   }

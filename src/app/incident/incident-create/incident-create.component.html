@@ -22,7 +22,7 @@
                 <mat-label>Empresa</mat-label>
                 <mat-select formControlName="company" name="company" required>
                   @for (company of userCompanies.companies; track company) {
-                    <mat-option [value]="company.name">{{company.name}}</mat-option>
+                    <mat-option [value]="company.id">{{company.name}}</mat-option>
                   }
                 </mat-select>
                 <mat-error *ngIf="incidentForm.get('company')?.invalid">{{ getErrorMessage('company') }}</mat-error>
