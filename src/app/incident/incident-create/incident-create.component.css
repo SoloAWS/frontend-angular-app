@@ -40,7 +40,6 @@ form {
 .continue-button {
     height: 36px;
     font-size: 14px;
-    justify-content: flex-end;
     margin-top: 45px;
     margin-bottom: 30px;
 }
