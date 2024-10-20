@@ -4,8 +4,9 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { SignupService } from './signup.service';
-import { Company } from './company';
 import { environment } from '../../environments/environment';
+import { Company } from '../models';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SignupService', () => {
   let service: SignupService;
@@ -13,7 +14,7 @@ describe('SignupService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [SignupService],
     });
     service = TestBed.inject(SignupService);
@@ -30,7 +31,7 @@ describe('SignupService', () => {
 
   it('should create a company', () => {
     const mockCompany: Company = new Company(
-      1,
+      '1',
       'Test Company',
       'John',
       'Doe',
@@ -55,7 +56,7 @@ describe('SignupService', () => {
 
   it('should use the correct API URL', () => {
     const mockCompany: Company = new Company(
-      1,
+      '1',
       'Test Company',
       'John',
       'Doe',
@@ -80,7 +81,7 @@ describe('SignupService', () => {
 
   it('should send the company data in the request body', () => {
     const mockCompany: Company = new Company(
-      1,
+      '1',
       'Test Company',
       'John',
       'Doe',
@@ -103,7 +104,7 @@ describe('SignupService', () => {
 
   it('should handle company creation with all fields', () => {
     const mockCompany: Company = new Company(
-      1,
+      '1',
       'Test Company',
       'John',
       'Doe',
@@ -116,7 +117,7 @@ describe('SignupService', () => {
     );
 
     service.crearCompany(mockCompany).subscribe((company) => {
-      expect(company.id).toBe(1);
+      expect(company.id).toBe('1');
       expect(company.name).toBe('Test Company');
       expect(company.first_name).toBe('John');
       expect(company.last_name).toBe('Doe');
@@ -137,7 +138,7 @@ describe('SignupService', () => {
 
   it('should handle error response', () => {
     const mockCompany: Company = new Company(
-      1,
+      '1',
       'Test Company',
       'John',
       'Doe',

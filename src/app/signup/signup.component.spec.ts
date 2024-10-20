@@ -12,6 +12,7 @@ import { SignupComponent } from './signup.component';
 import { SignupService } from './signup.service';
 import { DatePipe } from '@angular/common';
 import { of, throwError } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
@@ -32,6 +33,7 @@ describe('SignupComponent', () => {
         MatSelectModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
+        RouterTestingModule
       ],
       providers: [
         SignupService,
