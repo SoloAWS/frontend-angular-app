@@ -166,3 +166,47 @@ export class IncidentCreate {
         this.priority = priority;
     }
 }
+
+export class Feature {
+    description: string;
+
+    constructor(description: string) {
+        this.description = description;
+    }
+}
+
+export class Plan {
+    id: string;
+    name: string;
+    price: number;
+    features: Feature[];
+    currency: string;
+
+    constructor(
+        id: string,
+        name: string,
+        price: number,
+        features: Feature[],
+        currency: string
+    ) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.features = features.map(feature => new Feature(feature.description));
+        this.currency = currency;
+    }
+}
+
+export class PlanList {
+    plans: Plan[];
+
+    constructor(plans: Plan[]) {
+        this.plans = plans.map(plan => new Plan(
+            plan.id,
+            plan.name,
+            plan.price,
+            plan.features,
+            plan.currency
+        ));
+    }
+}

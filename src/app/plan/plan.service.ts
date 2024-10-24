@@ -1,0 +1,60 @@
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { Feature, Plan, PlanList } from '../models';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PlanService {
+
+  private apiUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) { }
+
+  getPlans(): Observable<PlanList> {
+    /*return this.http.get<PlanList>(
+      `${this.apiUrl}/billing-management/plans`
+    );*/
+    const burnedPlanList = new PlanList([
+      new Plan(
+        "67c52598-c06c-4e38-a5a3-d7c647cfa0dc",
+        "Emprendedor",
+        99,
+        [
+          new Feature("Registro de PQRs"),
+          new Feature("Atención telefónica"),
+          new Feature("Escalamiento automatizado"),
+          new Feature("Reportes básicos")
+        ],
+        "USD"
+      ),
+      new Plan(
+        "2e3f1f37-3048-4c71-a28f-b8e8c1332c4e",
+        "Empresario",
+        199,
+        [
+          new Feature("Todo de Emprendedor"),
+          new Feature("Soporte multicanal"),
+          new Feature("Llamadas salientes"),
+          new Feature("Panel de control avanzado")
+        ],
+        "USD"
+      ),
+      new Plan(
+        "9d3f6f4b-6d9a-4f1f-9c9f-1c9f1c9f1c9f",
+        "Empresario Plus",
+        299,
+        [
+          new Feature("Todas de Empresario"),
+          new Feature("Análisis con IA"),
+          new Feature("Modelos predictivos"),
+          new Feature("Soporte con IA generativa")
+        ],
+        "USD"
+      )
+    ]);
+    return of(burnedPlanList);
+  }
+}

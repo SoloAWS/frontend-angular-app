@@ -1,0 +1,84 @@
+.plan-init-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  width: 89%;
+  height: 80%;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #BDBDBD;
+}
+
+.form-container h2 {
+  font-size: 34px;
+  margin-top: 70px;
+  text-align: left;
+  width: 70%;
+}
+
+.plan-text {
+  margin-top: 0px;
+  font-size: 26px;
+  color: #757575;
+  text-align: left;
+  width: 70%;
+}
+
+.plans-grid {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 30px;
+  width: 100%;
+}
+
+.plan-card {
+  padding: 30px;
+  text-align: center;
+  border: 1px solid #BDBDBD;
+  width: 230px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-name {
+  margin-top: 5px;
+  font-size: 26px;
+  color: #212121;
+  margin-bottom: 20px;
+}
+
+.card-price {
+  color: #255F8C;
+  font-size: 38px;
+  margin-top: 0px;
+  margin-bottom: 50px;
+}
+
+.plan-card ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.plan-card li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #757575;
+}
+
+button {
+  color: #255F8C;
+  width: 100%;
+  margin-top: auto;
+  font-size: 15px;
+  height: 35px;
+}

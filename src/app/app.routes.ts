@@ -6,6 +6,7 @@ import { DashboardComponent } from './incident/dashboard/dashboard.component';
 import { IncidentDetailComponent } from './incident/incident-detail/incident-detail.component';
 import { PlanInitComponent } from './plan/plan-init/plan-init.component';
 import { PlanSelectComponent } from './plan/plan-select/plan-select.component';
+import { PlanPayComponent } from './plan/plan-pay/plan-pay.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -15,5 +16,6 @@ export const routes: Routes = [
     { path: 'incident/create', component: IncidentCreateComponent },
     { path: 'incident/details', component: IncidentDetailComponent },
     { path: 'plan/init', component: PlanInitComponent },
-    { path: 'plan/select', component: PlanSelectComponent }
+    { path: 'plan/select', component: PlanSelectComponent },
+    { path: 'plan/pay', component: PlanPayComponent }
 ];
