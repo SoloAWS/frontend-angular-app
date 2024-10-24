@@ -1,0 +1,45 @@
+.plan-init-container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container {
+    width: 89%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #BDBDBD;
+}
+
+.form-container h2 {
+    font-size: 34px;
+    margin-bottom: 20px;
+    margin-top: 90px;
+}
+
+.main-text {
+    font-size: 26px;
+    color: #757575;
+  }
+
+.button-container {
+    display: flex;
+    margin-top: 150px;
+    margin-bottom: 40px;
+}
+
+.continue-button {
+    width: 500px;
+    height: 60px;
+    font-size: 23px;
+}
+
+.select-text {
+    font-size: 25px;
+    color: #757575;
+    margin-bottom: 200px;
+  }
