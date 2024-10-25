@@ -1,0 +1,72 @@
+.pay-container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container {
+    width: 89%;
+    height: 80%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #BDBDBD;
+}
+
+form {
+    width: 70%;
+}
+
+.form-container h2 {
+    margin-top: 70px;
+    font-size: 34px;
+    align-self: flex-start;
+}
+
+.form-container p {
+    margin-right: 0;
+    font-size: 18px;
+}
+
+.plan-info {
+    background-color: #dddddd;
+    padding: 1px 20px;
+    margin-bottom: 20px;
+}
+
+.plan-name {
+    font-size: 20px;
+    color: #212121;
+}
+
+.plan-price {
+    font-size: 18px;
+    color: #757575;
+}
+
+.pay-price {
+    font-size: 18px;
+    color: #757575;
+}
+
+.pay-input {
+    width: 100%;
+}
+
+.input-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.half-input {
+    width: 50%;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }

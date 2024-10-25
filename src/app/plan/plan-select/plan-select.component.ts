@@ -41,7 +41,7 @@ export class PlanSelectComponent implements OnInit {
   }
 
   selectPlan(plan: Plan): void {
-    this.formDataService.setFormData({ plan_id: plan.id });
+    this.formDataService.setFormData({ plan: plan });
     this.router.navigate(['/plan/pay']);
   }
 

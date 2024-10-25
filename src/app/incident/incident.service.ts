@@ -27,7 +27,6 @@ export class IncidentService {
   }
 
   crearIncident(incident: IncidentCreate): Observable<any> {
-    console.log(incident);
     return this.http.post<any>(
       `${this.apiUrl}/incident-management/`,
       incident

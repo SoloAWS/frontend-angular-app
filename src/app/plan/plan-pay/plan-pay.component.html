@@ -1,1 +1,43 @@
-<p>plan-pay works!</p>
+<div class="pay-container">
+    <div class="form-container">
+        <form [formGroup]="payForm" (ngSubmit)="onSubmit()">
+            <h2>Realiza tu Pago</h2>
+            <p>Ingresa los datos de tu tarjeta para completar la suscripción</p>
+            <div class="plan-info">
+                <p class="plan-name">Plan seleccionado: {{ plan?.name }}</p>
+                <p class="plan-price">Precio mensual: ${{ plan?.price }}</p>
+            </div>
+            <mat-form-field appearance="outline" class="pay-input">
+                <mat-label>Número de tarjeta</mat-label>
+                <input matInput formControlName="cardNumber" required (input)="formatCardNumber($event)">
+                <mat-error *ngIf="payForm.get('cardNumber')?.invalid">{{ getErrorMessage('cardNumber') }}</mat-error>
+            </mat-form-field>
+
+            <div class="input-row">
+                <mat-form-field appearance="outline" class="pay-input half-input">
+                    <mat-label>Fecha de expiración (MM/AA)</mat-label>
+                    <input matInput formControlName="expirationDate" required maxlength="5" (input)="formatExpirationDate($event)">
+                    <mat-error *ngIf="payForm.get('expirationDate')?.invalid">{{
+                        getErrorMessage('expirationDate')}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pay-input half-input">
+                    <mat-label>CVV</mat-label>
+                    <input matInput type="password" formControlName="cvv" required maxlength="3" (input)="allowOnlyNumbers($event)">
+                    <mat-error *ngIf="payForm.get('cvv')?.invalid">{{ getErrorMessage('cvv') }}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="pay-input">
+                <mat-label>Nombre del titular</mat-label>
+                <input matInput formControlName="cardHolderName" required>
+                <mat-error *ngIf="payForm.get('cardHolderName')?.invalid">{{ getErrorMessage('cardHolderName')
+                    }}</mat-error>
+            </mat-form-field>
+
+            <div class="button-container">
+                <button mat-flat-button type="submit">REALIZAR PAGO</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -106,7 +106,6 @@ export class IncidentDetailComponent implements OnInit {
 
   onSubmit() {
     if (this.incidentForm.valid) {
-      console.log(this.user_id)
       const incident = new IncidentCreate(
         this.user_id,
         this.company_id,

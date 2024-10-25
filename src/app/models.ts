@@ -210,3 +210,39 @@ export class PlanList {
         ));
     }
 }
+
+export class CardInfo {
+    card_number: string;
+    expiration_date: string;
+    cvv: string;
+    card_holder_name: string;
+
+    constructor(
+        card_number: string,
+        expiration_date: string,
+        cvv: string,
+        card_holder_name: string
+    ) {
+        this.card_number = card_number;
+        this.expiration_date = expiration_date;
+        this.cvv = cvv;
+        this.card_holder_name = card_holder_name;
+    }
+}
+
+export class Pay {
+    plan_id: string;
+    company_id: string;
+    card_info: CardInfo;
+
+    constructor(
+        plan_id: string,
+        company_id: string,
+        card_info: CardInfo
+    ) {
+        this.plan_id = plan_id;
+        this.company_id = company_id;
+        this.card_info = card_info;
+    }
+}
+

@@ -1,101 +1,103 @@
 <div class="top-right">
-    <span class="globe-icon">🌐</span>
-    <span class="language-selector">ES/CO</span>
-    <span class="dropdown-icon">▼</span>
+  <span class="globe-icon">🌐</span>
+  <span class="language-selector">ES/CO</span>
+  <span class="dropdown-icon">▼</span>
+</div>
+
+<div class="login-container">
+  <div class="welcome-board">
+    <div class="welcome-texts">
+      <h1>ABCalls</h1>
+      <p>Tu aliado en el servicio al cliente</p>
+    </div>
   </div>
 
-  <div class="login-container">
-    <div class="welcome-board">
-      <div class="welcome-texts">
-        <h1>ABCalls</h1>
-        <p>Tu aliado en el servicio al cliente</p>
+  <div class="form-container">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <h2>Registro</h2>
+      <p>Ingresa tus datos para continuar</p>
+      <mat-form-field appearance="outline" class="signup-input">
+        <mat-label>Nombre de tu empresa</mat-label>
+        <input matInput formControlName="companyName" placeholder="Uniandes S.A." required>
+        <mat-error *ngIf="signupForm.get('companyName')?.invalid">{{ getErrorMessage('companyName') }}</mat-error>
+      </mat-form-field>
+
+      <div class="input-row">
+        <mat-form-field appearance="outline" class="signup-input half-input">
+          <mat-label>Nombres</mat-label>
+          <input matInput formControlName="firstName" placeholder="Juan" required>
+          <mat-error *ngIf="signupForm.get('firstName')?.invalid">{{ getErrorMessage('firstName') }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="signup-input half-input">
+          <mat-label>Apellidos</mat-label>
+          <input matInput formControlName="lastName" placeholder="Perez" required>
+          <mat-error *ngIf="signupForm.get('lastName')?.invalid">{{ getErrorMessage('lastName') }}</mat-error>
+        </mat-form-field>
       </div>
-    </div>
 
-    <div class="form-container">
-      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-        <h2>Registro</h2>
-        <p>Ingresa tus datos para continuar</p>
-        <mat-form-field appearance="outline" class="signup-input">
-          <mat-label>Nombre de tu empresa</mat-label>
-          <input matInput formControlName="companyName" placeholder="Uniandes S.A." required>
-          <mat-error *ngIf="signupForm.get('companyName')?.invalid">{{ getErrorMessage('companyName') }}</mat-error>
+      <div class="input-row">
+        <mat-form-field appearance="outline" class="signup-input half-input">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="birthDate" placeholder="MM/DD/AAAA" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="signupForm.get('birthDate')?.invalid">{{ getErrorMessage('birthDate') }}</mat-error>
         </mat-form-field>
 
-        <div class="input-row">
-            <mat-form-field appearance="outline" class="signup-input half-input">
-                <mat-label>Nombres</mat-label>
-                <input matInput formControlName="firstName" placeholder="Juan" required>
-                <mat-error *ngIf="signupForm.get('firstName')?.invalid">{{ getErrorMessage('firstName') }}</mat-error>
-            </mat-form-field>
+        <mat-form-field appearance="outline" class="signup-input half-input">
+          <mat-label>Celular</mat-label>
+          <input matInput type="tel" formControlName="phoneNumber" placeholder="+57 300 000 0000" required>
+          <mat-error *ngIf="signupForm.get('phoneNumber')?.invalid">{{ getErrorMessage('phoneNumber') }}</mat-error>
+        </mat-form-field>
+      </div>
 
-            <mat-form-field appearance="outline" class="signup-input half-input">
-                <mat-label>Apellidos</mat-label>
-                <input matInput formControlName="lastName" placeholder="Perez" required>
-                <mat-error *ngIf="signupForm.get('lastName')?.invalid">{{ getErrorMessage('lastName') }}</mat-error>
-            </mat-form-field>
-        </div>
-
-        <div class="input-row">
-            <mat-form-field appearance="outline" class="signup-input half-input">
-                <mat-label>Fecha de nacimiento</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="birthDate" placeholder="MM/DD/AAAA" required>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="signupForm.get('birthDate')?.invalid">{{ getErrorMessage('birthDate') }}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="signup-input half-input">
-                <mat-label>Celular</mat-label>
-                <input matInput type="tel" formControlName="phoneNumber" placeholder="+57 300 000 0000" required>
-                <mat-error *ngIf="signupForm.get('phoneNumber')?.invalid">{{ getErrorMessage('phoneNumber') }}</mat-error>
-            </mat-form-field>
-        </div>
-
-        <div class="input-row">
-            <mat-form-field appearance="outline" class="signup-input half-input">
-                <mat-label>País</mat-label>
-                <mat-select formControlName="country" (selectionChange)="onCountryChange($event.value)"  name="country" required>
-                  @for (country of countries; track country) {
-                    <mat-option [value]="country.name">{{country.name}}</mat-option>
-                  }
-                </mat-select>
-                <mat-error *ngIf="signupForm.get('country')?.invalid">{{ getErrorMessage('country') }}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="signup-input half-input">
-                <mat-label>Ciudad</mat-label>
-                <mat-select formControlName="city" name="city" required>
-                  @for (city of filteredCities; track city) {
-                    <mat-option [value]="city">{{city}}</mat-option>
-                  }
-                </mat-select>
-                <mat-error *ngIf="signupForm.get('city')?.invalid">{{ getErrorMessage('city') }}</mat-error>
-            </mat-form-field>
-        </div>
-
-        <mat-form-field appearance="outline" class="signup-input">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" placeholder="ejemplo@uniandes.com" required>
-            <mat-error *ngIf="signupForm.get('email')?.invalid">{{ getErrorMessage('email') }}</mat-error>
+      <div class="input-row">
+        <mat-form-field appearance="outline" class="signup-input half-input">
+          <mat-label>País</mat-label>
+          <mat-select formControlName="country" (selectionChange)="onCountryChange($event.value)" name="country"
+            required>
+            @for (country of countries; track country) {
+            <mat-option [value]="country.name">{{country.name}}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="signupForm.get('country')?.invalid">{{ getErrorMessage('country') }}</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="signup-input">
-          <mat-label>Contraseña</mat-label>
-          <input matInput formControlName="password" type="password" required>
-          <mat-error *ngIf="signupForm.get('password')?.invalid">{{ getErrorMessage('password') }}</mat-error>
+        <mat-form-field appearance="outline" class="signup-input half-input">
+          <mat-label>Ciudad</mat-label>
+          <mat-select formControlName="city" name="city" required>
+            @for (city of filteredCities; track city) {
+            <mat-option [value]="city">{{city}}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="signupForm.get('city')?.invalid">{{ getErrorMessage('city') }}</mat-error>
         </mat-form-field>
+      </div>
 
-        <mat-form-field appearance="outline" class="signup-input">
-            <mat-label>Confirmar Contraseña</mat-label>
-            <input matInput formControlName="confirmPassword" type="password" required>
-            <mat-error *ngIf="signupForm.get('confirmPassword')?.invalid">{{ getErrorMessage('confirmPassword') }}</mat-error>
-        </mat-form-field>
+      <mat-form-field appearance="outline" class="signup-input">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="ejemplo@uniandes.com" required>
+        <mat-error *ngIf="signupForm.get('email')?.invalid">{{ getErrorMessage('email') }}</mat-error>
+      </mat-form-field>
 
-        <div class="button-container">
-          <button mat-raised-button routerLink="/login" color="secondary" class="cancel-button">CANCELAR</button>
-          <button mat-flat-button type="submit">CONFIRMAR</button>
-        </div>
-      </form>
-    </div>
+      <mat-form-field appearance="outline" class="signup-input">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" type="password" required>
+        <mat-error *ngIf="signupForm.get('password')?.invalid">{{ getErrorMessage('password') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="signup-input">
+        <mat-label>Confirmar Contraseña</mat-label>
+        <input matInput formControlName="confirmPassword" type="password" required>
+        <mat-error *ngIf="signupForm.get('confirmPassword')?.invalid">{{ getErrorMessage('confirmPassword')
+          }}</mat-error>
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-raised-button routerLink="/login" color="secondary" class="cancel-button">CANCELAR</button>
+        <button mat-flat-button type="submit">CONFIRMAR</button>
+      </div>
+    </form>
   </div>
+</div>
