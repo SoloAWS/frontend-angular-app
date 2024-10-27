@@ -7,7 +7,7 @@ import { FormDataService } from '../../form-data.service';
 import { IncidentService } from '../incident.service';
 import { IncidentCreate, User, UserDetailRequest } from '../../models';
 import { MatSelectModule } from '@angular/material/select';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 
@@ -99,6 +99,8 @@ export class IncidentDetailComponent implements OnInit {
     const stateTranslations: { [key: string]: string } = {
       'open': 'Abierto',
       'closed': 'Resuelto',
+      'in_progress': 'En progreso',
+      'escalated': 'Escalado'
     };
 
     return stateTranslations[state] || state;

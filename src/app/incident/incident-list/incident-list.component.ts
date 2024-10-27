@@ -4,14 +4,16 @@ import { IncidentList, IncidentListResponse } from '../../models';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-incident-list',
   standalone: true,
   imports: [
     MatFormFieldModule,
-     MatInputModule,
-      MatTableModule
+    MatInputModule,
+    MatTableModule,
+    CommonModule
   ],
   templateUrl: './incident-list.component.html',
   styleUrl: './incident-list.component.css'
@@ -32,8 +34,12 @@ export class IncidentListComponent implements OnInit {
   getAllIncidents(): void {
     this.incidentService.getAllIncidents().subscribe(
       (incidentsResponse: IncidentListResponse) => {
-        this.incidents = incidentsResponse.incidents;
-        this.dataSource.data = incidentsResponse.incidents;
+        this.incidents = incidentsResponse.incidents.map(incident => ({
+          ...incident,
+          state: this.translateState(incident.state),
+          channel: this.translateChannel(incident.channel)
+        }));
+        this.dataSource.data = this.incidents;
       },
       (error) => {
         console.error('Error fetching incidents:', error);
@@ -44,5 +50,25 @@ export class IncidentListComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  translateState(state: string): string {
+    const stateTranslations: { [key: string]: string } = {
+      open: 'Abierto',
+      closed: 'Resuelto',
+      in_progress: 'En progreso',
+      escalated: 'Escalado'
+    };
+    return stateTranslations[state] || state;
+  }
+
+  translateChannel(channel: string): string {
+    const channelTranslations: { [key: string]: string } = {
+      phone: 'Llamada',
+      mobile: 'Móvil',
+      chat: 'Chat',
+      email: 'Correo'
+    };
+    return channelTranslations[channel] || channel;
   }
 }
