@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CardInfo, Pay, Plan } from '../../models';
+import { CardInfo, Company, Pay, Plan } from '../../models';
 import { FormDataService } from '../../form-data.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,6 +24,7 @@ import { PlanService } from '../plan.service';
 export class PlanPayComponent implements OnInit {
   payForm: FormGroup;
   plan: Plan | null = null;
+  company: Company | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -53,6 +54,21 @@ export class PlanPayComponent implements OnInit {
       if (storedPlan) {
         const planData = JSON.parse(storedPlan);
         this.plan = new Plan(planData.id, planData.name, planData.price, [], planData.currency);
+      } else {
+        console.error('Plan is missing.');
+      }
+    }
+
+    if (formData && formData.company) {
+      this.company = formData.company;
+      sessionStorage.setItem('company', JSON.stringify(this.company));
+    } else {
+      const storedCompany = sessionStorage.getItem('company');
+      if (storedCompany) {
+        const companyData = JSON.parse(storedCompany);
+        this.company = new Company(companyData.id, companyData.name, companyData.first_name,
+          companyData.last_name, companyData.birth_date, companyData.phone_number, companyData.username,
+          companyData.country, companyData.city, companyData.password);
       } else {
         console.error('Plan is missing.');
       }
@@ -117,8 +133,6 @@ export class PlanPayComponent implements OnInit {
 
   onSubmit() {
     if (this.payForm.valid) {
-      const companyId = '7f8d35a9-25c4-4aeb-89b2-9f24be9d3634';
-
       const cardInfo = new CardInfo(
           this.payForm.value.cardNumber.replace(/\s/g, ''), 
           this.payForm.value.expirationDate,
@@ -128,7 +142,7 @@ export class PlanPayComponent implements OnInit {
 
       const payRequest = new Pay(
           this.plan?.id || '',
-          companyId,
+          this.company?.id || '',
           cardInfo
       );
 

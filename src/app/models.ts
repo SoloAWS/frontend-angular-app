@@ -246,3 +246,26 @@ export class Pay {
     }
 }
 
+export class Subscription {
+    subscription_id: string;
+    status: string;
+    message: string;
+    plan_id: string;
+    company_id: string;
+
+    constructor(
+        subscription_id: string,
+        status: string,
+        message: string,
+        plan_id: string,
+        company_id: string
+    ) {
+        this.subscription_id = subscription_id;
+        this.status = status;
+        this.message = message;
+        this.plan_id = plan_id;
+        this.company_id = company_id;
+    }
+}
+
+

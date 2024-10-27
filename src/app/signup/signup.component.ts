@@ -16,8 +16,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { SignupService } from './signup.service';
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Company } from '../models';
+import { FormDataService } from '../form-data.service';
 
 interface Country {
   name: string;
@@ -50,7 +51,9 @@ export class SignupComponent {
   constructor(
     private fb: FormBuilder,
     private signupService: SignupService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private formDataService: FormDataService,
+    private router: Router
   ) {
     this.signupForm = this.fb.group(
       {
@@ -386,6 +389,9 @@ export class SignupComponent {
       this.signupService.crearCompany(company).subscribe({
         next: (response) => {
           console.log('User registered successfully', response);
+          this.formDataService.setFormData({ company : response });
+          sessionStorage.setItem('company', JSON.stringify(response));
+          this.router.navigate(['/plan/init']);
         },
         error: (error) => {
           console.error('Error registering user', error);
