@@ -5,6 +5,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-incident-list',
@@ -13,7 +16,10 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
-    CommonModule
+    CommonModule,
+    FormsModule,
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './incident-list.component.html',
   styleUrl: './incident-list.component.css'
@@ -50,6 +56,11 @@ export class IncidentListComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  clearFilter(input: HTMLInputElement) {
+    input.value = '';
+    this.applyFilter({ target: input } as unknown as Event);
   }
 
   translateState(state: string): string {

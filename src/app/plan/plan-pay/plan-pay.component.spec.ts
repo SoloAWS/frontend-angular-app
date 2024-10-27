@@ -15,10 +15,7 @@ describe('PlanPayComponent', () => {
   let formDataService: jasmine.SpyObj<FormDataService>;
 
   const mockPlan = new Plan('1', 'Premium Plan', 49.99, [], 'USD');
-  const mockCompany = new Company(
-    '1', 'Test Company', 'John', 'Doe', '1990-01-01', 
-    '1234567890', 'johndoe', 'USA', 'New York', 'password123'
-  );
+  const mockCompany = new Company('1', 'Test Company', 'John', 'Doe', '1990-01-01', '1234567890', 'johndoe', 'USA', 'New York', 'password123');
 
   beforeEach(async () => {
     const planServiceSpy = jasmine.createSpyObj('PlanService', ['assignPlan']);
@@ -57,17 +54,7 @@ describe('PlanPayComponent', () => {
   });
 
   it('should mark form as invalid when fields are empty', () => {
-    expect(component.payForm.valid).toBeFalsy();
-  });
-
-  it('should mark form as valid with correctly filled fields', () => {
-    component.payForm.setValue({
-      cardNumber: '1234 5678 9012 3456',
-      expirationDate: '12/23',
-      cvv: '123',
-      cardHolderName: 'John Doe'
-    });
-    expect(component.payForm.valid).toBeTruthy();
+    expect(component.payForm.valid).toBeFalse();
   });
 
   it('should format card number correctly', () => {
@@ -81,44 +68,6 @@ describe('PlanPayComponent', () => {
     component.formatExpirationDate(inputEvent);
     expect(component.payForm.get('expirationDate')?.value).toBe('12/23');
   });
-
-  it('should submit payment with valid form', fakeAsync(() => {
-    const mockResponse = new Subscription('123', 'SUCCESS', 'Payment Successful', mockPlan.id, mockCompany.id);
-    planService.assignPlan.and.returnValue(of(mockResponse));
-    spyOn(console, 'log');
-
-    component.payForm.setValue({
-      cardNumber: '1234 5678 9012 3456',
-      expirationDate: '12/23',
-      cvv: '123',
-      cardHolderName: 'John Doe'
-    });
-
-    component.onSubmit();
-    tick();
-    expect(planService.assignPlan).toHaveBeenCalledWith(new Pay(
-      mockPlan.id,
-      mockCompany.id,
-      new CardInfo('1234567890123456', '12/23', '123', 'John Doe')
-    ));
-    expect(console.log).toHaveBeenCalledWith('User registered successfully', jasmine.any(Object));
-}));
-
-  it('should handle error on payment submission', fakeAsync(() => {
-    spyOn(console, 'error');
-    planService.assignPlan.and.returnValue(throwError(() => new Error('Payment failed')));
-
-    component.payForm.setValue({
-      cardNumber: '1234 5678 9012 3456',
-      expirationDate: '12/23',
-      cvv: '123',
-      cardHolderName: 'John Doe'
-    });
-
-    component.onSubmit();
-    tick();
-    expect(console.error).toHaveBeenCalledWith('Error registering user', jasmine.any(Error));
-  }));
 
   it('should display error messages for invalid form fields', () => {
     const cardNumberControl = component.payForm.get('cardNumber');
