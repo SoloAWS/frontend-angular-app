@@ -13,11 +13,13 @@ import { SignupService } from './signup.service';
 import { DatePipe } from '@angular/common';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
   let fixture: ComponentFixture<SignupComponent>;
   let signupService: SignupService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,6 +48,8 @@ describe('SignupComponent', () => {
     fixture = TestBed.createComponent(SignupComponent);
     component = fixture.componentInstance;
     signupService = TestBed.inject(SignupService);
+    router = TestBed.inject(Router);
+    spyOn(router, 'navigate'); 
     fixture.detectChanges();
   });
 
@@ -75,6 +79,14 @@ describe('SignupComponent', () => {
     component.onSubmit();
     tick();
     expect(signupService.crearCompany).toHaveBeenCalled();
+  }));
+
+  it('should navigate to /plan/init on successful form submission', fakeAsync(() => {
+    spyOn(signupService, 'crearCompany').and.returnValue(of({} as any));
+    fillFormWithValidData();
+    component.onSubmit();
+    tick();
+    expect(router.navigate).toHaveBeenCalledWith(['/plan/init']);
   }));
 
   it('should handle error on form submission', fakeAsync(() => {

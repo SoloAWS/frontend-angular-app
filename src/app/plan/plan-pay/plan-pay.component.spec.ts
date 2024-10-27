@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PlanPayComponent } from './plan-pay.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('PlanPayComponent', () => {
   let component: PlanPayComponent;
@@ -8,7 +11,7 @@ describe('PlanPayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PlanPayComponent]
+      imports: [PlanPayComponent, HttpClientTestingModule, RouterTestingModule, BrowserAnimationsModule ]
     })
     .compileComponents();
 
