@@ -1,0 +1,18 @@
+<div class="incident-list-container">
+    <div class="table-container">
+        <h2>Consulta de incidentes</h2>
+        <mat-form-field appearance="outline">
+            <mat-label>Buscar por ID de incidente, cliente o descripción...</mat-label>
+            <input matInput (keyup)="applyFilter($event)" #input>
+        </mat-form-field>
+
+        <!--<mat-form-field appearance="outline" class="search-input">
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput placeholder="Buscar por ID de incidente, cliente o descripción..." [(ngModel)]="searchTerm"
+                (input)="applyFilter()" />
+            <button *ngIf="searchTerm" mat-icon-button matSuffix aria-label="Clear" (click)="clearSearch()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>-->
+    </div>
+</div>

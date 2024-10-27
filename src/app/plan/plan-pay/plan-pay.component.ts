@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CardInfo, Company, Pay, Plan } from '../../models';
 import { FormDataService } from '../../form-data.service';
 import { CommonModule } from '@angular/common';
@@ -33,7 +33,7 @@ export class PlanPayComponent implements OnInit {
   ) {
     this.payForm = this.fb.group(
       {
-        cardNumber: ['', [Validators.required, Validators.pattern(/^\d{4} ?\d{4} ?\d{4} ?\d{4}$/)]],
+        cardNumber: ['', [Validators.required, Validators.pattern(/^\d{4} ?\d{4} ?\d{4} ?\d{4}$/), luhnValidator()]],
         expirationDate: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
         cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
         cardHolderName: ['', [Validators.required, Validators.minLength(3),
@@ -122,6 +122,9 @@ export class PlanPayComponent implements OnInit {
           return 'El nombre del titular debe ser alfanumérico';
       }
     }
+    if (control?.hasError('invalidCardNumber')) {
+      return 'El número de tarjeta es inválido';
+    }
     if (control?.hasError('minlength')) {
       return 'El nombre del titular debe tener al menos 3 caracteres';
     }
@@ -134,16 +137,16 @@ export class PlanPayComponent implements OnInit {
   onSubmit() {
     if (this.payForm.valid) {
       const cardInfo = new CardInfo(
-          this.payForm.value.cardNumber.replace(/\s/g, ''), 
-          this.payForm.value.expirationDate,
-          this.payForm.value.cvv,
-          this.payForm.value.cardHolderName
+        this.payForm.value.cardNumber.replace(/\s/g, ''),
+        this.payForm.value.expirationDate,
+        this.payForm.value.cvv,
+        this.payForm.value.cardHolderName
       );
 
       const payRequest = new Pay(
-          this.plan?.id || '',
-          this.company?.id || '',
-          cardInfo
+        this.plan?.id || '',
+        this.company?.id || '',
+        cardInfo
       );
 
       this.planService.assignPlan(payRequest).subscribe({
@@ -156,4 +159,30 @@ export class PlanPayComponent implements OnInit {
       });
     }
   }
+}
+
+export function luhnValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const cardNumber = control.value.replace(/\s/g, '');
+    if (!cardNumber || !/^\d+$/.test(cardNumber)) {
+      return { invalidCardNumber: 'Card number must contain only digits' };
+    }
+
+    let sum = 0;
+    let shouldDouble = false;
+    for (let i = cardNumber.length - 1; i >= 0; i--) {
+      let digit = parseInt(cardNumber.charAt(i), 10);
+
+      if (shouldDouble) {
+        digit *= 2;
+        if (digit > 9) {
+          digit -= 9;
+        }
+      }
+      sum += digit;
+      shouldDouble = !shouldDouble;
+    }
+
+    return (sum % 10 === 0) ? null : { invalidCardNumber: 'Invalid card number' };
+  };
 }

@@ -268,4 +268,51 @@ export class Subscription {
     }
 }
 
+export class IncidentList {
+    id: string;
+    description: string;
+    state: string;
+    channel: string;
+    priority: string;
+    creation_date: string;
+    user_id: string;
+    company_id: string;
+    company_name: string;
+    manager_id: string | null;
+
+    constructor(
+        id: string,
+        description: string,
+        state: string,
+        channel: string,
+        priority: string,
+        creation_date: string,
+        user_id: string,
+        company_id: string,
+        company_name: string,
+        manager_id: string | null
+    ) {
+        this.id = id;
+        this.description = description;
+        this.state = state;
+        this.channel = channel;
+        this.priority = priority;
+        this.creation_date = creation_date;
+        this.user_id = user_id;
+        this.company_id = company_id;
+        this.company_name = company_name;
+        this.manager_id = manager_id;
+    }
+}
+
+export class IncidentListResponse {
+    incidents: IncidentList[];
+
+    constructor(
+        incidents: IncidentList[]
+    ) {
+        this.incidents = incidents;
+    }
+}
+
 
