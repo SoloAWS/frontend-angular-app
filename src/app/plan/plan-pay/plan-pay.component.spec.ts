@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlanPayComponent } from './plan-pay.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PlanService } from '../plan.service';
 import { FormDataService } from '../../form-data.service';
 import { of, throwError } from 'rxjs';
-import { Plan, Company, Pay, CardInfo, Subscription } from '../../models';
+import { Plan, Company, CardInfo, Pay, Subscription } from '../../models';
 
 describe('PlanPayComponent', () => {
   let component: PlanPayComponent;
@@ -70,20 +70,81 @@ describe('PlanPayComponent', () => {
   });
 
   it('should display error messages for invalid form fields', () => {
-    const cardNumberControl = component.payForm.get('cardNumber');
-    cardNumberControl?.setValue('123');
+    component.payForm.get('cardNumber')?.setValue('123');
     expect(component.getErrorMessage('cardNumber')).toBe('El número de tarjeta debe tener 16 dígitos');
 
-    const expirationDateControl = component.payForm.get('expirationDate');
-    expirationDateControl?.setValue('1323');
+    component.payForm.get('expirationDate')?.setValue('1323');
     expect(component.getErrorMessage('expirationDate')).toBe('La fecha de expiración debe tener el formato MM/AA');
 
-    const cvvControl = component.payForm.get('cvv');
-    cvvControl?.setValue('12');
+    component.payForm.get('cvv')?.setValue('12');
     expect(component.getErrorMessage('cvv')).toBe('El CVV debe tener 3 dígitos');
 
-    const cardHolderNameControl = component.payForm.get('cardHolderName');
-    cardHolderNameControl?.setValue('JD');
+    component.payForm.get('cardHolderName')?.setValue('JD');
     expect(component.getErrorMessage('cardHolderName')).toBe('El nombre del titular debe tener al menos 3 caracteres');
+  });
+
+
+  it('should validate card number using Luhn algorithm', () => {
+    component.payForm.get('cardNumber')?.setValue('1234 5678 9012 3456');
+    expect(component.payForm.get('cardNumber')?.hasError('invalidCardNumber')).toBeTrue();
+
+    component.payForm.get('cardNumber')?.setValue('4539 1488 0343 6467'); // Valid Luhn number
+    expect(component.payForm.get('cardNumber')?.hasError('invalidCardNumber')).toBeFalse();
+  });
+
+  it('should not submit form if card number is invalid', () => {
+    component.payForm.setValue({
+      cardNumber: '1234 5678 9012 3456', // Invalid Luhn
+      expirationDate: '12/23',
+      cvv: '123',
+      cardHolderName: 'John Doe'
+    });
+
+    component.onSubmit();
+
+    expect(planService.assignPlan).not.toHaveBeenCalled();
+  });
+
+  it('should validate expiration date format correctly', () => {
+    const expirationDateControl = component.payForm.get('expirationDate');
+
+    expirationDateControl?.setValue('13/23');
+    expect(expirationDateControl?.hasError('pattern')).toBeTrue();
+
+    expirationDateControl?.setValue('11/23');
+    expect(expirationDateControl?.hasError('pattern')).toBeFalse();
+  });
+
+  it('should validate CVV as 3 digits', () => {
+    const cvvControl = component.payForm.get('cvv');
+
+    cvvControl?.setValue('12');
+    expect(cvvControl?.hasError('pattern')).toBeTrue();
+
+    cvvControl?.setValue('123');
+    expect(cvvControl?.hasError('pattern')).toBeFalse();
+  });
+
+  it('should restrict card holder name length', () => {
+    const cardHolderNameControl = component.payForm.get('cardHolderName');
+
+    cardHolderNameControl?.setValue('Jo');
+    expect(cardHolderNameControl?.hasError('minlength')).toBeTrue();
+
+    cardHolderNameControl?.setValue('John Doe');
+    expect(cardHolderNameControl?.hasError('minlength')).toBeFalse();
+
+    cardHolderNameControl?.setValue('J'.repeat(51));
+    expect(cardHolderNameControl?.hasError('maxlength')).toBeTrue();
+  });
+
+  it('should prevent non-numeric input in CVV and card number fields', () => {
+    const cvvInputEvent = { target: { value: 'abc' } } as any;
+    component.allowOnlyNumbers(cvvInputEvent);
+    expect(cvvInputEvent.target.value).toBe('');
+
+    const cardNumberInputEvent = { target: { value: 'abcd5678' } } as any;
+    component.allowOnlyNumbers(cardNumberInputEvent);
+    expect(cardNumberInputEvent.target.value).toBe('5678');
   });
 });
