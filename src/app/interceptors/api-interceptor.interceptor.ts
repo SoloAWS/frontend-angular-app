@@ -29,7 +29,11 @@ export const apiInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
     });
   };
 
-  return next(req).pipe(
+  const modifiedReq = req.clone({
+    headers: req.headers.set('Authorization', 'Bearer 1234'),
+  });
+
+  return next(modifiedReq).pipe(
     tap((event) => {
       if (event instanceof HttpResponse) {
         showSuccessToast('Request successful');
