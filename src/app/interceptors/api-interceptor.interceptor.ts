@@ -10,6 +10,7 @@ import { throwError } from 'rxjs';
 
 export const apiInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   const snackBar = inject(MatSnackBar);
+  const token = localStorage.getItem('access_token');
 
   const showSuccessToast = (message: string) => {
     snackBar.open(message, 'Close', {
@@ -30,7 +31,7 @@ export const apiInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   };
 
   const modifiedReq = req.clone({
-    headers: req.headers.set('Authorization', 'Bearer 1234'),
+    headers: req.headers.set('Authorization', token ? `Bearer ${token}` : ''),
   });
 
   return next(modifiedReq).pipe(
