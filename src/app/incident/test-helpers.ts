@@ -67,7 +67,7 @@ export const mockCompany: Company = {
   username: 'john.doe@example.com',
   country: 'USA',
   city: 'New York',
-  password: 'password'
+  password: 'pass_placeholder'
 };
 
 export const mockUserCompanies: UserCompanies = { user_id: '1', companies: [mockCompany] };
