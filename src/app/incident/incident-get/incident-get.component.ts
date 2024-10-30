@@ -81,17 +81,20 @@ export class IncidentGetComponent implements OnInit {
   getLatestUpdate(): string | null {
     if (!this.incident?.history?.length) return null;
 
-    const latestHistory = this.incident.history.reduce((latest, current) => 
-      new Date(current.created_at) > new Date(latest.created_at) ? current : latest
+    const latestHistory = this.incident.history.reduce((latest, current) =>
+      new Date(current.created_at) > new Date(latest.created_at) ? current : latest,
+      this.incident.history[0] // Initial value as the first element
     );
+
     return this.datePipe.transform(latestHistory.created_at, 'yyyy-MM-dd HH:mm');
   }
 
   getElapsedTime(): string | null {
     if (!this.incident?.history?.length) return null;
 
-    const oldestHistory = this.incident.history.reduce((oldest, current) => 
-      new Date(current.created_at) < new Date(oldest.created_at) ? current : oldest
+    const oldestHistory = this.incident.history.reduce((oldest, current) =>
+      new Date(current.created_at) < new Date(oldest.created_at) ? current : oldest,
+      this.incident.history[0] // Initial value as the first element
     );
 
     const oldestDate = new Date(oldestHistory.created_at);
@@ -104,5 +107,4 @@ export class IncidentGetComponent implements OnInit {
 
     return `${days}d ${hours}h ${minutes}m`;
   }
-
 }
