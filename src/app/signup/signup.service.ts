@@ -14,7 +14,7 @@ export class SignupService {
 
   crearCompany(company: Company): Observable<Company> {
     return this.http.post<Company>(
-      `${this.apiUrl}/user-management/company/`,
+      `${this.apiUrl}/user-management/company/create`,
       company
     );
   }
