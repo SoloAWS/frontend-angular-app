@@ -57,19 +57,4 @@ export const mockUser: User = {
 
 export const mockDocument: Document = { document_type: 'passport', document_id: '123456' };
 
-export const mockCompany: Company = {
-  id: '1',
-  name: 'Company A',
-  first_name: 'John',
-  last_name: 'Doe',
-  birth_date: '1990-01-01',
-  phone_number: '1234567890',
-  username: 'john.doe@example.com',
-  country: 'USA',
-  city: 'New York',
-  password: 'pass_placeholder'
-};
-
-export const mockUserCompanies: UserCompanies = { user_id: '1', companies: [mockCompany] };
-
 export const mockUserDetailRequest: UserDetailRequest = { user_id: '1', company_id: '1' };
