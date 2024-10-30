@@ -1,5 +1,5 @@
 // src/app/tests/test-helpers.ts
-import { IncidentDetail, User, Document, Company, UserCompanies, UserDetailRequest } from '../models';
+import { IncidentDetail, User, Document, Company, UserCompanies, UserDetailRequest, CompanyResponse } from '../models';
 
 export const mockIncidentDetail: IncidentDetail = {
   id: '1',
@@ -57,7 +57,7 @@ export const mockUser: User = {
 
 export const mockDocument: Document = { document_type: 'passport', document_id: '123456' };
 
-export const mockCompany: Company = {
+export const mockCompany: CompanyResponse = {
   id: '1',
   name: 'Company A',
   first_name: 'John',
@@ -66,9 +66,7 @@ export const mockCompany: Company = {
   phone_number: '1234567890',
   username: 'john.doe@example.com',
   country: 'USA',
-  city: 'New York',
-  // Non-sensitive placeholder password for mock data in tests
-  password: 'pass_placeholder'
+  city: 'New York'
 };
 
 export const mockUserCompanies: UserCompanies = { user_id: '1', companies: [mockCompany] };

@@ -73,8 +73,7 @@ describe('IncidentCreateComponent', () => {
         phone_number: '1234567890',
         username: 'johndoe',
         country: 'USA',
-        city: 'New York',
-        password: 'password'
+        city: 'New York'
       }]
     };
     incidentService.getCompaniesByDocument.and.returnValue(of(mockResponse));
@@ -110,8 +109,7 @@ describe('IncidentCreateComponent', () => {
         phone_number: '1234567890',
         username: 'johndoe',
         country: 'USA',
-        city: 'New York',
-        password: 'password'
+        city: 'New York'
       }]
     };
 
