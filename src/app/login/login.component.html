@@ -15,21 +15,35 @@
   <div class="form-container">
     <h2>¡Bienvenido de nuevo!</h2>
     <p>Ingresa tus datos para continuar</p>
-    <form>
-      <mat-form-field appearance="outline" class="login-input">
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="login-input">
         <mat-label>Correo</mat-label>
-        <input matInput placeholder="Ingrese el correo" required>
+        <input matInput formControlName="username" type="email" />
+        <mat-error>{{ getErrorMessage("username") }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="login-input">
+      <mat-form-field class="login-input">
         <mat-label>Contraseña</mat-label>
-        <input matInput type="password" placeholder="Ingrese la contraseña" required>
+        <input matInput formControlName="password" type="password" />
+        <mat-error>{{ getErrorMessage("password") }}</mat-error>
       </mat-form-field>
 
-      <button mat-flat-button routerLink="/incident/dashboard" class="login-button">INICIAR SESION</button>
+      <mat-error *ngIf="loginError" style="margin-bottom: 16px; display: block">
+        {{ loginError }}
+      </mat-error>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="login-button"
+        type="submit"
+      >
+        INICIAR SESION
+      </button>
 
       <div class="links-container">
-        <a routerLink="/signup" class="link">Crear Cuenta</a>
+        <a class="link" routerLink="/signup">Crear Cuenta</a>
         <a class="link">Olvide mi contraseña</a>
       </div>
     </form>

@@ -3,22 +3,37 @@ import { LoginComponent } from './login.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AuthService } from './auth.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let authService: AuthService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         LoginComponent,
         NoopAnimationsModule,
-        RouterTestingModule
-      ]
+        RouterTestingModule,
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatCardModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
+    authService = TestBed.inject(AuthService);
     fixture.detectChanges();
   });
 
@@ -32,7 +47,9 @@ describe('LoginComponent', () => {
   });
 
   it('should have a password input field', () => {
-    const passwordInput = fixture.debugElement.query(By.css('input[type="password"]'));
+    const passwordInput = fixture.debugElement.query(
+      By.css('input[type="password"]')
+    );
     expect(passwordInput).toBeTruthy();
   });
 
@@ -42,12 +59,18 @@ describe('LoginComponent', () => {
   });
 
   it('should have a link to sign up', () => {
-    const signUpLink = fixture.debugElement.query(By.css('a[routerlink="/signup"]'));
+    const signUpLink = fixture.debugElement.query(
+      By.css('a[routerlink="/signup"]')
+    );
     expect(signUpLink.nativeElement.textContent).toContain('Crear Cuenta');
   });
 
   it('should have a link for forgotten password', () => {
-    const forgotPasswordLink = fixture.debugElement.query(By.css('a:not([routerlink])'));
-    expect(forgotPasswordLink.nativeElement.textContent).toContain('Olvide mi contraseña');
+    const forgotPasswordLink = fixture.debugElement.query(
+      By.css('a:not([routerlink])')
+    );
+    expect(forgotPasswordLink.nativeElement.textContent).toContain(
+      'Olvide mi contraseña'
+    );
   });
 });
