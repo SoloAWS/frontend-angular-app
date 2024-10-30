@@ -315,4 +315,118 @@ export class IncidentListResponse {
     }
 }
 
+export class UserDetails {
+    id: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+    document_id: string;
+    document_type: string;
+    birth_date: string;
+    phone_number: string;
+    importance: number;
+    allow_call: boolean;
+    allow_sms: boolean;
+    allow_email: boolean;
+    registration_date: string;
 
+    constructor(
+        id: string,
+        username: string,
+        first_name: string,
+        last_name: string,
+        document_id: string,
+        document_type: string,
+        birth_date: string,
+        phone_number: string,
+        importance: number,
+        allow_call: boolean,
+        allow_sms: boolean,
+        allow_email: boolean,
+        registration_date: string
+    ) {
+        this.id = id;
+        this.username = username;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.document_id = document_id;
+        this.document_type = document_type;
+        this.birth_date = birth_date;
+        this.phone_number = phone_number;
+        this.importance = importance;
+        this.allow_call = allow_call;
+        this.allow_sms = allow_sms;
+        this.allow_email = allow_email;
+        this.registration_date = registration_date;
+    }
+}
+
+export class ManagerDetails {
+    id: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+
+    constructor(id: string, username: string, first_name: string, last_name: string) {
+        this.id = id;
+        this.username = username;
+        this.first_name = first_name;
+        this.last_name = last_name;
+    }
+}
+
+export class HistoryItem {
+    description: string;
+    created_at: string;
+
+    constructor(description: string, created_at: string) {
+        this.description = description;
+        this.created_at = created_at;
+    }
+}
+
+export class IncidentDetail {
+    id: string;
+    description: string;
+    state: string;
+    channel: string;
+    priority: string;
+    creation_date: string;
+    user_id: string;
+    user_details: UserDetails;
+    company_id: string;
+    company_name: string;
+    manager_id: string;
+    manager_details: ManagerDetails;
+    history: HistoryItem[];
+
+    constructor(
+        id: string,
+        description: string,
+        state: string,
+        channel: string,
+        priority: string,
+        creation_date: string,
+        user_id: string,
+        user_details: UserDetails,
+        company_id: string,
+        company_name: string,
+        manager_id: string,
+        manager_details: ManagerDetails,
+        history: HistoryItem[]
+    ) {
+        this.id = id;
+        this.description = description;
+        this.state = state;
+        this.channel = channel;
+        this.priority = priority;
+        this.creation_date = creation_date;
+        this.user_id = user_id;
+        this.user_details = user_details;
+        this.company_id = company_id;
+        this.company_name = company_name;
+        this.manager_id = manager_id;
+        this.manager_details = manager_details;
+        this.history = history;
+    }
+}

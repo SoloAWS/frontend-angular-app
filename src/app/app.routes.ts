@@ -8,6 +8,7 @@ import { PlanInitComponent } from './plan/plan-init/plan-init.component';
 import { PlanSelectComponent } from './plan/plan-select/plan-select.component';
 import { PlanPayComponent } from './plan/plan-pay/plan-pay.component';
 import { IncidentListComponent } from './incident/incident-list/incident-list.component';
+import { IncidentGetComponent } from './incident/incident-get/incident-get.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -17,6 +18,7 @@ export const routes: Routes = [
     { path: 'incident/create', component: IncidentCreateComponent },
     { path: 'incident/details', component: IncidentDetailComponent },
     { path: 'incident/list', component: IncidentListComponent },
+    { path: 'incident/:id', component: IncidentGetComponent },
     { path: 'plan/init', component: PlanInitComponent },
     { path: 'plan/select', component: PlanSelectComponent },
     { path: 'plan/pay', component: PlanPayComponent }

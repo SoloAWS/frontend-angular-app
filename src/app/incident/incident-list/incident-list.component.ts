@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-incident-list',
@@ -31,6 +32,7 @@ export class IncidentListComponent implements OnInit {
 
   constructor(
     private incidentService: IncidentService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -81,5 +83,9 @@ export class IncidentListComponent implements OnInit {
       email: 'Correo'
     };
     return channelTranslations[channel] || channel;
+  }
+
+  goToDetail(id: string): void {
+    this.router.navigate(['/incident', id]);
   }
 }

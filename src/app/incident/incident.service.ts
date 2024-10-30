@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Document, IncidentCreate, IncidentListResponse, User, UserCompanies, UserDetailRequest } from '../models';
+import { Document, IncidentCreate, IncidentDetail, IncidentListResponse, User, UserCompanies, UserDetailRequest } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -37,5 +37,9 @@ export class IncidentService {
     return this.http.get<IncidentListResponse>(
       `${this.apiUrl}/incident-management/all-incidents`
     );
+  }
+
+  getIncidentById(id: string): Observable<IncidentDetail> {
+    return this.http.get<IncidentDetail>(`${this.apiUrl}/incident-management/${id}`);
   }
 }
