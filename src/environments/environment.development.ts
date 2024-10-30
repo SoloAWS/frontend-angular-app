@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'http://localhost:3002',
+  apiUrl: 'https://api.soloaws.cloud',
 };
