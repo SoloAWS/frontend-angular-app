@@ -2,9 +2,11 @@ import { Page, Locator, expect } from '@playwright/test';
 
 export class SignupPage {
   readonly page: Page;
+  readonly confirmButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.confirmButton = page.getByRole('button', { name: 'CONFIRMAR' })
   }
 
   async goto() {
@@ -28,14 +30,26 @@ export class SignupPage {
     await this.page.fill('input[formControlName="lastName"]', data.lastName);
     await this.page.fill('input[formControlName="birthDate"]', data.birthDate);
     await this.page.fill('input[formControlName="phoneNumber"]', data.phoneNumber);
-    await this.page.selectOption('select[formControlName="country"]', data.country);
-    await this.page.selectOption('select[formControlName="city"]', data.city);
     await this.page.fill('input[formControlName="email"]', data.email);
+
+    // Handle country selection
+    await this.page.locator('mat-select[formcontrolname="country"]').click();
+    await this.page.locator('mat-option', { hasText: data.country }).click();
+
+    // Wait for cities to load and handle city selection
+    await this.page.waitForTimeout(1000); // Wait for cities dropdown to update
+    await this.page.locator('mat-select[formcontrolname="city"]').click();
+    await this.page.locator('mat-option', { hasText: data.city }).click();
+
     await this.page.fill('input[formControlName="password"]', data.password);
     await this.page.fill('input[formControlName="confirmPassword"]', data.confirmPassword);
   }
 
   async submit() {
-    await this.page.click('button:text("CONFIRMAR")');
+    await this.confirmButton.click();
+  }
+
+  async waitForErrorMessage(message: string) {
+    await expect(this.page.locator('mat-error', { hasText: message })).toBeVisible();
   }
 }

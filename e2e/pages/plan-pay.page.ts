@@ -21,6 +21,6 @@ export class PlanPayPage {
   }
 
   async submitPayment() {
-    await this.page.click('button:text("REALIZAR PAGO")');
+    await this.page.getByRole('button', { name: 'REALIZAR PAGO' }).click();
   }
 }

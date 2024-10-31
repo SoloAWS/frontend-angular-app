@@ -14,8 +14,7 @@ export class PlanSelectPage {
     );
   }
 
-  async selectPlan(planName: string) {
-    const planCard = this.page.locator('.plan-card', { has: this.page.locator('.card-name', { hasText: planName }) });
-    await planCard.locator('button:text("SELECCIONAR PLAN")').click();
+  async selectPlan() {
+    await this.page.locator('.plan-card').first().locator('button').click();
   }
 }

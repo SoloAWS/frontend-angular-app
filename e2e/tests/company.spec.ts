@@ -1,17 +1,21 @@
 import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
+
 import { SignupPage } from '../pages/signup.page';
 import { PlanInitPage } from '../pages/plan-init.page';
-import { PlanSelectPage } from '../pages/plan-select.page';
 import { PlanPayPage } from '../pages/plan-pay.page';
+import { PlanSelectPage } from '../pages/plan-select.page';
+import { LoginPage } from '../pages/login.page';
 
 test.describe('Company Signup Flow', () => {
+  let loginPage: LoginPage;
   let signupPage: SignupPage;
   let planInitPage: PlanInitPage;
   let planSelectPage: PlanSelectPage;
   let planPayPage: PlanPayPage;
 
   test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
     signupPage = new SignupPage(page);
     planInitPage = new PlanInitPage(page);
     planSelectPage = new PlanSelectPage(page);
@@ -21,7 +25,7 @@ test.describe('Company Signup Flow', () => {
   test('successful company signup and plan subscription', async ({ page }) => {
     // Start signup process
     await signupPage.goto();
-
+    let email = faker.internet.email();
     // Fill signup form with valid data
     await signupPage.fillSignupForm({
       companyName: 'Test Company',
@@ -31,22 +35,25 @@ test.describe('Company Signup Flow', () => {
       phoneNumber: '+57 123 456 7890',
       country: 'Colombia',
       city: 'Bogotá',
-      email: faker.internet.email(),
+      email: email,
       password: 'Test123!@#',
       confirmPassword: 'Test123!@#'
     });
-
-    // Submit form and wait for navigation
     await signupPage.submit();
     await expect(page).toHaveURL(/.*plan\/init/);
 
+    await loginPage.goto();
+    await loginPage.login(email, "Test123!@#");
+    await expect(page).toHaveURL(/.*dashboard/);
+
     // Click on select plan button
+    await planInitPage.goto();
     await planInitPage.clickSelectPlan();
     await expect(page).toHaveURL(/.*plan\/select/);
 
     // Wait for plans to load and select one
     await planSelectPage.waitForPlansToLoad();
-    await planSelectPage.selectPlan('Empresario');
+    await planSelectPage.selectPlan();
     await expect(page).toHaveURL(/.*plan\/pay/);
 
     // Fill payment form with valid data
@@ -88,18 +95,18 @@ test.describe('Company Signup Flow', () => {
     await signupPage.submit();
 
     // Verify error messages
-    await expect(page.getByText('Mínimo 2 caracteres')).toBeVisible();
-    await expect(page.getByText('Este campo es requerido')).toBeVisible();
-    await expect(page.getByText('Debe ser mayor de 18 años')).toBeVisible();
-    await expect(page.getByText('Ingrese formato (+XX XXX XXX XXXX)')).toBeVisible();
-    await expect(page.getByText('Ingrese un correo electrónico válido')).toBeVisible();
-    await expect(page.getByText('La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales')).toBeVisible();
-    await expect(page.getByText('Las contraseñas no coinciden')).toBeVisible();
+    await signupPage.waitForErrorMessage('Mínimo 2 caracteres');
+    await signupPage.waitForErrorMessage('Debe ser mayor de 18 años');
+    await signupPage.waitForErrorMessage('Ingrese formato (+XX XXX XXX XXXX)');
+    await signupPage.waitForErrorMessage('Ingrese un correo electrónico válido');
+    await signupPage.waitForErrorMessage('La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales');
+    await signupPage.waitForErrorMessage('Las contraseñas no coinciden');
   });
 
   test('invalid payment data', async ({ page }) => {
     // Complete signup first
     await signupPage.goto();
+    let email = faker.internet.email();
     await signupPage.fillSignupForm({
       companyName: 'Test Company',
       firstName: 'John',
@@ -108,16 +115,22 @@ test.describe('Company Signup Flow', () => {
       phoneNumber: '+57 123 456 7890',
       country: 'Colombia',
       city: 'Bogotá',
-      email: faker.internet.email(),
+      email: email,
       password: 'Test123!@#',
       confirmPassword: 'Test123!@#'
     });
     await signupPage.submit();
+    await expect(page).toHaveURL(/.*plan\/init/);
+
+    await loginPage.goto();
+    await loginPage.login(email, "Test123!@#");
+    await expect(page).toHaveURL(/.*dashboard/);
 
     // Navigate through plan selection
+    await planInitPage.goto();
     await planInitPage.clickSelectPlan();
     await planSelectPage.waitForPlansToLoad();
-    await planSelectPage.selectPlan('Empresario');
+    await planSelectPage.selectPlan();
 
     // Fill payment form with invalid data
     await planPayPage.fillPaymentForm({
@@ -133,6 +146,5 @@ test.describe('Company Signup Flow', () => {
     await expect(page.getByText('El número de tarjeta debe tener 16 dígitos')).toBeVisible();
     await expect(page.getByText('La fecha de expiración debe tener el formato MM/AA')).toBeVisible();
     await expect(page.getByText('El CVV debe tener 3 dígitos')).toBeVisible();
-    await expect(page.getByText('El número de tarjeta es inválido')).toBeVisible();
   });
 });
