@@ -1,3 +1,4 @@
+// e2e/fixtures/test-data.ts
 export const TEST_DATA = {
   login: {
     email: 'manager1@example.com',
@@ -7,6 +8,10 @@ export const TEST_DATA = {
     documentId: 'PASS1',
     documentType: 'passport',
     company: 'Company Three',
-    priority: 'Baja'
+    priority: 'Baja',
+    firstName: 'User',
+    lastName: 'One',
+    phoneNumber: '1234567890',
+    username: 'john.doe@example.com'
   }
 };
