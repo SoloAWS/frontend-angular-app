@@ -4,31 +4,21 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastrService } from 'ngx-toastr';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
+interface ApiErrorResponse {
+  detail: string;
+}
+
+interface ApiSuccessResponse {
+  status?: string;
+}
+
 export const apiInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
-  const snackBar = inject(MatSnackBar);
+  const toastr = inject(ToastrService);
   const token = localStorage.getItem('access_token');
-
-  const showSuccessToast = (message: string) => {
-    snackBar.open(message, 'Close', {
-      duration: 3000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      panelClass: ['success-toast'],
-    });
-  };
-
-  const showErrorToast = (message: string) => {
-    snackBar.open(message, 'Close', {
-      duration: 3000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      panelClass: ['error-toast'],
-    });
-  };
 
   const modifiedReq = req.clone({
     headers: req.headers.set('Authorization', token ? `Bearer ${token}` : ''),
@@ -37,11 +27,35 @@ export const apiInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(modifiedReq).pipe(
     tap((event) => {
       if (event instanceof HttpResponse) {
-        showSuccessToast('Request successful');
+        const response = event.body as ApiSuccessResponse;
+        if (event?.status) {
+          toastr.success(`Status: ${event.status}`, 'Success', {
+            timeOut: 3000,
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+          });
+        }
       }
     }),
     catchError((error: HttpErrorResponse) => {
-      showErrorToast('An error occurred');
+      let errorMessage = 'An error occurred';
+
+      if (error.error && typeof error.error === 'object') {
+        const apiError = error.error as ApiErrorResponse;
+        if (apiError.detail) {
+          errorMessage = apiError.detail;
+        }
+      }
+
+      toastr.error(errorMessage, 'Request Failed', {
+        timeOut: 5000,
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+        enableHtml: true,
+      });
+
       return throwError(() => error);
     })
   );
