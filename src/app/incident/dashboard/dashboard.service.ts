@@ -35,16 +35,9 @@ export class DashboardService {
   }
 
   private getDashboardStats(): Observable<DashboardStats> {
-    // Return mock data
-    return of({
-      totalCalls: 1234,
-      averageHandlingTime: '5:30',
-      customerSatisfaction: 92,
-      openTickets: 45,
-    });
-
-    // Real API call (commented)
-    // return this.http.get<DashboardStats>(`${this.apiUrl}/dashboard/stats`);
+    return this.http.get<DashboardStats>(
+      `${this.apiUrl}/report-generation/dashboard/stats`
+    );
   }
 
   private getCallVolumeData(): Observable<CallVolumeData> {
