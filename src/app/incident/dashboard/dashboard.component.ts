@@ -4,6 +4,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { ChartModule } from 'primeng/chart';
 
+interface RecentIncident {
+  id: string;
+  client: string;
+  description: string;
+  status: string;
+  channel: string;
+  date: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -12,31 +21,31 @@ import { ChartModule } from 'primeng/chart';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent {
-  displayedColumns = [
+  displayedColumns: string[] = [
     'id',
-    'cliente',
-    'descripcion',
-    'estado',
-    'canal',
-    'fecha',
+    'client',
+    'description',
+    'status',
+    'channel',
+    'date',
   ];
 
-  incidents = [
+  recentIncidents: RecentIncident[] = [
     {
       id: 'ID-001',
-      cliente: 'Cliente A',
-      descripcion: 'Problema de Conexión',
-      estado: 'En Proceso',
-      canal: 'Llamada',
-      fecha: '12/09/2024 15:00',
+      client: 'Cliente A',
+      description: 'Problema de Conexión',
+      status: 'En Proceso',
+      channel: 'Llamada',
+      date: '12/09/2024 15:00',
     },
     {
       id: 'ID-002',
-      cliente: 'Cliente B',
-      descripcion: 'Facturación Incorrecta',
-      estado: 'Resuelto',
-      canal: 'Móvil',
-      fecha: '12/09/2024 11:00',
+      client: 'Cliente B',
+      description: 'Facturación Incorrecta',
+      status: 'Resuelto',
+      channel: 'Móvil',
+      date: '12/09/2024 11:00',
     },
   ];
 
@@ -51,7 +60,7 @@ export class DashboardComponent {
     ],
   };
 
-  satisfactionData = {
+  customerSatisfactionData = {
     labels: [
       'Satisfecho',
       'Moderadamente satisfecho',

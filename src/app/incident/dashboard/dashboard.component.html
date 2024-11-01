@@ -51,7 +51,7 @@
         <div class="chart-wrapper">
           <p-chart
             type="pie"
-            [data]="satisfactionData"
+            [data]="customerSatisfactionData"
             [options]="pieOptions"
           ></p-chart>
         </div>
@@ -63,42 +63,42 @@
   <mat-card>
     <mat-card-content>
       <div class="chart-title">Últimos Incidentes Gestionados</div>
-      <table mat-table [dataSource]="incidents">
+      <mat-table [dataSource]="recentIncidents" class="mat-elevation-z8">
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>ID</th>
-          <td mat-cell *matCellDef="let incident">{{ incident.id }}</td>
+          <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+          <mat-cell *matCellDef="let incident">{{ incident.id }}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="cliente">
-          <th mat-header-cell *matHeaderCellDef>Cliente</th>
-          <td mat-cell *matCellDef="let incident">{{ incident.cliente }}</td>
+        <ng-container matColumnDef="client">
+          <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
+          <mat-cell *matCellDef="let incident">{{ incident.client }}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="descripcion">
-          <th mat-header-cell *matHeaderCellDef>Descripción</th>
-          <td mat-cell *matCellDef="let incident">
-            {{ incident.descripcion }}
-          </td>
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+          <mat-cell *matCellDef="let incident">{{
+            incident.description
+          }}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef>Estado</th>
-          <td mat-cell *matCellDef="let incident">{{ incident.estado }}</td>
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+          <mat-cell *matCellDef="let incident">{{ incident.status }}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="canal">
-          <th mat-header-cell *matHeaderCellDef>Canal</th>
-          <td mat-cell *matCellDef="let incident">{{ incident.canal }}</td>
+        <ng-container matColumnDef="channel">
+          <mat-header-cell *matHeaderCellDef>Canal</mat-header-cell>
+          <mat-cell *matCellDef="let incident">{{ incident.channel }}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="fecha">
-          <th mat-header-cell *matHeaderCellDef>Fecha</th>
-          <td mat-cell *matCellDef="let incident">{{ incident.fecha }}</td>
+        <ng-container matColumnDef="date">
+          <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+          <mat-cell *matCellDef="let incident">{{ incident.date }}</mat-cell>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
     </mat-card-content>
   </mat-card>
 </div>
