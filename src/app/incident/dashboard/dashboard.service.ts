@@ -7,7 +7,7 @@ import {
   DashboardStats,
   CallVolumeData,
   CustomerSatisfactionData,
-  IncidentListResponse,
+  IncidentDetail,
 } from '../../models';
 
 @Injectable({
@@ -29,7 +29,7 @@ export class DashboardService {
         stats: response.stats,
         callVolume: response.callVolume,
         customerSatisfaction: response.customerSatisfaction,
-        recentIncidents: response.incidents.incidents,
+        recentIncidents: response.incidents,
       }))
     );
   }
@@ -94,74 +94,9 @@ export class DashboardService {
     // return this.http.get<CustomerSatisfactionData>(`${this.apiUrl}/dashboard/satisfaction`);
   }
 
-  private getRecentIncidents(): Observable<IncidentListResponse> {
-    // Return mock data
-    return of({
-      incidents: [
-        {
-          id: 'INC-001',
-          description: 'Falla en el servicio de internet',
-          state: 'En Proceso',
-          channel: 'Teléfono',
-          priority: 'Alta',
-          creation_date: new Date(2024, 10, 1, 14, 30).toISOString(),
-          user_id: 'USR-001',
-          company_id: 'CMP-001',
-          company_name: 'Empresa A',
-          manager_id: 'MGR-001',
-        },
-        {
-          id: 'INC-002',
-          description: 'Problema de facturación',
-          state: 'Resuelto',
-          channel: 'Email',
-          priority: 'Media',
-          creation_date: new Date(2024, 10, 1, 13, 15).toISOString(),
-          user_id: 'USR-002',
-          company_id: 'CMP-001',
-          company_name: 'Empresa B',
-          manager_id: 'MGR-002',
-        },
-        {
-          id: 'INC-003',
-          description: 'Actualización de plan',
-          state: 'Pendiente',
-          channel: 'Chat',
-          priority: 'Baja',
-          creation_date: new Date(2024, 10, 1, 12, 45).toISOString(),
-          user_id: 'USR-003',
-          company_id: 'CMP-002',
-          company_name: 'Empresa C',
-          manager_id: null,
-        },
-        {
-          id: 'INC-004',
-          description: 'Falla en equipamiento',
-          state: 'En Proceso',
-          channel: 'Teléfono',
-          priority: 'Alta',
-          creation_date: new Date(2024, 10, 1, 11, 20).toISOString(),
-          user_id: 'USR-004',
-          company_id: 'CMP-002',
-          company_name: 'Empresa D',
-          manager_id: 'MGR-003',
-        },
-        {
-          id: 'INC-005',
-          description: 'Cambio de dirección',
-          state: 'Resuelto',
-          channel: 'Portal Web',
-          priority: 'Baja',
-          creation_date: new Date(2024, 10, 1, 10, 0).toISOString(),
-          user_id: 'USR-005',
-          company_id: 'CMP-003',
-          company_name: 'Empresa E',
-          manager_id: 'MGR-001',
-        },
-      ],
-    });
-
-    // Real API call (commented)
-    // return this.http.get<IncidentListResponse>(`${this.apiUrl}/incident-management/all-incidents`);
+  private getRecentIncidents(): Observable<IncidentDetail[]> {
+    return this.http.get<IncidentDetail[]>(
+      `${this.apiUrl}/report-generation/dashboard/recent-incidents`
+    );
   }
 }
