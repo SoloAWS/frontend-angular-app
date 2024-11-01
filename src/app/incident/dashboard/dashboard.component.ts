@@ -1,17 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { ChartModule } from 'primeng/chart';
-
-interface RecentIncident {
-  id: string;
-  client: string;
-  description: string;
-  status: string;
-  channel: string;
-  date: string;
-}
+import { DashboardService } from './dashboard.service';
+import {
+  CallVolumeData,
+  CustomerSatisfactionData,
+  IncidentList,
+} from '../../models';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,60 +17,34 @@ interface RecentIncident {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent {
-  displayedColumns: string[] = [
-    'id',
-    'client',
-    'description',
-    'status',
-    'channel',
-    'date',
-  ];
+export class DashboardComponent implements OnInit {
+  totalCalls: number = 0;
+  averageHandlingTime: string = '';
+  customerSatisfactionPercentage: number = 0;
+  openTickets: number = 0;
 
-  recentIncidents: RecentIncident[] = [
-    {
-      id: 'ID-001',
-      client: 'Cliente A',
-      description: 'Problema de Conexión',
-      status: 'En Proceso',
-      channel: 'Llamada',
-      date: '12/09/2024 15:00',
-    },
-    {
-      id: 'ID-002',
-      client: 'Cliente B',
-      description: 'Facturación Incorrecta',
-      status: 'Resuelto',
-      channel: 'Móvil',
-      date: '12/09/2024 11:00',
-    },
-  ];
-
-  callVolumeData = {
-    labels: ['00:00', '03:00', '06:00', '9:00', '12:00', '15:00', '18:00'],
+  callVolumeData: CallVolumeData = {
+    labels: [],
     datasets: [
       {
         label: 'Llamadas',
-        data: [15, 25, 55, 85, 15, 25, 55],
+        data: [],
         backgroundColor: '#4CAF50',
       },
     ],
   };
 
-  customerSatisfactionData = {
-    labels: [
-      'Satisfecho',
-      'Moderadamente satisfecho',
-      'Indiferente',
-      'Insatisfecho',
-    ],
+  customerSatisfactionData: CustomerSatisfactionData = {
+    labels: [],
     datasets: [
       {
-        data: [40, 30, 20, 10],
-        backgroundColor: ['#9C27B0', '#2196F3', '#00BCD4', '#9C27B0'],
+        data: [],
+        backgroundColor: [],
       },
     ],
   };
+
+  recentIncidents: IncidentList[] = [];
 
   barOptions = {
     maintainAspectRatio: true,
@@ -99,4 +70,28 @@ export class DashboardComponent {
       },
     },
   };
+
+  constructor(private dashboardService: DashboardService) {}
+
+  ngOnInit(): void {
+    this.loadDashboardData();
+  }
+
+  private loadDashboardData(): void {
+    this.dashboardService.getDashboardData().subscribe({
+      next: (data) => {
+        this.totalCalls = data.stats.totalCalls;
+        this.averageHandlingTime = data.stats.averageHandlingTime;
+        this.customerSatisfactionPercentage = data.stats.customerSatisfaction;
+        this.openTickets = data.stats.openTickets;
+        this.callVolumeData = data.callVolume;
+        this.customerSatisfactionData = data.customerSatisfaction;
+        this.recentIncidents = data.recentIncidents;
+      },
+      error: (error) => {
+        console.error('Error loading dashboard data:', error);
+        // Here you might want to show an error message to the user
+      },
+    });
+  }
 }
