@@ -41,29 +41,9 @@ export class DashboardService {
   }
 
   private getCallVolumeData(): Observable<CallVolumeData> {
-    // Return mock data
-    return of({
-      labels: [
-        '00:00',
-        '03:00',
-        '06:00',
-        '09:00',
-        '12:00',
-        '15:00',
-        '18:00',
-        '21:00',
-      ],
-      datasets: [
-        {
-          label: 'Llamadas',
-          data: [25, 45, 75, 95, 85, 65, 45, 30],
-          backgroundColor: '#4CAF50',
-        },
-      ],
-    });
-
-    // Real API call (commented)
-    // return this.http.get<CallVolumeData>(`${this.apiUrl}/dashboard/call-volume`);
+    return this.http.get<CallVolumeData>(
+      `${this.apiUrl}/report-generation/dashboard/call-volume`
+    );
   }
 
   private getCustomerSatisfactionData(): Observable<CustomerSatisfactionData> {
@@ -78,7 +58,7 @@ export class DashboardService {
       datasets: [
         {
           data: [40, 30, 20, 10],
-          backgroundColor: ['#9C27B0', '#2196F3', '#00BCD4', '#9C27B0'],
+          backgroundColor: ['#B239B2', '#3E97DE', '#26A69A', '#673AB7'],
         },
       ],
     });
