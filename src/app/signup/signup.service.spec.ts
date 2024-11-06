@@ -48,7 +48,7 @@ describe('SignupService', () => {
     });
 
     const req = httpMock.expectOne(
-      `${environment.apiUrl}/user-management/company/`
+      `${environment.apiUrl}/user-management/company/create`
     );
     expect(req.request.method).toBe('POST');
     req.flush(mockCompany);
@@ -71,10 +71,10 @@ describe('SignupService', () => {
     service.crearCompany(mockCompany).subscribe();
 
     const req = httpMock.expectOne(
-      `${environment.apiUrl}/user-management/company/`
+      `${environment.apiUrl}/user-management/company/create`
     );
     expect(req.request.url).toBe(
-      `${environment.apiUrl}/user-management/company/`
+      `${environment.apiUrl}/user-management/company/create`
     );
     req.flush(mockCompany);
   });
@@ -96,7 +96,7 @@ describe('SignupService', () => {
     service.crearCompany(mockCompany).subscribe();
 
     const req = httpMock.expectOne(
-      `${environment.apiUrl}/user-management/company/`
+      `${environment.apiUrl}/user-management/company/create`
     );
     expect(req.request.body).toEqual(mockCompany);
     req.flush(mockCompany);
@@ -130,7 +130,7 @@ describe('SignupService', () => {
     });
 
     const req = httpMock.expectOne(
-      `${environment.apiUrl}/user-management/company/`
+      `${environment.apiUrl}/user-management/company/create`
     );
     expect(req.request.method).toBe('POST');
     req.flush(mockCompany);
@@ -160,7 +160,7 @@ describe('SignupService', () => {
     );
 
     const req = httpMock.expectOne(
-      `${environment.apiUrl}/user-management/company/`
+      `${environment.apiUrl}/user-management/company/create`
     );
     expect(req.request.method).toBe('POST');
     req.flush('Invalid data', mockError);
