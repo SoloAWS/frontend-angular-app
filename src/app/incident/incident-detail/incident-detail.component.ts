@@ -37,6 +37,8 @@ export class IncidentDetailComponent implements OnInit {
     { label: 'Media', value: 'medium' },
     { label: 'Alta', value: 'high' }
   ];
+  conocimiento: string = '';
+  ia: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -104,6 +106,16 @@ export class IncidentDetailComponent implements OnInit {
     };
 
     return stateTranslations[state] || state;
+  }
+
+  getSimilarIncidents(): void {
+    const randomString = Math.random().toString(36).substring(2, 8);
+    this.conocimiento = `Random-${randomString}`;
+  }
+
+  getIAResponse(): void {
+    const randomString = Math.random().toString(36).substring(2, 8);
+    this.ia = `Random-${randomString}`;
   }
 
   onSubmit() {
