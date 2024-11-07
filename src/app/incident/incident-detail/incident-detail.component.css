@@ -107,6 +107,11 @@ form {
     height: 200px;
 }
 
+textarea[matInput] {
+    height: 145px;
+    resize: none;
+  }
+
 .help-container {
     display: flex;
     justify-content: space-between;

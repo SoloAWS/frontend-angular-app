@@ -47,20 +47,26 @@
 
       <div class="help-container">
         <h2>Base de Conocimientos</h2>
-        <button mat-flat-button type="button" class="help-button" (click)="getSimilarIncidents()">BUSCAR PROBLEMAS SIMILARES</button>
+        <button mat-flat-button type="button" class="help-button" (click)="getSimilarIncidents()">
+          <mat-icon>search</mat-icon> 
+          BUSCAR PROBLEMAS SIMILARES
+        </button>
       </div>
       <mat-form-field appearance="outline" class="description-input">
         <mat-label></mat-label>
-        <input matInput [value]="conocimiento" readonly>
+        <textarea matInput [value]="conocimiento" readonly></textarea>
       </mat-form-field>
 
       <div class="help-container">
         <h2>Respuestas generadas por IA</h2>
-        <button mat-flat-button type="button" class="help-button" (click)="getIAResponse()">GENERAR POSIBLES RESPUESTAS</button>
+        <button mat-flat-button type="button" class="help-button" (click)="getIAResponse()">
+          <mat-icon>search</mat-icon> 
+          GENERAR POSIBLES RESPUESTAS
+        </button>
       </div>
       <mat-form-field appearance="outline" class="description-input">
         <mat-label></mat-label>
-        <input matInput [value]="ia" readonly>
+        <textarea matInput [value]="ia" readonly></textarea>
       </mat-form-field>
 
       <div class="button-container">
