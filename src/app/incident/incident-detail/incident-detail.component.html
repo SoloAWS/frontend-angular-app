@@ -38,15 +38,40 @@
         <mat-error *ngIf="incidentForm.get('priority')?.invalid">{{ getErrorMessage('priority') }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="descrpition-input" required>
+      <mat-form-field appearance="outline" class="description-input" required>
         <mat-label>Descripción del incidente...</mat-label>
         <input matInput formControlName="description" required>
         <mat-error *ngIf="incidentForm.get('description')?.invalid">{{ getErrorMessage('description') }}</mat-error>
       </mat-form-field>
 
+
+      <div class="help-container">
+        <h2>Base de Conocimientos</h2>
+        <button mat-flat-button type="button" class="help-button" (click)="getSimilarIncidents()">
+          <mat-icon>search</mat-icon> 
+          BUSCAR PROBLEMAS SIMILARES
+        </button>
+      </div>
+      <mat-form-field appearance="outline" class="description-input">
+        <mat-label></mat-label>
+        <textarea matInput [value]="conocimiento" readonly></textarea>
+      </mat-form-field>
+
+      <div class="help-container">
+        <h2>Respuestas generadas por IA</h2>
+        <button mat-flat-button type="button" class="help-button" (click)="getIAResponse()">
+          <mat-icon>search</mat-icon> 
+          GENERAR POSIBLES RESPUESTAS
+        </button>
+      </div>
+      <mat-form-field appearance="outline" class="description-input">
+        <mat-label></mat-label>
+        <textarea matInput [value]="ia" readonly></textarea>
+      </mat-form-field>
+
       <div class="button-container">
         <button mat-flat-button type="submit" class="create-button">REGISTRAR INCIDENTE</button>
-    </div>
+      </div>
     </form>
   </div>
 </div>

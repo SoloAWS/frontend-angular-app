@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-incident-detail',
@@ -22,7 +23,8 @@ import { MatCardModule } from '@angular/material/card';
     MatSelectModule,
     ReactiveFormsModule,
     CommonModule,
-    MatCardModule
+    MatCardModule,
+    MatIconModule
   ],
   templateUrl: './incident-detail.component.html',
   styleUrl: './incident-detail.component.css'
@@ -37,6 +39,8 @@ export class IncidentDetailComponent implements OnInit {
     { label: 'Media', value: 'medium' },
     { label: 'Alta', value: 'high' }
   ];
+  conocimiento: string = '';
+  ia: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -104,6 +108,39 @@ export class IncidentDetailComponent implements OnInit {
     };
 
     return stateTranslations[state] || state;
+  }
+
+  generateRandomSentence(): string {
+    const phrases = [
+      'Verificar configuración de la cuenta',
+      'Actualizar información de facturación',
+      'Reiniciar el dispositivo del cliente',
+      'Comprobar conexión a internet',
+      'Contactar al soporte técnico',
+      'Realizar una prueba de velocidad',
+      'Actualizar el firmware del dispositivo',
+      'Revisar las credenciales de acceso',
+      'Reiniciar el router',
+      'Actualizar datos de contacto'
+    ];
+  
+    const randomPhrases = [];
+    const numberOfPhrases = Math.floor(Math.random() * 3) + 2;
+  
+    for (let i = 0; i < numberOfPhrases; i++) {
+      const randomIndex = Math.floor(Math.random() * phrases.length);
+      randomPhrases.push(phrases[randomIndex]);
+    }
+  
+    return randomPhrases.map(phrase => `- ${phrase}`).join('\n');
+  }
+
+  getSimilarIncidents(): void {
+    this.conocimiento = this.generateRandomSentence();
+  }
+
+  getIAResponse(): void {
+    this.ia = this.generateRandomSentence();
   }
 
   onSubmit() {
