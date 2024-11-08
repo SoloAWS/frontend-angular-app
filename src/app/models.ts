@@ -482,3 +482,9 @@ export interface DashboardData {
   customerSatisfaction: CustomerSatisfactionData;
   recentIncidents: IncidentList[];
 }
+
+export interface DailyStats {
+  incidentsHandled: number;
+  avgResolutionTime: string;
+  customerSatisfaction: number;
+}
