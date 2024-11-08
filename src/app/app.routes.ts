@@ -9,17 +9,19 @@ import { PlanSelectComponent } from './plan/plan-select/plan-select.component';
 import { PlanPayComponent } from './plan/plan-pay/plan-pay.component';
 import { IncidentListComponent } from './incident/incident-list/incident-list.component';
 import { IncidentGetComponent } from './incident/incident-get/incident-get.component';
+import { DashboardManagerComponent } from './incident/dashboard-manager/dashboard-manager.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: 'login', component: LoginComponent },
-    { path: 'signup', component: SignupComponent },
-    { path: 'incident/dashboard', component: DashboardComponent },
-    { path: 'incident/create', component: IncidentCreateComponent },
-    { path: 'incident/details', component: IncidentDetailComponent },
-    { path: 'incident/list', component: IncidentListComponent },
-    { path: 'incident/:id', component: IncidentGetComponent },
-    { path: 'plan/init', component: PlanInitComponent },
-    { path: 'plan/select', component: PlanSelectComponent },
-    { path: 'plan/pay', component: PlanPayComponent }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'incident/dashboard', component: DashboardComponent },
+  { path: 'incident/dashboard-manager', component: DashboardManagerComponent },
+  { path: 'incident/create', component: IncidentCreateComponent },
+  { path: 'incident/details', component: IncidentDetailComponent },
+  { path: 'incident/list', component: IncidentListComponent },
+  { path: 'incident/:id', component: IncidentGetComponent },
+  { path: 'plan/init', component: PlanInitComponent },
+  { path: 'plan/select', component: PlanSelectComponent },
+  { path: 'plan/pay', component: PlanPayComponent },
 ];

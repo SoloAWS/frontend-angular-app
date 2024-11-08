@@ -1,0 +1,146 @@
+<div class="dashboard-container">
+  <!-- Incidentes Prioritarios -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Incidentes Prioritarios</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table
+        mat-table
+        [dataSource]="prioritizedIncidents"
+        class="mat-elevation-z8"
+      >
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let incident">{{ incident.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="company_name">
+          <th mat-header-cell *matHeaderCellDef>Cliente</th>
+          <td mat-cell *matCellDef="let incident">
+            {{ incident.company_name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Descripción</th>
+          <td mat-cell *matCellDef="let incident">
+            {{ incident.description }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="priority">
+          <th mat-header-cell *matHeaderCellDef>Prioridad</th>
+          <td mat-cell *matCellDef="let incident">{{ incident.priority }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="state">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let incident">{{ incident.state }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="channel">
+          <th mat-header-cell *matHeaderCellDef>Canal</th>
+          <td mat-cell *matCellDef="let incident">{{ incident.channel }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="creation_date">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let incident">
+            {{ incident.creation_date | date : "short" }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Últimos Incidentes Asignados -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Últimos Incidentes Asignados</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table
+        mat-table
+        [dataSource]="assignedIncidents"
+        class="mat-elevation-z8"
+      >
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let incident">{{ incident.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="company_name">
+          <th mat-header-cell *matHeaderCellDef>Cliente</th>
+          <td mat-cell *matCellDef="let incident">
+            {{ incident.company_name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Descripción</th>
+          <td mat-cell *matCellDef="let incident">
+            {{ incident.description }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="priority">
+          <th mat-header-cell *matHeaderCellDef>Prioridad</th>
+          <td mat-cell *matCellDef="let incident">{{ incident.priority }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="state">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let incident">{{ incident.state }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="channel">
+          <th mat-header-cell *matHeaderCellDef>Canal</th>
+          <td mat-cell *matCellDef="let incident">{{ incident.channel }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="creation_date">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let incident">
+            {{ incident.creation_date | date : "short" }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Estadísticas del Día -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Estadísticas del Día</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="dailyStatsArray" class="mat-elevation-z8">
+        <ng-container matColumnDef="label">
+          <th mat-header-cell *matHeaderCellDef>Descripción</th>
+          <td mat-cell *matCellDef="let stat">{{ stat.label }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef>Valor</th>
+          <td mat-cell *matCellDef="let stat">{{ stat.value }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['label', 'value']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['label', 'value']"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Action Buttons -->
+  <mat-card-actions align="end" class="button-container">
+    <button mat-flat-button>Consultar Incidente</button>
+    <button mat-flat-button>Crear Incidente</button>
+  </mat-card-actions>
+</div>
