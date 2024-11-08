@@ -26,7 +26,6 @@ export class DashboardManagerComponent implements OnInit {
 
   displayedColumns: string[] = [
     'id',
-    'company_name',
     'description',
     'priority',
     'state',
