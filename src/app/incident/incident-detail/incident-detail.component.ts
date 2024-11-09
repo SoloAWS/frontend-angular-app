@@ -7,10 +7,16 @@ import { FormDataService } from '../../form-data.service';
 import { IncidentService } from '../incident.service';
 import { IncidentCreate, User, UserDetailRequest } from '../../models';
 import { MatSelectModule } from '@angular/material/select';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { IncidentDetailService } from './incident-detail.service';
 
 @Component({
   selector: 'app-incident-detail',
@@ -24,10 +30,10 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     CommonModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './incident-detail.component.html',
-  styleUrl: './incident-detail.component.css'
+  styleUrl: './incident-detail.component.css',
 })
 export class IncidentDetailComponent implements OnInit {
   incidentForm: FormGroup;
@@ -37,7 +43,7 @@ export class IncidentDetailComponent implements OnInit {
   priorities = [
     { label: 'Baja', value: 'low' },
     { label: 'Media', value: 'medium' },
-    { label: 'Alta', value: 'high' }
+    { label: 'Alta', value: 'high' },
   ];
   conocimiento: string = '';
   ia: string = '';
@@ -45,14 +51,13 @@ export class IncidentDetailComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private formDataService: FormDataService,
-    private incidentService: IncidentService
+    private incidentService: IncidentService,
+    private incidentDetailService: IncidentDetailService
   ) {
-    this.incidentForm = this.fb.group(
-      {
-        priority: ['', Validators.required],
-        description: ['', Validators.required],
-      }
-    );
+    this.incidentForm = this.fb.group({
+      priority: ['', Validators.required],
+      description: ['', Validators.required],
+    });
   }
 
   ngOnInit(): void {
@@ -75,7 +80,10 @@ export class IncidentDetailComponent implements OnInit {
       }
     }
     if (this.user_id && this.company_id) {
-      const userDetailRequest = new UserDetailRequest(this.user_id, this.company_id);
+      const userDetailRequest = new UserDetailRequest(
+        this.user_id,
+        this.company_id
+      );
       this.getUserDetails(userDetailRequest);
     }
   }
@@ -101,10 +109,10 @@ export class IncidentDetailComponent implements OnInit {
 
   translateState(state: string): string {
     const stateTranslations: { [key: string]: string } = {
-      'open': 'Abierto',
-      'closed': 'Resuelto',
-      'in_progress': 'En progreso',
-      'escalated': 'Escalado'
+      open: 'Abierto',
+      closed: 'Resuelto',
+      in_progress: 'En progreso',
+      escalated: 'Escalado',
     };
 
     return stateTranslations[state] || state;
@@ -121,26 +129,42 @@ export class IncidentDetailComponent implements OnInit {
       'Actualizar el firmware del dispositivo',
       'Revisar las credenciales de acceso',
       'Reiniciar el router',
-      'Actualizar datos de contacto'
+      'Actualizar datos de contacto',
     ];
-  
+
     const randomPhrases = [];
     const numberOfPhrases = Math.floor(Math.random() * 3) + 2;
-  
+
     for (let i = 0; i < numberOfPhrases; i++) {
       const randomIndex = Math.floor(Math.random() * phrases.length);
       randomPhrases.push(phrases[randomIndex]);
     }
-  
-    return randomPhrases.map(phrase => `- ${phrase}`).join('\n');
+
+    return randomPhrases.map((phrase) => `- ${phrase}`).join('\n');
   }
 
   getSimilarIncidents(): void {
-    this.conocimiento = this.generateRandomSentence();
+    const prompt = this.incidentForm.value.description;
+    this.incidentDetailService.generateResponse(prompt).subscribe(
+      (response) => {
+        this.conocimiento = response.response;
+      },
+      (error) => {
+        console.error('Error fetching similar incidents:', error);
+      }
+    );
   }
 
   getIAResponse(): void {
-    this.ia = this.generateRandomSentence();
+    const prompt = this.incidentForm.value.description;
+    this.incidentDetailService.generateResponse(prompt).subscribe(
+      (response) => {
+        this.ia = response.response;
+      },
+      (error) => {
+        console.error('Error generating IA response:', error);
+      }
+    );
   }
 
   onSubmit() {
@@ -151,7 +175,7 @@ export class IncidentDetailComponent implements OnInit {
         this.incidentForm.value.description,
         'open',
         'phone',
-        this.incidentForm.value.priority,
+        this.incidentForm.value.priority
       );
 
       this.incidentService.crearIncident(incident).subscribe({
