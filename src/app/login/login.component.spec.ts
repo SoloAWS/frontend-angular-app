@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { of, throwError } from 'rxjs';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -72,5 +73,43 @@ describe('LoginComponent', () => {
     expect(forgotPasswordLink.nativeElement.textContent).toContain(
       'Olvide mi contraseña'
     );
+  });
+
+  // New Tests
+  it('should call onSubmit when the form is valid', () => {
+    const spy = spyOn(component, 'onSubmit').and.callThrough();
+    component.loginForm.setValue({ username: 'test@example.com', password: 'Password123' });
+    const loginButton = fixture.debugElement.query(By.css('button')).nativeElement;
+    loginButton.click();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should display error message for invalid form fields', () => {
+    component.loginForm.controls['username'].setValue('');
+    expect(component.getErrorMessage('username')).toBe('Este campo es requerido');
+    component.loginForm.controls['username'].setValue('invalid-email');
+    expect(component.getErrorMessage('username')).toBe('Ingrese un correo electrónico válido');
+    component.loginForm.controls['password'].setValue('');
+    expect(component.getErrorMessage('password')).toBe('Este campo es requerido');
+    component.loginForm.controls['password'].setValue('short');
+    expect(component.getErrorMessage('password')).toBe('Mínimo 8 caracteres');
+  });
+
+  it('should show error message on failed login with 401', () => {
+    spyOn(authService, 'login').and.returnValue(
+      throwError({ status: 401 })
+    );
+    component.loginForm.setValue({ username: 'test@example.com', password: 'Password123' });
+    component.onSubmit();
+    expect(component.loginError).toBe('Usuario o contraseña incorrectos');
+  });
+
+  it('should show generic error message on failed login with other errors', () => {
+    spyOn(authService, 'login').and.returnValue(
+      throwError({ status: 500 })
+    );
+    component.loginForm.setValue({ username: 'test@example.com', password: 'Password123' });
+    component.onSubmit();
+    expect(component.loginError).toBe('Ha ocurrido un error. Por favor intente nuevamente.');
   });
 });
