@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { IncidentDetailService } from './incident-detail.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-incident-detail',
@@ -52,7 +53,8 @@ export class IncidentDetailComponent implements OnInit {
     private fb: FormBuilder,
     private formDataService: FormDataService,
     private incidentService: IncidentService,
-    private incidentDetailService: IncidentDetailService
+    private incidentDetailService: IncidentDetailService,
+    private toastr: ToastrService
   ) {
     this.incidentForm = this.fb.group({
       priority: ['', Validators.required],
@@ -144,18 +146,35 @@ export class IncidentDetailComponent implements OnInit {
   }
 
   getSimilarIncidents(): void {
-    const prompt = this.incidentForm.value.description;
-    this.incidentDetailService.generateResponse(prompt).subscribe(
-      (response) => {
-        this.conocimiento = response.response;
-      },
-      (error) => {
-        console.error('Error fetching similar incidents:', error);
-      }
-    );
+    const descriptionValue = this.incidentForm.get('description')?.value;
+
+    if (!descriptionValue || descriptionValue.trim() === '') {
+      this.toastr.error('La descripción del incidente es requerida', 'Error en el formulario', {
+        timeOut: 5000,
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+        enableHtml: true,
+      });
+      return;
+    }
+    this.conocimiento = this.generateRandomSentence();
   }
 
   getIAResponse(): void {
+    const descriptionValue = this.incidentForm.get('description')?.value;
+
+    if (!descriptionValue || descriptionValue.trim() === '') {
+      this.toastr.error('La descripción del incidente es requerida', 'Error en el formulario', {
+        timeOut: 5000,
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+        enableHtml: true,
+      });
+      return;
+    }
+
     const prompt = this.incidentForm.value.description;
     this.incidentDetailService.generateResponse(prompt).subscribe(
       (response) => {
