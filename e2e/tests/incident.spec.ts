@@ -44,7 +44,7 @@ test.describe('Incident Creation Flow', () => {
     );
 
     // 6. Verify success toast and incident creation
-    await expect(page.getByText('Request Successful')).toBeVisible();
+    await expect(page.getByText('Status: 200')).toBeVisible();
 
     // Refresh and verify incident appears in history
     await page.reload();

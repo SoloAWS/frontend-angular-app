@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { JwtService } from '../core/services/jwt.service';
 
 interface LoginCredentials {
   username: string;
@@ -19,7 +21,9 @@ interface LoginResponse {
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+    private router: Router,
+    private jwtService: JwtService) {}
 
   login(credentials: LoginCredentials): Observable<LoginResponse> {
     return this.http
@@ -27,8 +31,24 @@ export class AuthService {
       .pipe(
         tap((response) => {
           localStorage.setItem('access_token', response.access_token);
+          this.redirectBasedOnRole();
         })
       );
+  }
+
+  private redirectBasedOnRole(): void {
+    const userType = this.jwtService.getUserType();
+
+    switch (userType) {
+      case 'manager':
+        this.router.navigate(['/incident/dashboard-manager']);
+        break;
+      case 'company':
+        this.router.navigate(['/incident/dashboard']);
+        break;
+      default:
+        this.router.navigate(['/login']);
+    }
   }
 
   getToken(): string | null {
@@ -36,10 +56,11 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    return !!this.getToken() && !this.jwtService.isTokenExpired();
   }
 
   logout(): void {
     localStorage.removeItem('access_token');
+    this.router.navigate(['/login']);
   }
 }
