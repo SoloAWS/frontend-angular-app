@@ -9,8 +9,8 @@ export const TEST_DATA = {
     documentType: 'passport',
     company: 'Company Three',
     priority: 'Baja',
-    firstName: 'User',
-    lastName: 'One',
+    firstName: 'Luis John',
+    lastName: 'Doe',
     phoneNumber: '1234567890',
     username: 'john.doe@example.com'
   }
