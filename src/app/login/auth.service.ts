@@ -38,9 +38,10 @@ export class AuthService {
 
   private redirectBasedOnRole(): void {
     const userType = this.jwtService.getUserType();
-
+    console.log(userType);
     switch (userType) {
       case 'manager':
+        console.log('navigating');
         this.router.navigate(['/incident/dashboard-manager']);
         break;
       case 'company':

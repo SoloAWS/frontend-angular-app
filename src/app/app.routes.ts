@@ -34,7 +34,7 @@ export const routes: Routes = [
     path: 'incident/create',
     component: IncidentCreateComponent,
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['company'] }
+    data: { roles: ['manager'] }
   },
   {
     path: 'incident/details',
