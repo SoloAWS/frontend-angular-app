@@ -1,48 +1,75 @@
 .all-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .top-bar {
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  align-items: center;
+  background: #255F8C;
+  color: white;
 }
 
 .menu-icon {
-    font-size: 30px;
-    margin-left: 16px;
-    margin-bottom: 8px;
+  font-size: 30px;
+  margin-left: 16px;
+  margin-bottom: 8px;
 }
 
 .title {
-    margin-left: 20px;
-    font-size: 30px;
+  margin-left: 20px;
+  font-size: 30px;
 }
 
 .spacer {
-    flex: 1;
+  flex: 1;
 }
 
 .container {
-    height: 100%;
+  height: 100%;
 }
 
 .mat-sidenav {
-    width: 16% !important;
-    padding-left: 20px;
+  width: 16% !important;
+  padding-left: 20px;
 }
 
 h3 {
-    margin-left: 20px;
-    color: #212121;
+  margin-left: 20px;
+  color: #212121;
 }
 
-.mat-toolbar {
-    background: #255F8C;
-    color: white;
+.active-list-item {
+  background-color: rgba(37, 95, 140, 0.1) !important;
+  border-radius: 4px;
+
+  .menu-icon {
+      color: #255F8C;
+  }
 }
 
+mat-list-item {
+  margin: 8px 0;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+      background-color: rgba(37, 95, 140, 0.05);
+  }
+}
+
+mat-nav-list {
+  padding-top: 16px;
+}
+
+.menu-icon {
+  margin-right: 12px;
+}
+
+mat-list-item[routerLinkActive="active-list-item"] {
+  color: #255F8C;
+}

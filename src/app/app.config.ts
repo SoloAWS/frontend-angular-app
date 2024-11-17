@@ -11,6 +11,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { provideToastr } from 'ngx-toastr';
 
+import { JwtService } from './core/services/jwt.service';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptors([apiInterceptorInterceptor])),
@@ -25,5 +27,6 @@ export const appConfig: ApplicationConfig = {
       progressBar: true,
       closeButton: true,
     }),
+    JwtService
   ],
 };

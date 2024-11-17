@@ -1,24 +1,28 @@
 <div class="all-container">
-    <mat-toolbar *ngIf="!isLoginRoute()" class="top-bar">
-        <mat-icon class="menu-icon" (click)="toggleSidenav()">menu</mat-icon>
-        <span class="title">ABCalls</span>
-        <span class="spacer"></span>
-        <mat-icon>public</mat-icon>
-        <span>ES/CO</span>
-        <mat-icon>keyboard_arrow_down</mat-icon>
-    </mat-toolbar>
-    
-    <mat-sidenav-container [ngClass]="{'with-toolbar': !isLoginRoute()}" class="container">
-        <mat-sidenav *ngIf="!isLoginRoute()" #sidenav mode="side" [(opened)]="isSidenavOpened">
-            <mat-nav-list>
-                <h3>Menú</h3>
-                <mat-list-item routerLink="/incident/create">Crear Nuevo Incidente</mat-list-item>
-                <mat-list-item routerLink="/incident/list">Consultar Incidente</mat-list-item>
-            </mat-nav-list>
-        </mat-sidenav>
-    
-        <mat-sidenav-content>
-            <router-outlet></router-outlet>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
+  <mat-toolbar *ngIf="!isLoginRoute()" class="top-bar">
+      <mat-icon class="menu-icon" (click)="toggleSidenav()">menu</mat-icon>
+      <span class="title">ABCalls</span>
+      <span class="spacer"></span>
+      <mat-icon>public</mat-icon>
+      <span>ES/CO</span>
+      <mat-icon>keyboard_arrow_down</mat-icon>
+  </mat-toolbar>
+
+  <mat-sidenav-container [ngClass]="{'with-toolbar': !isLoginRoute()}" class="container">
+      <mat-sidenav *ngIf="!isLoginRoute()" #sidenav mode="side" [(opened)]="isSidenavOpened" class="mat-sidenav">
+          <mat-nav-list>
+              <h3>Menú</h3>
+              <mat-list-item *ngFor="let item of menuItems"
+                           [routerLink]="item.path"
+                           routerLinkActive="active-list-item">
+                  <mat-icon matListItemIcon class="menu-icon">{{item.icon}}</mat-icon>
+                  <span matListItemTitle>{{item.label}}</span>
+              </mat-list-item>
+          </mat-nav-list>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+          <router-outlet></router-outlet>
+      </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
