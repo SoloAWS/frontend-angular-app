@@ -37,6 +37,7 @@ test.describe('Incident Creation Flow', () => {
 
     // 5. Fill incident details
     await expect(page).toHaveURL(/.*incident\/details/);
+    await page.waitForTimeout(3300);
     const description = faker.lorem.sentence().substring(0, 100);
     await incidentDetailPage.fillIncidentDetails(
       TEST_DATA.incident.priority,
@@ -44,7 +45,7 @@ test.describe('Incident Creation Flow', () => {
     );
 
     // 6. Verify success toast and incident creation
-    await expect(page.getByText('Request Successful')).toBeVisible();
+    await expect(page.getByText('Status: 200')).toBeVisible();
 
     // Refresh and verify incident appears in history
     await page.reload();
@@ -124,5 +125,82 @@ test.describe('Incident Creation Flow', () => {
     // 5. Wait for and verify 404 response
     const response = await responsePromise;
     expect(response.status()).toBe(404);
+  });
+});
+
+test.describe('Incident Help Features', () => {
+  let loginPage: LoginPage;
+  let incidentCreatePage: IncidentCreatePage;
+  let incidentDetailPage: IncidentDetailPage;
+
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    incidentCreatePage = new IncidentCreatePage(page);
+    incidentDetailPage = new IncidentDetailPage(page);
+
+    // Common setup: Login and navigate to incident creation
+    await loginPage.goto();
+    await loginPage.login(TEST_DATA.login.email, TEST_DATA.login.password);
+    await expect(page).toHaveURL(/.*dashboard/);
+    
+    await page.locator('mat-list-item', { hasText: 'Crear Nuevo Incidente' }).click();
+    await expect(page).toHaveURL(/.*incident\/create/);
+    
+    await incidentCreatePage.fillIncidentCreate(
+      TEST_DATA.incident.documentId,
+      TEST_DATA.incident.documentType,
+      TEST_DATA.incident.company
+    );
+    
+    await expect(page).toHaveURL(/.*incident\/details/);
+  });
+
+  test('should show similar incidents when description is provided', async ({ page }) => {
+    // Fill in description first
+    const description = faker.lorem.sentence().substring(0, 100);
+    await page.fill('input[formControlName="description"]', description);
+
+    // Click the similar incidents button
+    await page.getByRole('button', { name: 'BUSCAR PROBLEMAS SIMILARES' }).click();
+
+    // Verify suggestions appear in the readonly textarea
+    const suggestionsTextarea = page.locator('textarea').first();
+    await expect(suggestionsTextarea).not.toBeEmpty();
+    
+    // Verify the suggestions contain bullet points
+    const suggestions = await suggestionsTextarea.inputValue();
+    expect(suggestions).toContain('- ');
+  });
+
+  test('should show AI response when description is provided', async ({ page }) => {
+    // Fill in description
+    const description = faker.lorem.sentence().substring(0, 100);
+    await page.fill('input[formControlName="description"]', description);
+
+    // Click the AI response button
+    await page.getByRole('button', { name: 'GENERAR POSIBLES RESPUESTAS' }).click();
+
+    // Wait for and verify AI response
+    const responseTextarea = page.locator('textarea').nth(1);
+    await expect(responseTextarea).not.toBeEmpty();
+  });
+
+  test('should show warnings when buttons are clicked without description', async ({ page }) => {
+    // Clear description field if it has any value
+    await page.fill('input[formControlName="description"]', '');
+
+    // Test similar incidents button
+    await page.getByRole('button', { name: 'BUSCAR PROBLEMAS SIMILARES' }).click();
+    await expect(page.getByText('La descripción del incidente es requerida')).toBeVisible();
+    await expect(page.getByText('Error en el formulario')).toBeVisible();
+
+    // Test AI response button
+    await page.getByRole('button', { name: 'GENERAR POSIBLES RESPUESTAS' }).click();
+    await expect(page.getByText('La descripción del incidente es requerida')).toBeVisible();
+    await expect(page.getByText('Error en el formulario')).toBeVisible();
+
+    // Verify textareas remain empty
+    await expect(page.locator('textarea').first()).toBeEmpty();
+    await expect(page.locator('textarea').nth(1)).toBeEmpty();
   });
 });

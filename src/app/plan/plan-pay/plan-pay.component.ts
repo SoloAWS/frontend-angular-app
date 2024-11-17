@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { PlanService } from '../plan.service';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-plan-pay',
@@ -29,7 +30,8 @@ export class PlanPayComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private formDataService: FormDataService,
-    private planService: PlanService
+    private planService: PlanService,
+    private router: Router
   ) {
     this.payForm = this.fb.group(
       {
@@ -152,6 +154,7 @@ export class PlanPayComponent implements OnInit {
       this.planService.assignPlan(payRequest).subscribe({
         next: (response) => {
           console.log('User registered successfully', response);
+          this.router.navigate(['/incident/dashboard']);
         },
         error: (error) => {
           console.error('Error registering user', error);

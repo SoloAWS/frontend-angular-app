@@ -19,4 +19,25 @@ export class IncidentDetailPage {
     await this.descriptionInput.fill(description);
     await this.submitButton.click();
   }
+  
+  async clickSimilarIncidentsButton() {
+    await this.page.getByRole('button', { name: 'BUSCAR PROBLEMAS SIMILARES' }).click();
+  }
+
+  async clickAIResponseButton() {
+    await this.page.getByRole('button', { name: 'GENERAR POSIBLES RESPUESTAS' }).click();
+  }
+
+  async getSimilarIncidentsSuggestions(): Promise<string> {
+    return await this.page.locator('textarea').first().inputValue();
+  }
+
+  async getAIResponse(): Promise<string> {
+    return await this.page.locator('textarea').nth(1).inputValue();
+  }
+
+  async getErrorToast(): Promise<string> {
+    const toastMessage = await this.page.getByText('La descripción del incidente es requerida');
+    return await toastMessage.textContent() || '';
+  }
 }

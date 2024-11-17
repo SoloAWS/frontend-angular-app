@@ -40,10 +40,10 @@ test.describe('Company Signup Flow', () => {
       confirmPassword: 'Test123!@#'
     });
     await signupPage.submit();
-    await expect(page).toHaveURL(/.*plan\/init/);
 
-    await loginPage.goto();
+    await expect(page).toHaveURL(/.*login/);
     await loginPage.login(email, "Test123!@#");
+
     await expect(page).toHaveURL(/.*dashboard/);
 
     // Click on select plan button
@@ -120,12 +120,11 @@ test.describe('Company Signup Flow', () => {
       confirmPassword: 'Test123!@#'
     });
     await signupPage.submit();
-    await expect(page).toHaveURL(/.*plan\/init/);
 
-    await loginPage.goto();
+    await expect(page).toHaveURL(/.*login/);
     await loginPage.login(email, "Test123!@#");
-    await expect(page).toHaveURL(/.*dashboard/);
 
+    await expect(page).toHaveURL(/.*dashboard/);
     // Navigate through plan selection
     await planInitPage.goto();
     await planInitPage.clickSelectPlan();
