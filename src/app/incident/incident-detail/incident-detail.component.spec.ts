@@ -139,4 +139,67 @@ describe('IncidentDetailComponent', () => {
 
     expect(console.error).toHaveBeenCalledWith('User ID and Company ID are missing.');
   });
+
+  it('should generate a random sentence for knowledge base suggestions', () => {
+    const result = component.generateRandomSentence();
+    expect(result).toBeTruthy();
+    expect(result.split('\n').length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('should show an error toast when description is empty for similar incidents', () => {
+    spyOn(component['toastr'], 'error');
+
+    component.incidentForm.get('description')?.setValue('');
+    component.getSimilarIncidents();
+
+    expect(component['toastr'].error).toHaveBeenCalledWith(
+      'La descripción del incidente es requerida',
+      'Error en el formulario',
+      jasmine.any(Object)
+    );
+  });
+
+  it('should set conocimiento when description is provided for similar incidents', () => {
+    component.incidentForm.get('description')?.setValue('Test description');
+    component.getSimilarIncidents();
+
+    expect(component.conocimiento).toBeTruthy();
+  });
+
+  it('should show an error toast when description is empty for IA response', () => {
+    spyOn(component['toastr'], 'error');
+
+    component.incidentForm.get('description')?.setValue('');
+    component.getIAResponse();
+
+    expect(component['toastr'].error).toHaveBeenCalledWith(
+      'La descripción del incidente es requerida',
+      'Error en el formulario',
+      jasmine.any(Object)
+    );
+  });
+
+  it('should call incidentDetailService to generate IA response when description is valid', () => {
+    const incidentDetailServiceSpy = jasmine.createSpyObj('IncidentDetailService', ['generateResponse']);
+    incidentDetailServiceSpy.generateResponse.and.returnValue(of({ response: 'Test IA response' }));
+    component['incidentDetailService'] = incidentDetailServiceSpy;
+
+    component.incidentForm.get('description')?.setValue('Test description');
+    component.getIAResponse();
+
+    expect(incidentDetailServiceSpy.generateResponse).toHaveBeenCalledWith('Test description');
+    expect(component.ia).toBe('Test IA response');
+  });
+
+  it('should not set conocimiento if description is empty', () => {
+    component.incidentForm.get('description')?.setValue('');
+    component.getSimilarIncidents();
+    expect(component.conocimiento).toBe('');
+  });
+
+  it('should return default translation if state is not found', () => {
+    const translation = component.translateState('unknown_state');
+    expect(translation).toBe('unknown_state');
+  });
+
 });
