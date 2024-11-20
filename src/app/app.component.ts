@@ -8,6 +8,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterModule, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { JwtService } from './core/services/jwt.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatMenuModule } from '@angular/material/menu';  
 
 interface MenuItem {
   path: string;
@@ -26,7 +28,9 @@ interface MenuItem {
     MatListModule,
     MatIconModule,
     MatCardModule,
-    CommonModule
+    CommonModule,
+    MatMenuModule,
+    TranslateModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -35,11 +39,15 @@ export class AppComponent implements OnInit {
   title = 'New stack';
   isSidenavOpened = true;
   menuItems: MenuItem[] = [];
+  selectedLanguage = 'es';
 
   constructor(
     public router: Router,
-    private jwtService: JwtService
-  ) { }
+    private jwtService: JwtService,
+    private translate: TranslateService
+  ) { 
+    this.translate.use(this.selectedLanguage);
+  }
 
   ngOnInit() {
     // Update menu items when navigation ends
@@ -53,14 +61,19 @@ export class AppComponent implements OnInit {
     this.updateMenuItems();
   }
 
+  changeLanguage(lang: string) {
+    this.selectedLanguage = lang;
+    this.translate.use(lang);
+  }
+
   private updateMenuItems() {
     const userType = this.jwtService.getUserType();
 
     switch (userType) {
       case 'company':
         this.menuItems = [
-          { path: '/plan/select', label: 'Selección Plan', icon: 'assignment' },
-          { path: '/incident/dashboard', label: 'Dashboard', icon: 'dashboard' }
+          { path: '/plan/select', label: this.translate.instant('plan_selection'), icon: 'assignment' },
+          { path: '/incident/dashboard', label: this.translate.instant('dashboard'), icon: 'dashboard' }
         ];
         break;
       case 'manager':
