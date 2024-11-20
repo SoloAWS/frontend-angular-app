@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { User, UserDetailRequest, IncidentCreate } from '../../models';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 describe('IncidentDetailComponent', () => {
   let component: IncidentDetailComponent;
@@ -46,10 +47,12 @@ describe('IncidentDetailComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         BrowserAnimationsModule,
+        ToastrModule.forRoot()
       ],
       providers: [
         { provide: IncidentService, useValue: incidentServiceSpy },
-        { provide: FormDataService, useValue: formDataServiceSpy }
+        { provide: FormDataService, useValue: formDataServiceSpy },
+        ToastrService
       ]
     }).compileComponents();
 
@@ -63,6 +66,10 @@ describe('IncidentDetailComponent', () => {
     incidentService.getUserDetails.and.returnValue(of(mockUserDetails)); // Mock the Observable
 
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule(); // Reset to avoid state leakage
   });
 
   it('should create', () => {

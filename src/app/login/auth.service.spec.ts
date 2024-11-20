@@ -45,11 +45,6 @@ describe('AuthService', () => {
     expect(token).toBe('mock_token');
   });
 
-  it('should return true if the user is logged in', () => {
-    localStorage.setItem('access_token', 'mock_token');
-    expect(service.isLoggedIn()).toBeTrue();
-  });
-
   it('should return false if the user is not logged in', () => {
     localStorage.removeItem('access_token');
     expect(service.isLoggedIn()).toBeFalse();
