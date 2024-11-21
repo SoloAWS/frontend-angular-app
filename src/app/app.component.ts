@@ -9,7 +9,7 @@ import { Router, RouterModule, RouterOutlet, NavigationEnd } from '@angular/rout
 import { filter } from 'rxjs/operators';
 import { JwtService } from './core/services/jwt.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MatMenuModule } from '@angular/material/menu';  
+import { MatMenuModule } from '@angular/material/menu';
 
 interface MenuItem {
   path: string;
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     public router: Router,
     private jwtService: JwtService,
     private translate: TranslateService
-  ) { 
+  ) {
     this.translate.use(this.selectedLanguage);
   }
 
@@ -78,15 +78,15 @@ export class AppComponent implements OnInit {
         break;
       case 'manager':
         this.menuItems = [
-          { path: '/incident/create', label: 'Crear Nuevo Incidente', icon: 'add_circle' },
-          { path: '/incident/list', label: 'Consultar Incidente', icon: 'search' },
-          { path: '/incident/dashboard-manager', label: 'Dashboard', icon: 'dashboard' }
+          { path: '/incident/create', label: this.translate.instant('create_incident'), icon: 'add_circle' },
+          { path: '/incident/list', label: this.translate.instant('consult_incident'), icon: 'search' },
+          { path: '/incident/dashboard-manager', label: this.translate.instant('dashboard'), icon: 'dashboard' }
         ];
         break;
       case 'user':
         this.menuItems = [
-          { path: '/incident/create', label: 'Crear Nuevo Incidente', icon: 'add_circle' },
-          { path: '/incident/list', label: 'Consultar Incidente', icon: 'search' }
+          { path: '/incident/create', label: this.translate.instant('create_incident'), icon: 'add_circle' },
+          { path: '/incident/list', label: this.translate.instant('consult_incident'), icon: 'search' }
         ];
         break;
       default:

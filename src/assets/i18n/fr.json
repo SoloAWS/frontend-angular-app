@@ -1,0 +1,28 @@
+{
+    "title": "ABCalls",
+    "menu_title": "Menu",
+    "plan_selection": "Sélection du Plan",
+    "dashboard": "Tableau de Bord",
+    "create_incident": "Créer un Nouvel Incident",
+    "consult_incident": "Consulter un Incident",
+    "welcome_back": "Bienvenue à nouveau!",
+    "enter_details": "Saisissez vos informations pour continuer",
+    "email": "Email",
+    "password": "Mot de passe",
+    "login": "CONNEXION",
+    "create_account": "Créer un compte",
+    "forgot_password": "Mot de passe oublié",
+    "customer_service_ally": "Votre allié dans le service client",
+    "prioritized_incidents": "Incidents Prioritaires",
+    "last_assigned_incidents": "Derniers Incidents Assignés",
+    "daily_stats": "Statistiques Quotidiennes",
+    "id": "ID",
+    "description": "Description",
+    "priority": "Priorité",
+    "state": "État",
+    "channel": "Canal",
+    "creation_date": "Date de Création",
+    "client": "Client",
+    "value": "Valeur"
+  }
+  

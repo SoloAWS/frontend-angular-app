@@ -1,30 +1,30 @@
 <div class="top-right">
-  <span class="globe-icon">🌐</span>
-  <span class="language-selector">ES/CO</span>
-  <span class="dropdown-icon">▼</span>
+  <mat-icon>public</mat-icon>
+  <span [matMenuTriggerFor]="languageMenu">{{ selectedLanguage.toUpperCase() }}</span>
+  <mat-icon [matMenuTriggerFor]="languageMenu">keyboard_arrow_down</mat-icon>
 </div>
 
 <div class="login-container">
   <div class="welcome-board">
     <div class="welcome-texts">
-      <h1>ABCalls</h1>
-      <p>Tu aliado en el servicio al cliente</p>
+      <h1>{{ 'title' | translate }}</h1>
+      <p>{{ 'customer_service_ally' | translate }}</p>
     </div>
   </div>
 
   <div class="form-container">
-    <h2>¡Bienvenido de nuevo!</h2>
-    <p>Ingresa tus datos para continuar</p>
+    <h2>{{ 'welcome_back' | translate }}</h2>
+    <p>{{ 'enter_details' | translate }}</p>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="login-input">
-        <mat-label>Correo</mat-label>
+        <mat-label>{{ 'email' | translate }}</mat-label>
         <input matInput formControlName="username" type="email" />
         <mat-error>{{ getErrorMessage("username") }}</mat-error>
       </mat-form-field>
 
       <mat-form-field class="login-input">
-        <mat-label>Contraseña</mat-label>
+        <mat-label>{{ 'password' | translate }}</mat-label>
         <input matInput formControlName="password" type="password" />
         <mat-error>{{ getErrorMessage("password") }}</mat-error>
       </mat-form-field>
@@ -33,19 +33,20 @@
         {{ loginError }}
       </mat-error>
 
-      <button
-        mat-raised-button
-        color="primary"
-        class="login-button"
-        type="submit"
-      >
-        INICIAR SESION
+      <button mat-raised-button color="primary" class="login-button" type="submit">
+        {{ 'login' | translate }}
       </button>
 
       <div class="links-container">
-        <a class="link" routerLink="/signup">Crear Cuenta</a>
-        <a class="link">Olvide mi contraseña</a>
+        <a class="link" routerLink="/signup">{{ 'create_account' | translate }}</a>
+        <a class="link">{{ 'forgot_password' | translate }}</a>
       </div>
     </form>
   </div>
+
+  <mat-menu #languageMenu="matMenu">
+    <button mat-menu-item (click)="changeLanguage('es')">ES</button>
+    <button mat-menu-item (click)="changeLanguage('en')">EN</button>
+    <button mat-menu-item (click)="changeLanguage('fr')">FR</button>
+  </mat-menu>
 </div>

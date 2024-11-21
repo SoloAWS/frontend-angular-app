@@ -12,6 +12,9 @@ import {
 import { CommonModule } from '@angular/common';
 import { AuthService } from './auth.service';
 import { MatCardModule } from '@angular/material/card';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +27,9 @@ import { MatCardModule } from '@angular/material/card';
     ReactiveFormsModule,
     CommonModule,
     MatCardModule,
+    MatMenuModule,
+    TranslateModule,
+    MatIconModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -31,16 +37,25 @@ import { MatCardModule } from '@angular/material/card';
 export class LoginComponent {
   loginForm: FormGroup;
   loginError: string = '';
+  selectedLanguage = 'es';
+
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
+    this.translate.use(this.selectedLanguage);
+  }
+
+  changeLanguage(lang: string) {
+    this.selectedLanguage = lang;
+    this.translate.use(lang);
   }
 
   onSubmit() {

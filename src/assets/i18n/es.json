@@ -4,6 +4,25 @@
     "plan_selection": "Selección Plan",
     "dashboard": "Dashboard",
     "create_incident": "Crear Nuevo Incidente",
-    "consult_incident": "Consultar Incidente"
+    "consult_incident": "Consultar Incidente",
+    "welcome_back": "¡Bienvenido de nuevo!",
+    "enter_details": "Ingresa tus datos para continuar",
+    "email": "Correo",
+    "password": "Contraseña",
+    "login": "INICIAR SESIÓN",
+    "create_account": "Crear Cuenta",
+    "forgot_password": "Olvidé mi contraseña",
+    "customer_service_ally": "Tu aliado en el servicio al cliente",
+    "prioritized_incidents": "Incidentes Prioritarios",
+    "last_assigned_incidents": "Últimos Incidentes Asignados",
+    "daily_stats": "Estadísticas del Día",
+    "id": "ID",
+    "description": "Descripción",
+    "priority": "Prioridad",
+    "state": "Estado",
+    "channel": "Canal",
+    "creation_date": "Fecha",
+    "client": "Cliente",
+    "value": "Valor"
   }
   

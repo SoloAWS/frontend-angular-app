@@ -5,11 +5,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button'; // Import MatButtonModule
 import { DashboardService } from './dashboard-manager.service';
 import { IncidentList, DailyStats } from '../../models';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard-manager',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatTableModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatTableModule, MatButtonModule, TranslateModule],
   templateUrl: './dashboard-manager.component.html',
   styleUrls: ['./dashboard-manager.component.css'],
 })
