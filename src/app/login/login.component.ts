@@ -50,12 +50,15 @@ export class LoginComponent {
       username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
-    this.translate.use(this.selectedLanguage);
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'es'; // Get saved language or default to 'es'
+    this.selectedLanguage = savedLanguage.toUpperCase(); // Update the displayed language
+    this.translate.use(savedLanguage);
   }
 
   changeLanguage(lang: string) {
     this.selectedLanguage = lang;
     this.translate.use(lang);
+    localStorage.setItem('selectedLanguage', lang);
   }
 
   onSubmit() {

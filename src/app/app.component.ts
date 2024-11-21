@@ -8,7 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterModule, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { JwtService } from './core/services/jwt.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
 
 interface MenuItem {
@@ -46,24 +46,30 @@ export class AppComponent implements OnInit {
     private jwtService: JwtService,
     private translate: TranslateService
   ) {
-    this.translate.use(this.selectedLanguage);
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'es';
+    this.selectedLanguage = savedLanguage.toUpperCase();
+    this.translate.use(savedLanguage);
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.selectedLanguage = event.lang.toUpperCase(); // Update the displayed language
+      this.updateMenuItems(); // Refresh menu items with new translations
+    });
   }
 
   ngOnInit() {
-    // Update menu items when navigation ends
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.updateMenuItems();
     });
 
-    // Initial menu items update
     this.updateMenuItems();
   }
 
   changeLanguage(lang: string) {
     this.selectedLanguage = lang;
     this.translate.use(lang);
+    localStorage.setItem('selectedLanguage', lang);
   }
 
   private updateMenuItems() {
