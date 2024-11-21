@@ -27,6 +27,10 @@ export const apiInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(modifiedReq).pipe(
     tap((event) => {
       if (event instanceof HttpResponse) {
+        if (req.url.includes('/assets/i18n/')) {
+          return;
+        }
+
         const response = event.body as ApiSuccessResponse;
         if (event?.status) {
           toastr.success(`Status: ${event.status}`, 'Success', {
@@ -39,6 +43,10 @@ export const apiInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
       }
     }),
     catchError((error: HttpErrorResponse) => {
+      if (req.url.includes('/assets/i18n/')) {
+        return throwError(() => error);
+      }
+      
       let errorMessage = 'An error occurred';
 
       if (error.error && typeof error.error === 'object') {
