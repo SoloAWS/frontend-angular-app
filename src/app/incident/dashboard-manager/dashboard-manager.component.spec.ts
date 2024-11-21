@@ -4,6 +4,7 @@ import { DashboardManagerComponent } from './dashboard-manager.component';
 import { DashboardService } from './dashboard-manager.service';
 import { of } from 'rxjs';
 import { IncidentList, DailyStats } from '../../models';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('DashboardManagerComponent', () => {
   let component: DashboardManagerComponent;
@@ -12,7 +13,7 @@ describe('DashboardManagerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardManagerComponent, HttpClientTestingModule],
+      imports: [DashboardManagerComponent, HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [DashboardService]
     }).compileComponents();
 

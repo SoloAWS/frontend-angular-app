@@ -11,11 +11,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { of, throwError } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authService: AuthService;
+  let translateService: TranslateService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -29,13 +33,32 @@ describe('LoginComponent', () => {
         MatInputModule,
         MatButtonModule,
         MatCardModule,
+        MatMenuModule,
+        MatIconModule,
+        TranslateModule.forRoot({
+          defaultLanguage: 'es',
+          useDefaultLang: true
+        })
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     authService = TestBed.inject(AuthService);
+    translateService = TestBed.inject(TranslateService);
+    
+    // Mock translations
+    const translations = {
+      'LOGIN.BUTTON': 'login',
+      'LOGIN.SIGNUP': 'create_account',
+      'LOGIN.FORGOT_PASSWORD': 'forgot_password',
+      'LOGIN.TITLE': 'ABCalls'
+    };
+    translateService.setTranslation('es', translations);
+    translateService.use('es');
+    
     fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
@@ -44,7 +67,7 @@ describe('LoginComponent', () => {
 
   it('should have a welcome message', () => {
     const welcomeElement = fixture.debugElement.query(By.css('h1'));
-    expect(welcomeElement.nativeElement.textContent).toContain('ABCalls');
+    expect(welcomeElement.nativeElement.textContent).toContain('title');
   });
 
   it('should have a password input field', () => {
@@ -56,14 +79,14 @@ describe('LoginComponent', () => {
 
   it('should have a login button', () => {
     const loginButton = fixture.debugElement.query(By.css('button'));
-    expect(loginButton.nativeElement.textContent).toContain('INICIAR SESION');
+    expect(loginButton.nativeElement.textContent).toContain('login');
   });
 
   it('should have a link to sign up', () => {
     const signUpLink = fixture.debugElement.query(
       By.css('a[routerlink="/signup"]')
     );
-    expect(signUpLink.nativeElement.textContent).toContain('Crear Cuenta');
+    expect(signUpLink.nativeElement.textContent).toContain('create_account');
   });
 
   it('should have a link for forgotten password', () => {
@@ -71,11 +94,10 @@ describe('LoginComponent', () => {
       By.css('a:not([routerlink])')
     );
     expect(forgotPasswordLink.nativeElement.textContent).toContain(
-      'Olvide mi contraseña'
+      'forgot_password'
     );
   });
 
-  // New Tests
   it('should call onSubmit when the form is valid', () => {
     const spy = spyOn(component, 'onSubmit').and.callThrough();
     component.loginForm.setValue({ username: 'test@example.com', password: 'Password123' });
@@ -97,7 +119,7 @@ describe('LoginComponent', () => {
 
   it('should show error message on failed login with 401', () => {
     spyOn(authService, 'login').and.returnValue(
-      throwError({ status: 401 })
+      throwError(() => ({ status: 401 }))
     );
     component.loginForm.setValue({ username: 'test@example.com', password: 'Password123' });
     component.onSubmit();
@@ -106,7 +128,7 @@ describe('LoginComponent', () => {
 
   it('should show generic error message on failed login with other errors', () => {
     spyOn(authService, 'login').and.returnValue(
-      throwError({ status: 500 })
+      throwError(() => ({ status: 500 }))
     );
     component.loginForm.setValue({ username: 'test@example.com', password: 'Password123' });
     component.onSubmit();
