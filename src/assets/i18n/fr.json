@@ -23,6 +23,9 @@
     "channel": "Canal",
     "creation_date": "Date de Création",
     "client": "Client",
-    "value": "Valeur"
+    "value": "Valeur",
+    "required": "Ce champ est requis",
+    "email_invalid": "Veuillez saisir une adresse email valide",
+    "minlength": "Au moins {{length}} caractères"
   }
   

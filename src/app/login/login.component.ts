@@ -50,8 +50,8 @@ export class LoginComponent {
       username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
-    const savedLanguage = localStorage.getItem('selectedLanguage') || 'es'; // Get saved language or default to 'es'
-    this.selectedLanguage = savedLanguage.toUpperCase(); // Update the displayed language
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'es';
+    this.selectedLanguage = savedLanguage.toUpperCase();
     this.translate.use(savedLanguage);
   }
 
@@ -81,14 +81,17 @@ export class LoginComponent {
 
   getErrorMessage(controlName: string): string {
     const control = this.loginForm.get(controlName);
-    if (control?.hasError('required')) {
-      return 'Este campo es requerido';
+    if (!control) return '';
+  
+    if (control.hasError('required')) {
+      return this.translate.instant('required');
     }
-    if (control?.hasError('email')) {
-      return 'Ingrese un correo electrónico válido';
+    if (control.hasError('email')) {
+      return this.translate.instant('email_invalid');
     }
-    if (control?.hasError('minlength')) {
-      return `Mínimo ${control.errors?.['minlength'].requiredLength} caracteres`;
+    if (control.hasError('minlength')) {
+      const requiredLength = control.errors?.['minlength'].requiredLength;
+      return this.translate.instant('minlength', { length: requiredLength });
     }
     return '';
   }
