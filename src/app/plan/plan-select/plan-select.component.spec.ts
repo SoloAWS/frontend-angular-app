@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { FormDataService } from '../../form-data.service';
 import { Plan, PlanList } from '../../models';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('PlanSelectComponent', () => {
   let component: PlanSelectComponent;
@@ -25,7 +26,7 @@ describe('PlanSelectComponent', () => {
     const formDataServiceSpy = jasmine.createSpyObj('FormDataService', ['setFormData']);
 
     await TestBed.configureTestingModule({
-      imports: [PlanSelectComponent, HttpClientTestingModule],
+      imports: [PlanSelectComponent, HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: PlanService, useValue: planServiceSpy },
         { provide: FormDataService, useValue: formDataServiceSpy },

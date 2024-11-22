@@ -1,10 +1,12 @@
 <div class="plan-init-container">
     <div class="form-container">
-        <h2>¡Bienvenido a ABCalls!</h2>
-        <p class="main-text">Para comenzar, por favor seleccione un plan para su empresa.</p>
+        <h2>{{ 'welcome_to_abcalls' | translate }}</h2>
+        <p class="main-text">{{ 'start_by_selecting_plan' | translate }}</p>
         <div class="button-container">
-            <button mat-flat-button routerLink="/plan/select" class="continue-button">SELECCIONAR PLAN</button>
+            <button mat-flat-button routerLink="/plan/select" class="continue-button">
+                {{ 'select_plan' | translate }}
+            </button>
         </div>
-        <p class="select-text">Seleccione un plan para acceder a todas las funcionalidades de ABCalls.</p>
+        <p class="select-text">{{ 'select_plan_text' | translate }}</p>
     </div>
 </div>

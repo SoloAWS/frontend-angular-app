@@ -1,17 +1,19 @@
 <div class="plan-init-container">
   <div class="form-container">
-    <h2>Selecciona tu Plan</h2>
-    <p class="plan-text">Elige el plan que mejor se adapte a tus necesidades</p>
+    <h2>{{ 'select_your_plan' | translate }}</h2>
+    <p class="plan-text">{{ 'choose_best_plan' | translate }}</p>
     <div class="plans-grid">
       <div *ngFor="let plan of plans?.plans" class="plan-card">
         <p class="card-name">{{ plan.name }}</p>
-        <p class="card-price">${{ plan.price }}</p>
+        <p class="card-price">{{ 'price' | translate }}: ${{ plan.price }}</p>
 
         <ul>
           <li *ngFor="let feature of plan.features">{{ feature.description }}</li>
         </ul>
 
-        <button mat-flat-button (click)="selectPlan(plan)">SELECCIONAR PLAN</button>
+        <button mat-flat-button (click)="selectPlan(plan)">
+          {{ 'select_plan' | translate }}
+        </button>
       </div>
     </div>
   </div>

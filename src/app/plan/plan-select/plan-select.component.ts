@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { FormDataService } from '../../form-data.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-plan-select',
@@ -12,6 +13,7 @@ import { FormDataService } from '../../form-data.service';
   imports: [
     CommonModule,
     MatButtonModule,
+    TranslateModule
   ],
   templateUrl: './plan-select.component.html',
   styleUrl: './plan-select.component.css'

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CardInfo, Company, Pay, Plan } from '../../models';
 import { FormDataService } from '../../form-data.service';
@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { PlanService } from '../plan.service';
 import { RouterModule, Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-plan-pay',
@@ -17,7 +18,8 @@ import { RouterModule, Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     CommonModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslateModule
   ],
   templateUrl: './plan-pay.component.html',
   styleUrl: './plan-pay.component.css'
@@ -26,6 +28,7 @@ export class PlanPayComponent implements OnInit {
   payForm: FormGroup;
   plan: Plan | null = null;
   company: Company | null = null;
+  private translate = inject(TranslateService);
 
   constructor(
     private fb: FormBuilder,
@@ -110,31 +113,35 @@ export class PlanPayComponent implements OnInit {
   getErrorMessage(controlName: string): string {
     const control = this.payForm.get(controlName);
     if (control?.hasError('required')) {
-      return 'Este campo es requerido';
+        return this.translate.instant('required_field');
     }
     if (control?.hasError('pattern')) {
-      switch (controlName) {
-        case 'cardNumber':
-          return 'El número de tarjeta debe tener 16 dígitos';
-        case 'expirationDate':
-          return 'La fecha de expiración debe tener el formato MM/AA';
-        case 'cvv':
-          return 'El CVV debe tener 3 dígitos';
-        case 'cardHolderName':
-          return 'El nombre del titular debe ser alfanumérico';
-      }
+        switch (controlName) {
+            case 'cardNumber':
+                return this.translate.instant('invalid_card_number_format');
+            case 'expirationDate':
+                return this.translate.instant('invalid_expiration_date_format');
+            case 'cvv':
+                return this.translate.instant('invalid_cvv_format');
+            case 'cardHolderName':
+                return this.translate.instant('invalid_cardholder_name');
+        }
     }
     if (control?.hasError('invalidCardNumber')) {
-      return 'El número de tarjeta es inválido';
+        return this.translate.instant('invalid_card_number');
     }
     if (control?.hasError('minlength')) {
-      return 'El nombre del titular debe tener al menos 3 caracteres';
+        return this.translate.instant('min_length', {
+            length: control.errors?.['minlength']?.requiredLength,
+        });
     }
     if (control?.hasError('maxlength')) {
-      return 'El nombre del titular no puede tener más de 50 caracteres';
+        return this.translate.instant('max_length', {
+            length: control.errors?.['maxlength']?.requiredLength,
+        });
     }
     return '';
-  }
+}
 
   onSubmit() {
     if (this.payForm.valid) {

@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('PlanInitComponent', () => {
   let component: PlanInitComponent;
@@ -13,7 +14,7 @@ describe('PlanInitComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PlanInitComponent, RouterTestingModule.withRoutes([
+      imports: [PlanInitComponent, TranslateModule.forRoot(), RouterTestingModule.withRoutes([
         { path: 'plan/select', component: PlanInitComponent }
       ])],
     })
