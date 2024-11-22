@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +9,7 @@ import { Document, UserCompanies } from '../../models';
 import { Router } from '@angular/router';
 import { FormDataService } from '../../form-data.service';
 import { CommonModule } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-incident-create',
@@ -20,7 +21,8 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     MatSelectModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    TranslateModule
   ],
   templateUrl: './incident-create.component.html',
   styleUrl: './incident-create.component.css'
@@ -29,6 +31,7 @@ export class IncidentCreateComponent {
   incidentForm: FormGroup;
   documentTypes: string[] = ['passport', 'cc']
   userCompanies: UserCompanies = { user_id: '', companies: [] };
+  private translate = inject(TranslateService);
 
   constructor(
     private fb: FormBuilder,
@@ -66,10 +69,10 @@ export class IncidentCreateComponent {
   getErrorMessage(controlName: string): string {
     const control = this.incidentForm.get(controlName);
     if (control?.hasError('required')) {
-      return 'Este campo es requerido';
+      return this.translate.instant('required');
     }
     return '';
-  }
+  }  
 
   onSubmit() {
     if (this.incidentForm.valid) {

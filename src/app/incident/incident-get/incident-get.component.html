@@ -1,42 +1,41 @@
 <div class="incident-container">
     <div class="info-container">
-        <h2>Incidente {{ incident?.id }}</h2>
-        <p>Estado: {{ translateState(incident?.state ?? '') }} |
-            Prioridad: {{ translatePriority(incident?.priority ?? '') }} |
-            Creado: {{ incident?.creation_date | date:'yyyy-MM-dd HH:mm' }}
+        <h2>{{ 'incident' | translate }} {{ incident?.id }}</h2>
+        <p>{{ 'state' | translate }}: {{ translateState(incident?.state ?? '') }} |
+            {{ 'priority' | translate }}: {{ translatePriority(incident?.priority ?? '') }} |
+            {{ 'created' | translate }}: {{ incident?.creation_date | date:'yyyy-MM-dd HH:mm' }}
         </p>
         <div class="details-container">
             <div class="detail-item">
-                <h3>Detalles del Cliente</h3>
-                <p>Empresa: {{ incident?.company_name }}</p>
-                <p>ID Cliente: {{ incident?.user_details?.id }}</p>
-                <p>Nombre: {{ incident?.user_details?.first_name }} {{ incident?.user_details?.last_name }}</p>
-                <p>Teléfono: {{ incident?.user_details?.phone_number }}</p>
+                <h3>{{ 'customer_details' | translate }}</h3>
+                <p>{{ 'company' | translate }}: {{ incident?.company_name }}</p>
+                <p>{{ 'client_id' | translate }}: {{ incident?.user_details?.id }}</p>
+                <p>{{ 'name' | translate }}: {{ incident?.user_details?.first_name }} {{ incident?.user_details?.last_name }}</p>
+                <p>{{ 'phone' | translate }}: {{ incident?.user_details?.phone_number }}</p>
             </div>
             <div class="detail-item">
-                <h3>Detalles del Incidente</h3>
-                <p>Asignado a: {{ incident?.manager_details?.first_name }} {{ incident?.manager_details?.last_name }}
-                </p>
-                <p>Última actualización: {{ latestUpdate }}</p>
-                <p>Tiempo transcurrido: {{ elapsedTime }}</p>
-                <p>Canal: {{ translateChannel(incident?.channel ?? '') }}</p>
+                <h3>{{ 'incident_details' | translate }}</h3>
+                <p>{{ 'assigned_to' | translate }}: {{ incident?.manager_details?.first_name }} {{ incident?.manager_details?.last_name }}</p>
+                <p>{{ 'last_update' | translate }}: {{ latestUpdate }}</p>
+                <p>{{ 'elapsed_time' | translate }}: {{ elapsedTime }}</p>
+                <p>{{ 'channel' | translate }}: {{ translateChannel(incident?.channel ?? '') }}</p>
             </div>
         </div>
         <div class="description-container">
-            <h3>Descripción del Problema</h3>
+            <h3>{{ 'problem_description' | translate }}</h3>
             <p>{{ incident?.description }}</p>
         </div>
         <div class="table-container">
-            <h2>Historial de Acciones</h2>
+            <h2>{{ 'action_history' | translate }}</h2>
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     
                 <ng-container matColumnDef="created_at">
-                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                    <th mat-header-cell *matHeaderCellDef>{{ 'date' | translate }}</th>
                     <td mat-cell *matCellDef="let element"> {{ element.created_at | date: 'yyyy-MM-dd HH:mm' }} </td>
                 </ng-container>
     
                 <ng-container matColumnDef="description">
-                    <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                    <th mat-header-cell *matHeaderCellDef>{{ 'description' | translate }}</th>
                     <td mat-cell *matCellDef="let element"> {{element.description}} </td>
                 </ng-container>
     

@@ -4,11 +4,12 @@ import { IncidentService } from '../incident.service';
 import { HistoryItem, IncidentDetail } from '../../models';
 import { DatePipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-incident-get',
   standalone: true,
-  imports: [DatePipe, MatTableModule],
+  imports: [DatePipe, MatTableModule, TranslateModule],
   providers: [DatePipe],
   templateUrl: './incident-get.component.html',
   styleUrl: './incident-get.component.css'

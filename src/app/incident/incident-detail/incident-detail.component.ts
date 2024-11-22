@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { IncidentDetailService } from './incident-detail.service';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-incident-detail',
@@ -32,6 +33,7 @@ import { ToastrService } from 'ngx-toastr';
     CommonModule,
     MatCardModule,
     MatIconModule,
+    TranslateModule
   ],
   templateUrl: './incident-detail.component.html',
   styleUrl: './incident-detail.component.css',
@@ -48,6 +50,7 @@ export class IncidentDetailComponent implements OnInit {
   ];
   conocimiento: string = '';
   ia: string = '';
+  private translate = inject(TranslateService);
 
   constructor(
     private fb: FormBuilder,
@@ -104,10 +107,10 @@ export class IncidentDetailComponent implements OnInit {
   getErrorMessage(controlName: string): string {
     const control = this.incidentForm.get(controlName);
     if (control?.hasError('required')) {
-      return 'Este campo es requerido';
+      return this.translate.instant('required');
     }
     return '';
-  }
+  } 
 
   translateState(state: string): string {
     const stateTranslations: { [key: string]: string } = {

@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { mockIncidentDetail } from '../test-helpers';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('IncidentGetComponent', () => {
   let component: IncidentGetComponent;
@@ -17,7 +18,11 @@ describe('IncidentGetComponent', () => {
   beforeEach(async () => {
     mockIncidentService = jasmine.createSpyObj('IncidentService', ['getIncidentById']);
     await TestBed.configureTestingModule({
-      imports: [IncidentGetComponent, MatTableModule, HttpClientTestingModule],
+      imports: [IncidentGetComponent, MatTableModule, HttpClientTestingModule,
+        TranslateModule.forRoot({
+          defaultLanguage: 'es',
+        }),
+      ],
       providers: [
         DatePipe,
         { provide: IncidentService, useValue: mockIncidentService },

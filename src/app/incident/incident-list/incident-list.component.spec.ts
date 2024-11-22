@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IncidentListResponse, IncidentList } from '../../models';
 import { MatTableDataSource } from '@angular/material/table';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('IncidentListComponent', () => {
   let component: IncidentListComponent;
@@ -47,7 +48,10 @@ describe('IncidentListComponent', () => {
       imports: [
         IncidentListComponent,
         HttpClientTestingModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        TranslateModule.forRoot({
+          defaultLanguage: 'es',
+        }),
       ],
       providers: [
         { provide: IncidentService, useValue: incidentServiceSpy }

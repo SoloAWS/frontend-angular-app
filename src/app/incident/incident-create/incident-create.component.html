@@ -1,15 +1,15 @@
 <div class="incident-create-container">
   <div class="form-container">
     <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()">
-      <h2>Iniciar Nuevo Incidente</h2>
+      <h2>{{ 'start_new_incident' | translate }}</h2>
       <mat-form-field appearance="outline" class="incident-input">
-        <mat-label>Número de identificación del usuario</mat-label>
-        <input matInput formControlName="documentId" placeholder="Ingrese el número de identificación" required>
+        <mat-label>{{ 'user_document_id' | translate }}</mat-label>
+        <input matInput formControlName="documentId" placeholder="{{ 'enter_document_id' | translate }}" required>
         <mat-error *ngIf="incidentForm.get('documentId')?.invalid">{{ getErrorMessage('documentId') }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="incident-input">
-        <mat-label>Tipo de documento</mat-label>
+        <mat-label>{{ 'document_type' | translate }}</mat-label>
         <mat-select formControlName="documentType" (selectionChange)="fetchCompanies()" name="documentType" required>
           @for (documentType of documentTypes; track documentType) {
           <mat-option [value]="documentType">{{documentType}}</mat-option>
@@ -19,7 +19,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="incident-input">
-        <mat-label>Empresa</mat-label>
+        <mat-label>{{ 'company' | translate }}</mat-label>
         <mat-select formControlName="company" name="company" required>
           @for (company of userCompanies.companies; track company) {
           <mat-option [value]="company.id">{{company.name}}</mat-option>
@@ -29,7 +29,7 @@
       </mat-form-field>
 
       <div class="button-container">
-        <button mat-flat-button type="submit" class="continue-button">CONTINUAR</button>
+        <button mat-flat-button type="submit" class="continue-button">{{ 'continue' | translate }}</button>
       </div>
     </form>
   </div>

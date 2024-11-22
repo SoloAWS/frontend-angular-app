@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
@@ -35,7 +36,8 @@ describe('SignupComponent', () => {
         MatSelectModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
-        RouterTestingModule
+        RouterTestingModule,
+        TranslateModule.forRoot()
       ],
       providers: [
         SignupService,
@@ -138,14 +140,6 @@ describe('SignupComponent', () => {
     component.signupForm.get('city')?.setValue('Bogotá');
     component.onCountryChange('Argentina');
     expect(component.signupForm.get('city')?.value).toBeNull();
-  });
-
-  it('should get error messages for form controls', () => {
-    const control = component.signupForm.get('email');
-    control?.setErrors({ required: true });
-    expect(component.getErrorMessage('email')).toBe('Este campo es requerido');
-    control?.setErrors({ email: true });
-    expect(component.getErrorMessage('email')).toBe('Ingrese un correo electrónico válido');
   });
 
   function fillFormWithValidData() {

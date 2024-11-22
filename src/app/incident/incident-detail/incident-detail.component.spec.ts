@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { User, UserDetailRequest, IncidentCreate } from '../../models';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 describe('IncidentDetailComponent', () => {
   let component: IncidentDetailComponent;
@@ -47,7 +48,10 @@ describe('IncidentDetailComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         BrowserAnimationsModule,
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        TranslateModule.forRoot({
+          defaultLanguage: 'es',
+        }),
       ],
       providers: [
         { provide: IncidentService, useValue: incidentServiceSpy },
@@ -61,15 +65,21 @@ describe('IncidentDetailComponent', () => {
     incidentService = TestBed.inject(IncidentService) as jasmine.SpyObj<IncidentService>;
     formDataService = TestBed.inject(FormDataService) as jasmine.SpyObj<FormDataService>;
 
-    // Mock formDataService to return user_id and company_id
     formDataService.getFormData.and.returnValue({ user_id: '123', company_id: '456' });
-    incidentService.getUserDetails.and.returnValue(of(mockUserDetails)); // Mock the Observable
+    incidentService.getUserDetails.and.returnValue(of(mockUserDetails));
+
+    const translations = {
+      required: 'Este campo es requerido'
+    };
+    const translateService = TestBed.inject(TranslateService);
+    translateService.setTranslation('es', translations);
+    translateService.use('es');
 
     fixture.detectChanges();
   });
 
   afterEach(() => {
-    TestBed.resetTestingModule(); // Reset to avoid state leakage
+    TestBed.resetTestingModule();
   });
 
   it('should create', () => {

@@ -1,15 +1,15 @@
 <div class="detail-container">
   <div class="detail-board">
-    <h1>Información del Cliente</h1>
+    <h1>{{ 'customer_info' | translate }}</h1>
     <div class="user-info">
-      <p>Nombre: {{ userDetails?.first_name }} {{ userDetails?.last_name }}</p>
-      <p>ID: {{ userDetails?.document_id }}</p>
-      <p>Teléfono: {{ userDetails?.phone_number }}</p>
-      <p>Email: {{ userDetails?.username }}</p>
+      <p>{{ 'name' | translate }}: {{ userDetails?.first_name }} {{ userDetails?.last_name }}</p>
+      <p>{{ 'id' | translate }}: {{ userDetails?.document_id }}</p>
+      <p>{{ 'phone' | translate }}: {{ userDetails?.phone_number }}</p>
+      <p>{{ 'email' | translate }}: {{ userDetails?.username }}</p>
     </div>
 
     <div class="importance-container">
-      <h2>Prioridad del Cliente: {{ userDetails?.importance }}/10</h2>
+      <h2>{{ 'customer_priority' | translate }}: {{ userDetails?.importance }}/10</h2>
       <div class="importance-bar-background">
         <div
           class="importance-bar"
@@ -18,26 +18,24 @@
       </div>
     </div>
 
-    <h2>Historial de Incidentes</h2>
+    <h2>{{ 'incident_history' | translate }}</h2>
     <div class="incident-list">
       <mat-card
         *ngFor="let incident of userDetails?.incidents"
         class="incident-card"
       >
-        <p>
-          Última llamada: {{ incident.creation_date | date : "dd/MM/yyyy" }}
-        </p>
-        <p>Motivo: {{ incident.description }}</p>
-        <p>Estado: {{ translateState(incident.state) }}</p>
+        <p>{{ 'last_call' | translate }}: {{ incident.creation_date | date : "dd/MM/yyyy" }}</p>
+        <p>{{ 'reason' | translate }}: {{ incident.description }}</p>
+        <p>{{ 'state' | translate }}: {{ translateState(incident.state) }}</p>
       </mat-card>
     </div>
   </div>
 
   <div class="form-container">
-    <h1>Detalles del Incidente</h1>
+    <h1>{{ 'incident_details' | translate }}</h1>
     <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="priority-input">
-        <mat-label>Prioridad</mat-label>
+        <mat-label>{{ 'priority' | translate }}</mat-label>
         <mat-select formControlName="priority" name="priority" required>
           @for (priority of priorities; track priority) {
           <mat-option [value]="priority.value">{{ priority.label }}</mat-option>
@@ -49,7 +47,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="description-input" required>
-        <mat-label>Descripción del incidente...</mat-label>
+        <mat-label>{{ 'incident_description' | translate }}</mat-label>
         <input matInput formControlName="description" required />
         <mat-error *ngIf="incidentForm.get('description')?.invalid">{{
           getErrorMessage("description")
@@ -58,7 +56,7 @@
 
       <!-- Base de Conocimientos -->
       <div class="help-container">
-        <h2>Base de Conocimientos</h2>
+        <h2>{{ 'knowledge_base' | translate }}</h2>
         <button
           mat-flat-button
           type="button"
@@ -66,7 +64,7 @@
           (click)="getSimilarIncidents()"
         >
           <mat-icon>search</mat-icon>
-          BUSCAR PROBLEMAS SIMILARES
+          {{ 'search_similar_problems' | translate }}
         </button>
       </div>
       <mat-form-field appearance="outline" class="description-input">
@@ -76,7 +74,7 @@
 
       <!-- Respuestas generadas por IA -->
       <div class="help-container">
-        <h2>Respuestas generadas por IA</h2>
+        <h2>{{ 'ia_generated_responses' | translate }}</h2>
         <button
           mat-flat-button
           type="button"
@@ -84,7 +82,7 @@
           (click)="getIAResponse()"
         >
           <mat-icon>search</mat-icon>
-          GENERAR POSIBLES RESPUESTAS
+          {{ 'generate_possible_responses' | translate }}
         </button>
       </div>
       <mat-form-field appearance="outline" class="description-input">
@@ -94,7 +92,7 @@
 
       <div class="button-container">
         <button mat-flat-button type="submit" class="create-button">
-          REGISTRAR INCIDENTE
+          {{ 'register_incident' | translate }}
         </button>
       </div>
     </form>

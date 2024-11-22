@@ -49,10 +49,9 @@ describe('LoginComponent', () => {
     
     // Mock translations
     const translations = {
-      'LOGIN.BUTTON': 'login',
-      'LOGIN.SIGNUP': 'create_account',
-      'LOGIN.FORGOT_PASSWORD': 'forgot_password',
-      'LOGIN.TITLE': 'ABCalls'
+      required: 'Este campo es requerido',
+      email_invalid: 'Ingrese un correo electrónico válido',
+      minlength: 'Mínimo 8 caracteres'
     };
     translateService.setTranslation('es', translations);
     translateService.use('es');

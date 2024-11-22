@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserCompanies } from '../../models';
+import { TranslateModule, TranslateLoader, TranslateService, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('IncidentCreateComponent', () => {
   let component: IncidentCreateComponent;
@@ -19,21 +20,35 @@ describe('IncidentCreateComponent', () => {
     const incidentServiceSpy = jasmine.createSpyObj('IncidentService', ['getCompaniesByDocument']);
 
     await TestBed.configureTestingModule({
-      imports: [IncidentCreateComponent, RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule],
+      imports: [
+        IncidentCreateComponent,
+        RouterTestingModule,
+        HttpClientTestingModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+      ],
       providers: [
         { provide: IncidentService, useValue: incidentServiceSpy },
-        FormBuilder
-      ]
-    })
-    .compileComponents();
+        FormBuilder,
+        TranslateService,
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(IncidentCreateComponent);
     component = fixture.componentInstance;
     incidentService = TestBed.inject(IncidentService) as jasmine.SpyObj<IncidentService>;
     router = TestBed.inject(Router);
 
-    fixture.detectChanges();
-  });
+    const translateService = TestBed.inject(TranslateService);
+    const translations = {
+      required: 'Este campo es requerido',
+    };
+    translateService.setTranslation('es', translations);
+    translateService.use('es');
+      fixture.detectChanges();
+    });
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
