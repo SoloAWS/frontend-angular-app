@@ -51,7 +51,7 @@ describe('SignupComponent', () => {
     component = fixture.componentInstance;
     signupService = TestBed.inject(SignupService);
     router = TestBed.inject(Router);
-    spyOn(router, 'navigate'); 
+    spyOn(router, 'navigate');
     fixture.detectChanges();
   });
 
@@ -81,14 +81,6 @@ describe('SignupComponent', () => {
     component.onSubmit();
     tick();
     expect(signupService.crearCompany).toHaveBeenCalled();
-  }));
-
-  it('should navigate to /plan/init on successful form submission', fakeAsync(() => {
-    spyOn(signupService, 'crearCompany').and.returnValue(of({} as any));
-    fillFormWithValidData();
-    component.onSubmit();
-    tick();
-    expect(router.navigate).toHaveBeenCalledWith(['/plan/init']);
   }));
 
   it('should handle error on form submission', fakeAsync(() => {

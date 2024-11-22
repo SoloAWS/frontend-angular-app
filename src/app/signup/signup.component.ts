@@ -22,6 +22,7 @@ import { FormDataService } from '../form-data.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { AuthService } from '../login/auth.service';
 
 interface Country {
   name: string;
@@ -61,7 +62,8 @@ export class SignupComponent {
     private datePipe: DatePipe,
     private formDataService: FormDataService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private authService: AuthService,
   ) {
     this.signupForm = this.fb.group(
       {
@@ -167,7 +169,7 @@ export class SignupComponent {
 
     return null;
   };
-  
+
 
   formatPhoneNumber(value: string): string {
     const digits = value.replace(/\D/g, '');
@@ -409,7 +411,16 @@ export class SignupComponent {
           console.log('User registered successfully', response);
           this.formDataService.setFormData({ company : response });
           sessionStorage.setItem('company', JSON.stringify(response));
-          this.router.navigate(['/plan/init']);
+
+          this.authService.login({password  : this.signupForm.value.password, username : this.signupForm.value.email}).subscribe({
+            next: () => {
+              this.router.navigate(['/plan/init']);
+            },
+            error: (error) => {
+              console.error('Error user login', error);
+              this.router.navigate(['/login']);
+            },
+          });
         },
         error: (error) => {
           console.error('Error registering user', error);
@@ -420,7 +431,7 @@ export class SignupComponent {
 
   getErrorMessage(controlName: string): string {
     const control = this.signupForm.get(controlName);
-  
+
     if (control?.hasError('required')) {
       return this.translate.instant('required');
     }
@@ -454,5 +465,5 @@ export class SignupComponent {
     }
     return '';
   }
-  
+
 }
