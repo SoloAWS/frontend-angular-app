@@ -19,6 +19,9 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Company } from '../models';
 import { FormDataService } from '../form-data.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 interface Country {
   name: string;
@@ -38,7 +41,10 @@ interface Country {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    MatIconModule,
+    MatMenuModule,
+    TranslateModule
   ],
   providers: [DatePipe],
   templateUrl: './signup.component.html',
@@ -47,13 +53,15 @@ interface Country {
 export class SignupComponent {
   signupForm: FormGroup;
   filteredCities: string[] = [];
+  selectedLanguage = 'es';
 
   constructor(
     private fb: FormBuilder,
     private signupService: SignupService,
     private datePipe: DatePipe,
     private formDataService: FormDataService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {
     this.signupForm = this.fb.group(
       {
@@ -86,6 +94,15 @@ export class SignupComponent {
           ?.setValue(formattedValue, { emitEvent: false });
       }
     });
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'es';
+    this.selectedLanguage = savedLanguage.toUpperCase();
+    this.translate.use(savedLanguage);
+  }
+
+  changeLanguage(lang: string) {
+    this.selectedLanguage = lang;
+    this.translate.use(lang);
+    localStorage.setItem('selectedLanguage', lang);
   }
 
   ageValidator(): ValidatorFn {
@@ -150,6 +167,7 @@ export class SignupComponent {
 
     return null;
   };
+  
 
   formatPhoneNumber(value: string): string {
     const digits = value.replace(/\D/g, '');
@@ -402,33 +420,39 @@ export class SignupComponent {
 
   getErrorMessage(controlName: string): string {
     const control = this.signupForm.get(controlName);
+  
     if (control?.hasError('required')) {
-      return 'Este campo es requerido';
+      return this.translate.instant('required');
     }
     if (control?.hasError('email') || control?.hasError('invalidEmail')) {
-      return 'Ingrese un correo electrónico válido';
+      return this.translate.instant('email_invalid');
     }
     if (control?.hasError('minlength')) {
-      return `Mínimo ${control.errors?.['minlength'].requiredLength} caracteres`;
+      return this.translate.instant('minlength', {
+        length: control.errors?.['minlength'].requiredLength,
+      });
     }
     if (control?.hasError('maxlength')) {
-      return `Máximo ${control.errors?.['maxlength'].requiredLength} caracteres`;
+      return this.translate.instant('maxlength', {
+        length: control.errors?.['maxlength'].requiredLength,
+      });
     }
     if (control?.hasError('underage')) {
-      return 'Debe ser mayor de 18 años';
+      return this.translate.instant('underage');
     }
     if (control?.hasError('weakPassword')) {
-      return 'La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales';
+      return this.translate.instant('weak_password');
     }
     if (control?.hasError('passwordMismatch')) {
-      return 'Las contraseñas no coinciden';
+      return this.translate.instant('password_mismatch');
     }
     if (control?.hasError('invalidName')) {
-      return 'Ingrese solo letras (incluyendo acentos y ñ)';
+      return this.translate.instant('invalid_name');
     }
     if (control?.hasError('invalidPhoneNumber')) {
-      return 'Ingrese formato (+XX XXX XXX XXXX)';
+      return this.translate.instant('invalid_phone_number');
     }
     return '';
   }
+  
 }
