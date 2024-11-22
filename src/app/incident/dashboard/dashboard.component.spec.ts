@@ -4,6 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DashboardService } from './dashboard.service';
 import { of, throwError } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -12,7 +13,7 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardComponent, HttpClientTestingModule],
+      imports: [DashboardComponent, HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [DashboardService],
     }).compileComponents();
 

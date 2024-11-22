@@ -9,11 +9,12 @@ import {
   CustomerSatisfactionData,
   IncidentList,
 } from '../../models';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatTableModule, ChartModule],
+  imports: [CommonModule, MatCardModule, MatTableModule, ChartModule, TranslateModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })

@@ -106,5 +106,12 @@
   "invalid_cardholder_name": "The cardholder name must be alphanumeric",
   "invalid_card_number": "The card number is invalid",
   "min_length": "Must be at least {{length}} characters long",
-  "max_length": "Cannot be more than {{length}} characters long"
+  "max_length": "Cannot be more than {{length}} characters long",
+  "total_calls": "Total Calls",
+  "average_handling_time": "Average Handling Time",
+  "customer_satisfaction": "Customer Satisfaction",
+  "open_tickets": "Open Tickets",
+  "call_volume_by_hour": "Call Volume by Hour",
+  "customer_satisfaction_trend": "Customer Satisfaction Trend",
+  "recent_managed_incidents": "Recent Managed Incidents"
 }

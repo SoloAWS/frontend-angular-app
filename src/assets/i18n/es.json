@@ -105,5 +105,12 @@
   "invalid_cardholder_name": "El nombre del titular debe ser alfanumérico",
   "invalid_card_number": "El número de tarjeta es inválido",
   "min_length": "Debe tener al menos {{length}} caracteres",
-  "max_length": "No puede tener más de {{length}} caracteres"
+  "max_length": "No puede tener más de {{length}} caracteres",
+  "total_calls": "Total de Llamadas",
+  "average_handling_time": "Tiempo Promedio de Atención",
+  "customer_satisfaction": "Satisfacción del Cliente",
+  "open_tickets": "Tickets Abiertos",
+  "call_volume_by_hour": "Volumen de Llamadas por Hora",
+  "customer_satisfaction_trend": "Tendencia de Satisfacción del Cliente",
+  "recent_managed_incidents": "Últimos Incidentes Gestionados"
 }

@@ -106,5 +106,12 @@
   "invalid_cardholder_name": "Le nom du titulaire doit être alphanumérique",
   "invalid_card_number": "Le numéro de carte est invalide",
   "min_length": "Doit contenir au moins {{length}} caractères",
-  "max_length": "Ne peut pas contenir plus de {{length}} caractères"
+  "max_length": "Ne peut pas contenir plus de {{length}} caractères",
+  "total_calls": "Total des Appels",
+  "average_handling_time": "Temps Moyen de Traitement",
+  "customer_satisfaction": "Satisfaction Client",
+  "open_tickets": "Tickets Ouverts",
+  "call_volume_by_hour": "Volume d'Appels par Heure",
+  "customer_satisfaction_trend": "Tendance de la Satisfaction Client",
+  "recent_managed_incidents": "Derniers Incidents Gérés"
 }
