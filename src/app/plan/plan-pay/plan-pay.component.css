@@ -43,7 +43,7 @@ form {
 
 .plan-price {
     font-size: 18px;
-    color: #757575;
+    color: #424242;
 }
 
 .pay-price {
@@ -69,4 +69,8 @@ form {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-  }
+}
+
+mat-label {
+    color: #4A4A4A;
+}

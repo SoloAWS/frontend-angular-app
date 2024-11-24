@@ -89,15 +89,29 @@ form {
   color: #2196F3;
 }
 
-.globe-icon {
-  font-size: 18px;
-}
-
-.language-selector {
+.top-right button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  color: #255F8C;
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
-.dropdown-icon {
-  font-size: 12px;
-  cursor: pointer;
+.button-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.language-button mat-icon {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+
+mat-label {
+  color: #4A4A4A;
 }

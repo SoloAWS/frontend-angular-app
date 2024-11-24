@@ -31,7 +31,7 @@ h2 {
 }
 
 .detail-board p {
-    color: #757575;
+    color: #424242;
 }
 
 .importance-container {
@@ -134,3 +134,7 @@ textarea[matInput] {
     height: 36px;
     font-size: 14px;
 }
+
+mat-label {
+    color: #4A4A4A;
+  }

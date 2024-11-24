@@ -1,7 +1,11 @@
 <div class="top-right">
-  <mat-icon>public</mat-icon>
-  <span [matMenuTriggerFor]="languageMenu">{{ selectedLanguage.toUpperCase() }}</span>
-  <mat-icon [matMenuTriggerFor]="languageMenu">keyboard_arrow_down</mat-icon>
+  <button mat-button [matMenuTriggerFor]="languageMenu" aria-haspopup="menu" aria-expanded="false" class="language-button">
+    <div class="button-content">
+      <mat-icon>public</mat-icon>
+      <span class="language-text">{{ selectedLanguage.toUpperCase() }}</span>
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </div>
+  </button>
 </div>
 
 <div class="login-container">

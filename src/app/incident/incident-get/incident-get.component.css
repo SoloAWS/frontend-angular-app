@@ -23,7 +23,7 @@
     font-size: 16px;
     margin-top: 0;
     align-self: flex-start;
-    color: #757575;
+    color: #424242;
 }
 
 .details-container {
@@ -49,7 +49,7 @@
 
 .detail-item p {
     font-size: 14px;
-    color: #757575;
+    color: #424242;
 }
 
 .description-container {

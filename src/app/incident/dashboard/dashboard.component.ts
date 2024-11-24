@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -72,10 +72,44 @@ export class DashboardComponent implements OnInit {
     },
   };
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService,
+    private renderer: Renderer2,
+    private el: ElementRef
+  ) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
+  }
+
+  ngAfterViewInit(): void {
+    // Seleccionar el canvas del DOM
+    const barCanvas = this.el.nativeElement.querySelector('canvas');
+    if (barCanvas) {
+      this.renderer.setAttribute(
+        barCanvas,
+        'aria-label',
+        'Gráfico de barras que muestra el volumen de llamadas por hora.'
+      );
+      this.renderer.setAttribute(
+        barCanvas,
+        'role',
+        'img'
+      );
+    }
+
+    const pieCanvas = this.el.nativeElement.querySelectorAll('canvas')[1];
+    if (pieCanvas) {
+      this.renderer.setAttribute(
+        pieCanvas,
+        'aria-label',
+        'Gráfico de pastel que muestra la tendencia de satisfacción del cliente.'
+      );
+      this.renderer.setAttribute(
+        pieCanvas,
+        'role',
+        'img'
+      );
+    }
   }
 
   private loadDashboardData(): void {

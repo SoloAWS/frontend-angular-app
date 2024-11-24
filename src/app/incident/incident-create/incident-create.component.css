@@ -43,3 +43,7 @@ form {
     margin-top: 45px;
     margin-bottom: 30px;
 }
+
+mat-label {
+    color: #4A4A4A;
+  }
