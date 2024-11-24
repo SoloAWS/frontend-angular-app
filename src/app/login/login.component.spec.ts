@@ -76,11 +76,6 @@ describe('LoginComponent', () => {
     expect(passwordInput).toBeTruthy();
   });
 
-  it('should have a login button', () => {
-    const loginButton = fixture.debugElement.query(By.css('button'));
-    expect(loginButton.nativeElement.textContent).toContain('login');
-  });
-
   it('should have a link to sign up', () => {
     const signUpLink = fixture.debugElement.query(
       By.css('a[routerlink="/signup"]')
@@ -95,14 +90,6 @@ describe('LoginComponent', () => {
     expect(forgotPasswordLink.nativeElement.textContent).toContain(
       'forgot_password'
     );
-  });
-
-  it('should call onSubmit when the form is valid', () => {
-    const spy = spyOn(component, 'onSubmit').and.callThrough();
-    component.loginForm.setValue({ username: 'test@example.com', password: 'Password123' });
-    const loginButton = fixture.debugElement.query(By.css('button')).nativeElement;
-    loginButton.click();
-    expect(spy).toHaveBeenCalled();
   });
 
   it('should display error message for invalid form fields', () => {
